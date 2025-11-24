@@ -252,6 +252,7 @@ class Compiler():
         elif tool_name == "workflow_implment":
             tool_status_code, tool_output = self.handle_workflow_implement(tool_input=tool_input)
         elif tool_name == "ask_user_help":
+            print('ask_user_help')
             tool_status_code, tool_output = self.ask_user_help(tool_input=tool_input)
         elif tool_name == "task_submit":
             tool_status_code, tool_output = self.task_submit(tool_input=tool_input)
