@@ -97,7 +97,10 @@ class RPAgentConfig(CfgNode):
         C = CfgNode()
 
         C.default_completion_kwargs = {
-            'model': 'gpt-4-32k',
+            # 'model': 'gpt-4',
+            'model': 'gpt-4-turbo',
+            # 'model': 'gpt-3.5-turbo',
+            # 'model': 'gpt-5-mini',
             'temperature': 0.5,
             'request_timeout':30,
             'max_tokens': 4096,
@@ -107,7 +110,16 @@ class RPAgentConfig(CfgNode):
 
         C.default_knowledge = knowledge
 
-        C.environment = ENVIRONMENT.Production
+        # C.environment = ENVIRONMENT.Production
+        C.environment = ENVIRONMENT.Development
+        # - Development：不访问缓存，从头开始
+        # - Refine：访问缓存，但
+        # user
+        # messages
+        # 必须一致，若不一致（例如节点返回值变化）则停止访问缓存
+        # - Production：无条件访问缓存，将
+        # record
+        # 重播一遍
 
         return C
     
