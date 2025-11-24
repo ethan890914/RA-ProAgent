@@ -156,25 +156,63 @@ class n8nWorkflowRunner():
 
         assert error != None
         code_split = workflow_code.split("\n")
-        frame = tb[-1]
-        counter = 2
-        for cont in tb:
+
+        # frame = tb[-1]
+        # counter = 2
+        # for cont in tb:
+        #     if cont.filename == "<string>":
+        #         # frame = cont
+        #         counter -= 1
+        #     if counter == 0:
+        #         frame = cont
+        #         break
+        #
+        # print(f"frame.lineno: {frame.lineno}, len(code_split): {len(code_split)}")
+        #
+        # if frame.lineno > 0:
+        #     error_codes = ["--> "+code_split[frame.lineno - 1]]
+        #     if frame.lineno < len(code_split) and code_split[frame.lineno].strip() != "":
+        #         error_codes.append( "    "+ code_split[frame.lineno])
+        #     if frame.lineno - 2 >= 0 and code_split[frame.lineno - 2].strip() != "":
+        #         error_codes = ["    "+ code_split[frame.lineno - 2]] + error_codes
+        #     error_codes = [f"In Function: {frame.name}"] + error_codes
+        #     error.add_context_stack(error_codes)
+
+        # 1. Find the deepest frame that was executed dynamically (filename='<string>')
+        #    This pinpoints the exact line inside your workflow code string.
+        frame = None
+        for cont in reversed(tb):
             if cont.filename == "<string>":
-                # frame = cont
-                counter -= 1
-            if counter == 0:
                 frame = cont
                 break
-        # print(f"frame.lineno: {frame.lineno}, len(code_split): {len(code_split)}")
 
-        if frame.lineno > 0:
-            error_codes = ["--> "+code_split[frame.lineno - 1]]
-            if frame.lineno < len(code_split) and code_split[frame.lineno].strip() != "":
-                error_codes.append( "    "+ code_split[frame.lineno])
-            if frame.lineno - 2 >= 0 and code_split[frame.lineno - 2].strip() != "":
-                error_codes = ["    "+ code_split[frame.lineno - 2]] + error_codes
-            error_codes = [f"In Function: {frame.name}"] + error_codes
+        # If the frame is not found or the line number is suspicious, gracefully handle the error
+        if frame is None or frame.lineno <= 0 or frame.lineno > len(code_split):
+            error_codes = [f"In Function: {self.workflow_name}",
+                           "--> Execution failed, but line number could not be mapped to the workflow code (IndexError avoided).",
+                           f"Reported Line: {frame.lineno if frame else 'N/A'}, Code Length: {len(code_split)}"]
             error.add_context_stack(error_codes)
+            raise error
+
+        # 2. Use the dynamically-executed frame's line number for accurate indexing
+        print(f"frame.lineno: {frame.lineno}, len(code_split): {len(code_split)}")
+
+        # We use frame.lineno - 1 for 0-based indexing
+        # Note: frame.lineno is relative to the start of the code string passed to exec().
+
+        # Display the error line
+        error_codes = ["--> " + code_split[frame.lineno - 1]]
+
+        # Add the line after the error (if it exists)
+        if frame.lineno < len(code_split) and code_split[frame.lineno].strip() != "":
+            error_codes.append("    " + code_split[frame.lineno])
+
+        # Add the line before the error (if it exists)
+        if frame.lineno - 2 >= 0 and code_split[frame.lineno - 2].strip() != "":
+            error_codes = ["    " + code_split[frame.lineno - 2]] + error_codes
+
+        error_codes = [f"In Function: {frame.name}"] + error_codes
+        error.add_context_stack(error_codes)
         
         # import pdb; pdb.set_trace()
         # add local_var info
