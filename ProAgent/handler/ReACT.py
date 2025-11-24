@@ -88,7 +88,7 @@ class ReACTHandler():
             highlighted_code = highlight_code(self.compiler.code_runner.print_clean_code(indent=4))
             user_prompt_colored = user_prompt.split("{{now_codes}}")
             user_prompt_colored = highlighted_code.join(user_prompt_colored)
-            logger.typewriter_log(user_prompt_colored)
+            # logger.typewriter_log(user_prompt_colored)
 
             user_prompt = user_prompt.replace("{{now_codes}}", self.compiler.code_runner.print_code())
 
@@ -104,4 +104,11 @@ class ReACTHandler():
             action = self.compiler.tool_call_handle(content, function_name, function_arguments)
             self.messages.append(message)
             self.actions.append(action)
+
+            if action.tool_name == 'ask_user_help':
+                print('ask_user_help exit!!!')
+                # exit()
+            elif action.tool_name == 'task_submit':
+                print('task_submit finish!!!')
+                exit()
             # exit()
