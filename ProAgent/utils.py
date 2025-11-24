@@ -11,6 +11,8 @@ from dataclasses import dataclass, field
 class LLMStatusCode(Enum):
     SUCCESS = 0
     ERROR = 1
+    AUTH_ERROR = 2
+    API_FAILURE = 3
 
 @unique
 class NodeType(Enum):
