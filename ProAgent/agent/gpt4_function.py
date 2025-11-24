@@ -32,6 +32,8 @@ class OpenAIFunction():
             if isinstance(output, Dict):
                 usage = output["usage"]
                 message = output["choices"][0]["message"]
+                llm_interface_id = args['recorder'].llm_interface_id
+                print(f'llm_id = {llm_interface_id}')
                 print(usage)
 
                 if "function_call" in message.keys():
