@@ -105,7 +105,39 @@ def _chat_completion_request_without_retry(default_completion_kwargs, messages, 
                                     output_data = response)
         
         return response, LLMStatusCode.SUCCESS
-    
+
+    # Catch the specific AuthenticationError
+    except openai.error.AuthenticationError as e:
+        traceback.print_exc()
+        logger.error("AuthenticationError: API key not provided or invalid.")  # Use logger.error for critical issue
+        logger.error(f"Please set the OPENAI_API_KEY environment variable or set it in code: {e}")
+        # Optionally, you might want to stop execution or raise a more controlled error here.
+        # For now, following your error handling pattern:
+        if recorder:
+            recorder.regist_llm_inout(base_kwargs=default_completion_kwargs,
+                                      messages=messages,
+                                      functions=functions,
+                                      function_call=function_call,
+                                      stop=stop,
+                                      other_args=args,
+                                      output_data=f"AuthenticationError: {e}")
+        return e, LLMStatusCode.AUTH_ERROR  # Define a new status code for clarity, e.g., AUTH_ERROR
+
+    # Catch other OpenAI API errors (e.g., APIError, RateLimitError)
+    except openai.error.OpenAIError as e:
+        traceback.print_exc()
+        logger.info("Unable to generate ChatCompletion response due to OpenAI API error")
+        logger.info(f"Exception: {e}")
+        if recorder:
+            recorder.regist_llm_inout(base_kwargs=default_completion_kwargs,
+                                      messages=messages,
+                                      functions=functions,
+                                      function_call=function_call,
+                                      stop=stop,
+                                      other_args=args,
+                                      output_data=f"OpenAIError: {e}")
+        return e, LLMStatusCode.API_FAILURE  # Define a new status code
+
     except Exception as e:
         traceback.print_exc()
         logger.info("Unable to generate ChatCompletion response")
@@ -131,14 +163,35 @@ def _chat_completion_request(**args):
         The completed output if the request is successful, otherwise None.
     """
 
-    for i in range(3):
+    for i in range(5):
         if i > 0:
             logger.info(f"LLM retry for the {i+1}'th time")
 
         try:
             output, output_code = _chat_completion_request_without_retry(**args)
+            logger.info(f"LLM testing")
             if output_code == LLMStatusCode.SUCCESS:
+                logger.info(f"LLM output success")
                 return output
+            elif output_code == LLMStatusCode.AUTH_ERROR:
+                logger.info(f"LLM AuthenticationError")
+                logger.info(f"Starting 60-second sleep...")
+                time.sleep(60)
+                logger.info(f"Sleep finished.")
+            elif output_code == openai.error.OpenAIError:
+                logger.info(f"LLM OpenAIError")
+                logger.info(f"Starting 60-second sleep...")
+                time.sleep(60)
+                logger.info(f"Sleep finished.")
+            else:
+                logger.info(f"LLM API_FAILURE")
+                logger.info(f"Starting 60-second sleep...")
+                time.sleep(60)
+                logger.info(f"Sleep finished.")
+
         except func_timeout.exceptions.FunctionTimedOut: #TLE
             logger.info(f"LLM response time out")
+            print("Starting 60-second sleep...")
+            time.sleep(60)
+            print("Sleep finished.")
             continue
