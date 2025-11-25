@@ -1,6 +1,7 @@
 from ast import literal_eval
 
 from ProAgent.router.utils import ENVIRONMENT
+import os
 
 
 class CfgNode:
@@ -96,17 +97,42 @@ class RPAgentConfig(CfgNode):
     def get_default_config():
         C = CfgNode()
 
-        C.default_completion_kwargs = {
-            # 'model': 'gpt-4',
-            'model': 'gpt-4-turbo',
-            # 'model': 'gpt-3.5-turbo',
-            # 'model': 'gpt-5-mini',
-            'temperature': 0.5,
-            'request_timeout':30,
-            'max_tokens': 4096,
-            'frequency_penalty': 0, 
-            'presence_penalty': 0
-        }
+                # Detect API provider from environment (defaults to openai for backward compatibility)
+        api_provider = os.getenv('API_PROVIDER', 'openai').lower()
+        
+        # Set completion kwargs based on API provider
+        if api_provider == 'gemini':
+            # Gemini configuration
+            # Note: Model names stay as OpenAI format - they get mapped internally
+            C.default_completion_kwargs = {
+                'model': 'gpt-4-turbo',  # Will be mapped to gemini-2.5-pro
+                # Alternative options:
+                # 'model': 'gpt-4',      # Will be mapped to gemini-2.5-pro
+                # 'model': 'gpt-3.5-turbo',  # Will be mapped to gemini-2.5-flash
+                'temperature': 0.5,
+                'request_timeout': 30,
+                'max_tokens': 4096,
+                'frequency_penalty': 0,  # Not used by Gemini but kept for compatibility
+                'presence_penalty': 0    # Not used by Gemini but kept for compatibility
+            }
+            print(f"🤖 ProAgent configured to use Gemini API (model will be mapped from {C.default_completion_kwargs['model']})")
+        else:
+            # OpenAI configuration (original, unchanged)
+            C.default_completion_kwargs = {
+                # 'model': 'gpt-4',
+                'model': 'gpt-4-turbo',
+                # 'model': 'gpt-3.5-turbo',
+                # 'model': 'gpt-5.1',
+                'temperature': 0.5,
+                'request_timeout': 30,
+                'max_tokens': 4096,
+                'frequency_penalty': 0, 
+                'presence_penalty': 0
+            }
+            print(f"🤖 ProAgent configured to use OpenAI API (model: {C.default_completion_kwargs['model']})")
+
+        # Store API provider info for reference
+        C.api_provider = api_provider
 
         C.default_knowledge = knowledge
 
