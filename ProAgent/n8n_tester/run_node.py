@@ -90,22 +90,29 @@ def _get_constant_workflow(input_data):
 def parse_n8n_output(output_str, target_node_name):
     """Parses the JSON output from n8n execution to find the target node's data."""
     try:
-        # Attempt to find the JSON array in the stdout (skipping logs)
-        start_idx = output_str.find('[')
-        end_idx = output_str.rfind(']') + 1
+        # Find the JSON object in the stdout (n8n returns objects, not arrays)
+        start_idx = output_str.find('{')
+        end_idx = output_str.rfind('}') + 1
         if start_idx == -1 or end_idx == 0:
             return []
 
         json_str = output_str[start_idx:end_idx]
         execution_data = json.loads(json_str)
-
-        # Navigate: [ { "node": "Target_Node", "data": { "main": [ [ { "json": ... } ] ] } } ]
-        for item in execution_data:
-            if item.get("node") == target_node_name and item.get("executionStatus") == "success":
+        
+        # Navigate the n8n response structure: data.resultData.runData[target_node_name]
+        run_data = execution_data.get("data", {}).get("resultData", {}).get("runData", {})
+        target_node_data = run_data.get(target_node_name, [])
+        
+        if target_node_data and len(target_node_data) > 0:
+            # Get the successful execution data
+            latest_execution = target_node_data[-1]  # Use the latest execution
+            if latest_execution.get("executionStatus") == "success":
                 # Return the list of items from the first output of 'main'
-                return item.get("data", {}).get("main", [[]])[0]
+                return latest_execution.get("data", {}).get("main", [[]])[0]
+                
     except Exception as e:
         print(colored(f"Error parsing n8n output: {e}", "yellow"))
+        print(colored(f"Raw output: {output_str[:500]}...", "yellow"))  # Show first 500 chars for debugging
     return []
 
 
