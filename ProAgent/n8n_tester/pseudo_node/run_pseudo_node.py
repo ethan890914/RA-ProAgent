@@ -28,7 +28,8 @@ def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) 
     params_list = [params_raw]
 
     if node_var['type'].split('.')[-1] == 'aiCompletion':
-        return_list = run_ai_completion(params_list)
+        # return_list = run_ai_completion(params_list)
+        return_list = run_ai_completion(input_data)
     else:
         return_list = []
     final_return_data = fill_return_data(return_list)
