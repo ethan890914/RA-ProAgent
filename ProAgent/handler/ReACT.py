@@ -64,14 +64,17 @@ class ReACTHandler():
             messages.append({"role":"system","content": specific_prompt})
 
             # cut some messages down, only allow for last_num messages
-            last_num = 3
+            messages.append({"role": "system", "content": "In the following messages, three previous assistant response with tool output are given."})
+            last_num = 5
             for k, (assistant_message, parsed_action) in enumerate(zip(self.messages, self.actions)):
                 if k < len(self.messages) - last_num:
                     continue
-                messages.append(assistant_message)
+                if assistant_message != None:
+                    messages.append(assistant_message)
                 messages.append({
-                    "role":"function",
-                    "name": parsed_action.tool_name,
+                    # "role":"function",
+                    "role": "user",
+                    # "name": parsed_action.tool_name,
                     "content": parsed_action.tool_output,
                 })
             
@@ -97,10 +100,16 @@ class ReACTHandler():
             functions = get_intrinsic_functions()
 
             agent = OpenAIFunction()
+            # call agent, query cached llm inout (if you want to load previous llm result)
+            # save llm inout result (LLM_inout_pair)
             content, function_name, function_arguments, message = agent.parse(messages=messages,
                                                             functions=functions,
                                                             default_completion_kwargs=CONFIG.default_completion_kwargs,
                                                             recorder=self.recorder)
+
+            # run code
+            # function_name => tool_name
+            # function_arguments => tool_input
             action = self.compiler.tool_call_handle(content, function_name, function_arguments)
             self.messages.append(message)
             self.actions.append(action)
