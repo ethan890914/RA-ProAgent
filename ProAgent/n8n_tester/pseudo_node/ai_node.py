@@ -18,7 +18,7 @@ def run_ai_completion(params_list:list) -> str:
     return_list = []
     completion_kwargs = CONFIG.default_completion_kwargs
     for params in params_list:
-        messages = params['messages']
+        messages = params['json']['messages']
         if isinstance(messages, str):
             messages_json = json.loads(messages)
         elif isinstance(messages, list):
