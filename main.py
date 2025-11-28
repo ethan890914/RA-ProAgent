@@ -25,13 +25,15 @@ def main(cfg: omegaconf.DictConfig):
         None
     """
     
-    recorder = RunningRecoder()
+    recorder = RunningRecoder() # default root directory: ./records
 
     record_dir = None
     record_dir = "./apa_case"
 
     if record_dir != None:
         recorder.load_from_disk(record_dir, cfg)
+        # this record_dir is the record history provided by the original paper, which is different from saving
+        # directory of current round
 
     # slack put fixed string
     # query = userQuery(
@@ -45,19 +47,110 @@ def main(cfg: omegaconf.DictConfig):
     # )
 
     # slack put messages from googleSheets
+    # query = userQuery(
+    #     task = "Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type (to B or to C). If the business flow type is to B (to Business) just show it",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.\n",
+    #         "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+    #         "2.2 The sheetName of Google is: commercial\n",
+    #         "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Descrption\n"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type (to B or to C). If the business flow type is to B (to Business) just show it",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.\n",
+    #         "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+    #         "2.2 The sheetName of Google is: commercial\n",
+    #         "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Description\n",
+    #         "3.1 For the AI completion, use this prompt: 'Based on the description: {{$json.Description}}, classify this business as either to B (business-to-business) or to C (business-to-consumer). Respond with only: to B or to C'\n",
+    #         "3.2 Make sure the AI completion messages parameter is properly formatted as a JSON array\n"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type (to B or to C). If the business flow type is to B (to Business) just show it",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.\n",
+    #         "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+    #         "2.2 The sheetName of Google is: commercial\n",
+    #         "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Description\n",
+    #         "3.1 The aiCompletion node should use the existing OpenAI credentials from n8n\n",
+    #         "3.2 For the AI completion prompt, use: 'Classify this business description as B2B or B2C: {{$json.Description}}. Respond only: to B or to C'\n",
+    #         "3.3 Make sure the messages parameter is formatted as a simple string for OpenAI compatibility\n"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # # slack put messages from googleSheets
     query = userQuery(
         task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
         additional_information=[
-            "1. All thoughts and comments should be in Chinese for me to understand.\n",
-            "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
-            "2.2 The sheetName of Google is: commercial\n"
-            "3.1 Choose #general for the Slack Channel.\n",
-            "3.2 Send what you got from googlesheet as a whole json structure string to slack. \n"
+            "1. All thoughts and comments should be in Chinese for me to understand.",
+            "2.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+            "2.2 The sheetName of Google is: news",
+            "2.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below."
+            "3.1 Choose #general for the Slack Channel.",
+            "3.2 Send headlines you got from googlesheet row by row to slack. "
         ],
         refine_prompt=""
     )
 
-    # # googleSheets
+    # slack put messages from googleSheets
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and use n8n-nodes-base.aiCompletion to check if this news belongs to category technology or sport. Send the result to slack at the end. Each slack message contains a single news - category pair.",
+        additional_information=[
+            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+            "1.2 The sheetName of Google is: news",
+            "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+            "1.4 Convert output of googleSheets news in json \"messages\" field."
+            "2.1 Use n8n-nodes-base.aiCompletion to check if each news title belongs to category technology or sport"
+            "3.1 Send the category result to slack"
+            "3.2 Choose #general for the Slack Channel."
+            "3.3 Each message contains a single news-category pair. There are total 10 messages to be sent."
+        ],
+        refine_prompt=""
+    )
+
+    # slack put messages from googleSheets
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+    #     additional_information=[
+    #         "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
+    #         "2.1 Send the generate joke to slack"
+    #         "2.2 Choose #general for the Slack Channel."
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # slack put messages from googleSheets
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.",
+    #         "2. news title: \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"",
+    #         "3. Use aiCompletion to check if this news title belongs to category technology or sport"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # # slack put messages from googleSheets
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.\n",
+    #         "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+    #         "2.2 The sheetName of Google is: commercial\n"
+    #         "3.1 Choose #general for the Slack Channel.\n",
+    #         "3.2 Send what you got from googlesheet as a whole json structure string to slack. \n"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # googleSheets
     # query = userQuery(
     #     task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and shows it.",
     #     additional_information=[
