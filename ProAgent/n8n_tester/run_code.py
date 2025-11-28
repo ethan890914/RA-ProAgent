@@ -264,6 +264,7 @@ class n8nPythonCodeRunner():
         2. Execute the current code and modify the information of all accessed nodes.
         """
 
+        # initialization
         for workflow_name, workflow in self.workflows.items():
             workflow.last_runtime_info = TestResult(
                                                     data_type=TestDataType.NoInput,
@@ -302,7 +303,7 @@ class n8nPythonCodeRunner():
         self.error_stack_str = []
         self.std_output = ""
         try:
-            name_space["mainWorkflow"](trigger_input)
+            name_space["mainWorkflow"](trigger_input) # execute mainWorkflow
         except n8nRunningException as e:
             for code_lines in reversed(e.code_stack):
                 self.error_stack_str.extend(code_lines)
