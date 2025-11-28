@@ -119,12 +119,13 @@ class RPAgentConfig(CfgNode):
         else:
             # OpenAI configuration (original, unchanged)
             C.default_completion_kwargs = {
+                'model': 'gpt-4.1-mini',
                 # 'model': 'gpt-4',
-                'model': 'gpt-4-turbo',
+                # 'model': 'gpt-4-turbo',
                 # 'model': 'gpt-3.5-turbo',
                 # 'model': 'gpt-5.1',
                 'temperature': 0.5,
-                'request_timeout': 30,
+                'timeout': 30,
                 'max_tokens': 4096,
                 'frequency_penalty': 0, 
                 'presence_penalty': 0
