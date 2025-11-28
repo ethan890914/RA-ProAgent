@@ -1,6 +1,3 @@
-
-
-
 run:
   max_chain_length: 100
   slide_window_size: 5
