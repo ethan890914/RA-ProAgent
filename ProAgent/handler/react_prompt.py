@@ -149,7 +149,7 @@ def mainWorkflow(trigger_input: [{...}]):
 
 system_prompt_2 = '''You will define and implement functions progressively for many steps. At each step, you can do one of the following actions:
 1. functions_define: Define a list of functions(Action and Trigger). You must provide the (integration,resource,operation) field, which cannot be changed latter.
-2. function_implement: After function define, we will provide you the specific_param schema of the target function. You can provide(or override) the specific_param by this function. We will show your available test_data after you implement functions.
+2. function_implement: After function define, we will provide you the specific_param schema of the target function. Remember to provide all parameters in the schema. You can provide(or override) the specific_param by this function. We will show your available test_data after you implement functions.
 3. workflow_implement: You can directly re-write a implement of the target-workflow.
 4. add_test_data: Beside the provided hostory data, you can also add your custom test data for a function.
 5. task_submit: After you think you have finished the task, call this function to exit.
@@ -159,6 +159,93 @@ Remember:
 2.Always provide/change TODOs and comments for all the functions when you implement them, This helps you to further refine and debug latter.
 3.We will test functions automatically, you only need to change the pinned data.
 
+🚨 CRITICAL: function_rewrite_params REQUIRES ALL PARAMETERS 🚨
+
+When calling function_rewrite_params, you MUST provide these 7 parameters:
+1. thought (string)
+2. plan (array) 
+3. criticism (string)
+4. function_name (string) - e.g., "action_0"
+5. params (string) - Complete JSON as string
+6. comments (string) 
+7. TODO (array)
+
+If you omit ANY parameter, the call will FAIL. No exceptions.
+
+PSEUDO_NODE_GUIDANCE:
+CRITICAL: Different parameter formats for different node types:
+
+REAL N8N NODES (googleSheets, slack, etc.):
+- Use n8n expressions: "={{$json['FieldName']}}"
+- Parameters go through n8n CLI execution
+
+PSEUDO NODES (aiCompletion):
+- Use direct JSON values, NO expressions
+- Parameters processed by ProAgent internally
+- For aiCompletion specifically:
+  * 'messages' should be a JSON array
+  * Construct messages using data from previous nodes
+  * No {{ }} expressions needed
+
+Example aiCompletion params (PSEUDO NODE):
+{
+  "messages": [
+    {"role": "system", "content": "你是分类助手"}, 
+    {"role": "user", "content": "实际的新闻标题内容"}
+  ]
+}
+NOT: {"messages": "={{$json['messages']}}"}
+
+PSEUDO_NODE_OUTPUT_GUIDANCE:
+CRITICAL: aiCompletion pseudo node output format differs from real n8n nodes:
+
+REAL N8N NODE OUTPUT (like googleSheets):
+[{"json": {"Headlines": "title"}, "pairedItem": {...}}]
+
+PSEUDO NODE OUTPUT (aiCompletion):  
+[{"json": {"choices": [{"text": "AI response text"}]}, "pairedItem": {...}}]
+
+For aiCompletion parsing in workflows:
+1. Check if ai_output[0]["json"]["choices"] exists
+2. Extract text: ai_output[0]["json"]["choices"][0]["text"]
+3. Parse the text content (not JSON structure)
+
+Example correct parsing:
+try:
+    if "choices" in ai_output[0]["json"]:
+        ai_text = ai_output[0]["json"]["choices"][0]["text"]
+    else:
+        ai_text = str(ai_output[0])
+except (KeyError, IndexError):
+    # Handle parsing error
+    
+🚨 CRITICAL: aiCompletion Parameter Format 🚨
+
+For aiCompletion (PSEUDO NODE), the "messages" parameter must be a STRING containing JSON, not a JSON object.
+
+Correct format:
+"params": "{\"messages\": \"[{\\\"role\\\": \\\"system\\\", \\\"content\\\": \\\"You are helpful\\\"}, {\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"Generate a joke\\\"}]\"}"
+
+NOT:
+"params": "{\"messages\": [{\"role\": \"system\", \"content\": \"...\"}]}"
+    
+ROBUST_AI_PARSING_GUIDANCE:
+For aiCompletion output parsing, use defensive programming:
+STEP 1: Extract text with debugging
+STEP 2: Parse categories with multiple fallback methods  
+STEP 3: Validate count matches expected
+STEP 4: Use explicit error handling, not silent defaults
+
+BETTER APPROACH:
+try:
+    categories = re.findall(r"\d+\.\s*(technology|sport)", ai_text)
+    if len(categories) != len(expected):
+        # Try alternative parsing methods
+        lines = ai_text.strip().split('\n')
+        categories = [line.split('.')[-1].strip() for line in lines if line.strip()]
+except:
+    categories = ["unknown"] * len(expected)
+    print("PARSING FAILED: Using unknown categories")
 '''
 
 system_prompt_3 = '''The user query:
