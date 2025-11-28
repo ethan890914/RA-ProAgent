@@ -81,7 +81,7 @@ def get_intrinsic_functions():
 
     node_rewrite_param_function = {
         "name": "function_rewrite_params",
-        "description": "Give params of a already defined function with the provided param descriptions, This will overwrite now params",
+        "description": "Give params of a already defined function with the provided param descriptions, This will overwrite now params. ALL parameters are mandatory!",
         "parameters":{
             "type": "object",
             "properties": {
