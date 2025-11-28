@@ -148,7 +148,8 @@ class RunningRecoder():
                     "other_args":dump_common_things(other_args),
                     # 'uuid': dump_common_things(uuid)
                 },
-                "output": dump_common_things(output_data),
+                # "output": dump_common_things(output_data),
+                "output": output_data,
                 "llm_interface_id": self.llm_interface_id,
             }
             json.dump(llm_inout_record,writer,indent=2, ensure_ascii=False)
