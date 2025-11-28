@@ -25,7 +25,7 @@ from ProAgent.utils import LLMStatusCode
 # Import Gemini agent (only when needed)
 _gemini_available = False
 try:
-    from ProAgent.gemini_agent import gemini_chat_completion_create
+    from ProAgent.agent.gemini_agent import gemini_chat_completion_create
     _gemini_available = True
 except ImportError:
     _gemini_available = False
@@ -49,7 +49,7 @@ def _chat_completion_request_atomic(**json_data):
     """
     api_provider = get_api_provider()
     
-    if api_provider == 'gemini':
+    if api_provider in ['gemini', 'gemini-flash']:
         # Use Gemini API
         if not _gemini_available:
             raise ImportError("Gemini agent not available. Install google-generativeai and ensure gemini_agent.py is present.")
@@ -61,6 +61,7 @@ def _chat_completion_request_atomic(**json_data):
         # Use OpenAI API (original code)
         openai.api_key = os.environ.get('OPENAI_API_KEY')
         openai.api_base = os.environ.get('OPENAI_API_BASE')
+
         response = openai.ChatCompletion.create(**json_data)
         return response
 
@@ -184,7 +185,7 @@ def _chat_completion_request_without_retry(default_completion_kwargs, messages, 
         
         else:
             # OpenAI-specific error handling (original code)
-            
+
             # Catch the specific AuthenticationError
             if hasattr(openai.error, 'AuthenticationError') and isinstance(e, openai.error.AuthenticationError):
                 logger.error("OpenAI AuthenticationError: API key not provided or invalid.")
@@ -219,9 +220,9 @@ def _chat_completion_request_without_retry(default_completion_kwargs, messages, 
                 logger.info(f"Exception: {e}")
                 if recorder and hasattr(recorder, 'regist_llm_inout'):
                     recorder.regist_llm_inout(base_kwargs = default_completion_kwargs,
-                                            messages=messages, 
-                                            functions=functions, 
-                                            function_call=function_call, 
+                                            messages=messages,
+                                            functions=functions,
+                                            function_call=function_call,
                                             stop = stop,
                                             other_args = args,
                                             output_data=f"Exception: {e}")
