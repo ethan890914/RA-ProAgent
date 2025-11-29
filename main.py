@@ -205,6 +205,39 @@ def main(cfg: omegaconf.DictConfig):
         refine_prompt=""
     )
 
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to qwuqwuqwu@gmail.com.",
+        additional_information=[
+            "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
+            "2.1 Send the generated joke to email address: qwuqwuqwu@gmail.com"
+            "2.2 email title: ProAgent Joking",
+            "2.3 email content: [joke]"
+        ],
+        refine_prompt=""
+    )
+
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends each result to qwuqwuqwu@gmail.com. Each email message contains a single news-category pair.",
+        additional_information=[
+            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+            "1.2 The sheetName of Google is: news",
+            "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+
+            "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+            "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
+            "2.3 User prompt: Include the actual headline text",
+            "2.4 aiCompletion should process each of the headlines separately",
+
+            "3.1 Parse aiCompletion output to extract the category (technology or sport)",
+            "3.2 Send results to email qwuqwuqwu@gmail.com",
+            "3.3 Each email title: [i]. ProAgent News: [headline]"
+            "3.4 i is the index of the news. start from 1"
+            "3.5 Each email content: News: [headline]\nCategory: [category]"
+        ],
+        refine_prompt=""
+    )
+
+
     # # slack put messages from googleSheets
     # query = userQuery(
     #     task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
