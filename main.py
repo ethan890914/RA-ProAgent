@@ -196,6 +196,15 @@ def main(cfg: omegaconf.DictConfig):
         refine_prompt=""
     )
 
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which send an email to qwuqwuqwu@gmail.com",
+        additional_information=[
+            "1.2 email title: ProAgent testing",
+            "1.1 email content: Hi qwuqwuqwu!"
+        ],
+        refine_prompt=""
+    )
+
     # # slack put messages from googleSheets
     # query = userQuery(
     #     task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",

@@ -61,6 +61,13 @@ class Credentials():
                             "slackTrigger",  # Slack Trigger node with OAuth2
                             "SlackTrigger"
                         ],
+                        "gmailOAuth2": [
+                            "gmail",
+                            "Gmail",
+                            "gmailTrigger",
+                            "GmailTrigger",
+                            "Gmail account"
+                        ]
                         # Add more mappings as needed
                     }
 
