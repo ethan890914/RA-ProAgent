@@ -40,7 +40,8 @@ class Credentials():
                             "lmChatOpenAi",  # From @n8n/n8n-nodes-langchain.lmChatOpenAi
                             "OpenAi",
                             "openAi",
-                            "ChatOpenAi"
+                            "ChatOpenAi",
+                            "aiCompletion"
                         ],
                         "serpApi": [
                             "toolSerpApi",  # From @n8n/n8n-nodes-langchain.toolSerpApi
