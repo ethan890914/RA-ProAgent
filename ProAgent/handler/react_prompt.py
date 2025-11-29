@@ -192,74 +192,247 @@ REAL N8N NODES (googleSheets, slack, etc.):
 - Parameters go through n8n CLI execution
 
 PSEUDO NODES (aiCompletion):
-- Use direct JSON values, NO expressions
-- Parameters processed by ProAgent internally
-- For aiCompletion specifically:
-  * 'messages' should be a JSON array
-  * Construct messages using data from previous nodes
-  * No {{ }} expressions needed
+⚠️⚠️⚠️ MOST IMPORTANT RULE FOR aiCompletion ⚠️⚠️⚠️
+BUILD ai_input WITH MESSAGES IN mainWorkflow, THEN PASS TO ACTION!
 
-Example aiCompletion params (PSEUDO NODE):
-{
-  "messages": [
-    {"role": "system", "content": "你是分类助手"}, 
-    {"role": "user", "content": "实际的新闻标题内容"}
-  ]
-}
-NOT: {"messages": "={{$json['messages']}}"}
+- aiCompletion is a PSEUDO node - it ONLY reads from input_data, NEVER from params
+- The params field is COMPLETELY IGNORED - don't put anything in params!
+- input_data is the ONLY source of messages for aiCompletion
+- NEVER pass trigger_input directly to aiCompletion action
+- NEVER pass empty list [] to aiCompletion action
+- ALWAYS build ai_input = [{"json": {"messages": [...]}}] in mainWorkflow FIRST
+
+HOW aiCompletion ACTUALLY WORKS:
+1. WORKFLOW builds input_data (Python structures, NO json.dumps):
+   ```python
+   # Single item case - build one message set
+   ai_input = [{
+       "json": {
+           "messages": [
+               {"role": "system", "content": "You are helpful"},
+               {"role": "user", "content": "Generate conversation"}
+           ]
+       }
+   }]
+   ai_output = action_0(ai_input)  # aiCompletion receives input_data directly
+   ```
+
+   ```python
+   # Multiple items case - build message set for each item
+   ai_input = []
+   for item in news_data:
+       messages_data = [
+           {"role": "system", "content": "Classify news"},
+           {"role": "user", "content": f"Classify: {item['json']['Headlines']}"}
+       ]
+       ai_input.append({"json": {"messages": messages_data}})
+   ai_output = action_1(ai_input)  # aiCompletion receives input_data directly
+   ```
+
+2. ACTION FUNCTION params (keep empty or leave placeholder):
+   ```python
+   params = {}  # Empty params - aiCompletion doesn't use them!
+   ```
+
+3. RESULT: aiCompletion pseudo node receives input_data, extracts messages from each item
+
+CRITICAL FOR aiCompletion:
+✅ Build messages as Python list/dict in mainWorkflow
+✅ Put messages in input_data: {"json": {"messages": [...]}}
+✅ aiCompletion reads ONLY from input_data, never from params
+✅ Pass ai_input (with messages) to action, NOT trigger_input or []
+❌ NO json.dumps() in workflow
+❌ NO JSON.stringify() anywhere
+❌ NO putting messages in params - params are ignored!
+❌ NO passing trigger_input or [] to aiCompletion action
+
+CORRECT: Build ai_input in mainWorkflow, pass to action, params stay empty
 
 PSEUDO_NODE_OUTPUT_GUIDANCE:
-CRITICAL: aiCompletion pseudo node output format is simplified to match n8n standards:
+CRITICAL: aiCompletion pseudo node output format:
 
 REAL N8N NODE OUTPUT (like googleSheets):
 [{"json": {"Headlines": "title"}, "pairedItem": {...}}]
 
 PSEUDO NODE OUTPUT (aiCompletion):
-[{"json": {"text": "AI response text"}, "pairedItem": {...}}]
+[{"json": {"choices": [{"text": "AI response text"}]}, "pairedItem": {...}}]
 
 For aiCompletion output in workflows:
-1. The AI response is in the "text" field
-2. Access it directly: ai_output[0]["json"]["text"]
-3. Use in expressions: "={{$json["text"]}}"
+1. The AI response is in choices[0]["text"]
+2. Access it: ai_output[0]["json"]["choices"][0]["text"]
+3. For Slack, extract text first in workflow
 
-Example usage with Slack:
-ai_output = action_0(input_data=trigger_data)
-# ai_output = [{"json": {"text": "Generated joke here"}}]
+⚠️ CRITICAL: Build ai_input in WORKFLOW, not in action params! ⚠️
 
-# Send to Slack using expression
-slack_params = {
-    "text": "={{$json["text"]}}"  # Simple, direct access
-}
-    
-🚨 CRITICAL: aiCompletion Parameter Format 🚨
+COMPLETE CORRECT Example - Generate conversation and send to Slack:
+```python
+def mainWorkflow(trigger_input: [{...}]):
+    """
+    comments: Generate conversation using AI and send to Slack
+    TODOs:
+      - Test end-to-end workflow
+    """
+    # ✅ STEP 1: BUILD ai_input WITH MESSAGES IN WORKFLOW!
+    # DO NOT pass trigger_input or empty list to AI action!
+    # BUILD the input data structure HERE:
+    ai_input = [{
+        "json": {
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant. Generate a short conversation between 3 people about AI. Total words less than 500."},
+                {"role": "user", "content": "Please generate the conversation now."}
+            ]
+        }
+    }]
 
-For aiCompletion (PSEUDO NODE), the "messages" parameter must be a STRING containing JSON, not a JSON object.
+    # ✅ STEP 2: Pass ai_input (NOT trigger_input, NOT empty list!) to action
+    ai_output = action_0(ai_input)
 
-Correct format:
-"params": "{\"messages\": \"[{\\\"role\\\": \\\"system\\\", \\\"content\\\": \\\"You are helpful\\\"}, {\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"Generate a joke\\\"}]\"}"
+    # ✅ STEP 3: Extract text from AI response
+    conversation = ai_output[0]["json"]["choices"][0]["text"]
 
-NOT:
-"params": "{\"messages\": [{\"role\": \"system\", \"content\": \"...\"}]}"
-    
-ROBUST_AI_PARSING_GUIDANCE:
-For aiCompletion output parsing, use defensive programming:
-STEP 1: Extract text from the simplified structure: ai_output[0]["json"]["text"]
-STEP 2: Parse the content with multiple fallback methods
-STEP 3: Validate results match expected format
-STEP 4: Use explicit error handling, not silent defaults
+    # ✅ STEP 4: Send to Slack
+    slack_input = [{"json": {"text": conversation}}]
+    slack_output = action_1(slack_input)
 
-EXAMPLE - Extracting AI response text:
-try:
-    ai_text = ai_output[0]["json"]["text"]
-    # Now parse the text content as needed
-    categories = re.findall(r"\d+\.\s*(technology|sport)", ai_text)
-    if len(categories) != len(expected):
-        # Try alternative parsing methods
-        lines = ai_text.strip().split('\n')
-        categories = [line.split('.')[-1].strip() for line in lines if line.strip()]
-except (KeyError, IndexError):
-    categories = ["unknown"] * len(expected)
-    print("PARSING FAILED: Using unknown categories")
+    return slack_output
+```
+
+❌ WRONG - What LLM keeps generating (STOP DOING THIS!):
+```python
+def mainWorkflow(trigger_input):
+    empty_input = []  # ❌ WRONG! Don't pass empty list!
+    ai_output = action_0(empty_input)  # ❌ Will crash with KeyError!
+```
+
+❌ WRONG - Also wrong:
+```python
+def mainWorkflow(trigger_input):
+    ai_output = action_0(trigger_input)  # ❌ trigger_input is [{"json": {}}]!
+```
+
+❌ WRONG - Don't pass trigger_input to AI action:
+```python
+def mainWorkflow(trigger_input):
+    # ❌ This passes empty json: [{"json": {}}]
+    ai_output = action_ai(trigger_input)  # WRONG!
+```
+
+❌ WRONG - Don't build messages in action params:
+```python
+def action_ai(input_data):
+    params = {
+        "messages": "[{...}]"  # ❌ Params are IGNORED!
+    }
+```
+
+CORRECT Example - Multiple items (e.g., classify news):
+```python
+def mainWorkflow(trigger_input):
+    # Get news
+    news_data = action_sheets(trigger_input)  # 10 items
+
+    # Build AI input for each
+    ai_input = []
+    for item in news_data:
+        ai_input.append({
+            "json": {
+                "messages": [
+                    {"role": "system", "content": "Classify as tech/sport"},
+                    {"role": "user", "content": item["json"]["Headlines"]}
+                ]
+            }
+        })
+
+    # Call AI (returns 10 results)
+    ai_output = action_ai(ai_input)
+
+    # Extract and send each
+    for i, ai_item in enumerate(ai_output):
+        category = ai_item["json"]["choices"][0]["text"]
+        headline = news_data[i]["json"]["Headlines"]
+        slack_input = [{"json": {"text": f"{headline}: {category}"}}]
+        action_slack(slack_input)
+```
+
+🚨 WORKFLOW DATA FLOW PATTERNS 🚨
+
+CRITICAL: ProAgent processes data as LISTS where each item flows through nodes independently.
+
+PATTERN 1: One-to-One Processing (RECOMMENDED)
+When you have N items and need N AI calls + N Slack messages:
+
+```python
+def mainWorkflow(trigger_input: List[Dict]):
+    """
+    comments: Process each news headline individually through AI and Slack
+    TODOs:
+      - Test end-to-end workflow
+    """
+    # Step 1: Read news from Google Sheets (returns 10 items)
+    news_data = action_0(trigger_input)
+
+    # Step 2: Transform to aiCompletion format
+    # Create messages for each news item
+    ai_input = []
+    for item in news_data:
+        headline = item['json'].get('Headlines', '')
+        # Build messages array as a JSON-serializable structure
+        messages_data = [
+            {"role": "system", "content": "Classify news as technology or sport"},
+            {"role": "user", "content": f"Classify: {headline}"}
+        ]
+        ai_input.append({"json": {"messages": messages_data}})
+
+    # Step 3: Call AI (processes each of the 10 items separately)
+    ai_output = action_1(ai_input)
+
+    # Step 4: Extract categories from AI responses
+    slack_input = []
+    for i, item in enumerate(ai_output):
+        headline = news_data[i]['json']['Headlines']
+        ai_text = item['json']['choices'][0]['text']
+        # Simple parsing: look for technology or sport in response
+        category = "technology" if "technology" in ai_text.lower() else "sport"
+        slack_input.append({
+            "json": {"text": f"News: {headline}\\nCategory: {category}"}
+        })
+
+    # Step 5: Send to Slack (sends 10 separate messages)
+    slack_output = action_2(slack_input)
+
+    return slack_output
+```
+
+KEY POINTS FOR WORKFLOWS:
+1. NO `import json` needed - use Python data structures directly
+2. NO `json.dumps()` - pass list/dict structures as-is to aiCompletion
+3. The `messages` field for aiCompletion should be a Python list/dict, NOT a string
+4. n8n expressions (like `={{$json['messages']}}`) are for REAL nodes (Slack, Sheets)
+5. For PSEUDO nodes (aiCompletion), construct data in workflow, extract in action with expression
+
+PATTERN 2: If You MUST Use Imports
+If you absolutely need json module or other imports, place them INSIDE the function:
+
+```python
+def mainWorkflow(trigger_input: List[Dict]):
+    import json  # Import INSIDE the function
+    import re
+
+    # Now you can use json.dumps(), re.search(), etc.
+    ...
+```
+
+DO NOT place imports in docstrings or outside function definitions.
+
+⚠️ CODE VALIDATION RULES ⚠️
+
+Before submitting workflow code, verify:
+1. ✅ NO `import` statements outside functions
+2. ✅ NO `json.dumps()` when building aiCompletion input
+3. ✅ aiCompletion receives list of dicts with `messages` key containing list/dict data
+4. ✅ Each dict in the input list = one AI call
+5. ✅ Return values are always lists, never single dicts
+6. ✅ Imports (if needed) are INSIDE function body
 '''
 
 system_prompt_3 = '''The user query:

@@ -137,10 +137,11 @@ def main(cfg: omegaconf.DictConfig):
             "1.2 news title: Multiple snowstorms to bear down on Northeast, Ohio Valley in early December"
             "2.1 Send the generate category to slack"
             "2.2 Choose #general for the Slack Channel."
+            "2.3 Slack message format: 'News: [title]\nCategory: [category]"
         ],
         refine_prompt=""
     )
-
+    #
     # slack put messages from googleSheets
     query = userQuery(
         task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
@@ -150,22 +151,47 @@ def main(cfg: omegaconf.DictConfig):
             "3. Use aiCompletion to check if this news title belongs to category technology or sport"
             "4.1 Send the generate category to slack"
             "4.2 Choose #general for the Slack Channel."
+            "4.3 Slack message format: 'News: [title]\nCategory: [category]"
         ],
         refine_prompt=""
     )
 
-    # slack put messages from googleSheets
     query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and use n8n-nodes-base.aiCompletion to check if this news belongs to category technology or sport. Send the result to slack at the end. Each slack message contains a single news - category pair.",
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.",
         additional_information=[
             "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
             "1.2 The sheetName of Google is: news",
             "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
-            "1.4 Convert output of googleSheets news in json \"messages\" field."
-            "2.1 Use n8n-nodes-base.aiCompletion to check if each news title belongs to category technology or sport"
-            "3.1 Send the category result to slack"
-            "3.2 Choose #general for the Slack Channel."
-            "3.3 Each message contains a single news-category pair. There are total 10 messages to be sent."
+
+            "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+            "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
+            "2.3 User prompt: Include the actual headline text",
+            "2.4 aiCompletion should process each of the 10 headlines separately",
+
+            "3.1 Parse aiCompletion output to extract the category (technology or sport)",
+            "3.2 Send results to Slack channel #general",
+            "3.3 Each Slack message format: 'News: [headline]\nCategory: [category]'",
+            "3.4 Total 10 messages should be sent to Slack"
+        ],
+        refine_prompt=""
+    )
+
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.",
+        additional_information=[
+            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+            "1.2 The sheetName of Google is: news",
+            "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+
+            "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+            "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
+            "2.3 User prompt: Include the actual headline text",
+            "2.4 aiCompletion should process each of the headlines separately",
+
+            "3.1 Parse aiCompletion output to extract the category (technology or sport)",
+            "3.2 Send results to Slack channel #general",
+            "3.3 Each Slack message format: '[i]. News: [headline]\nCategory: [category]'",
+            "3.4 i is the index of the news. start from 1"
         ],
         refine_prompt=""
     )
