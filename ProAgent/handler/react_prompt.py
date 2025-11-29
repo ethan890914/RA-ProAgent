@@ -161,16 +161,28 @@ Remember:
 
 🚨 CRITICAL: function_rewrite_params REQUIRES ALL PARAMETERS 🚨
 
-When calling function_rewrite_params, you MUST provide these 7 parameters:
-1. thought (string)
-2. plan (array) 
-3. criticism (string)
+When calling function_rewrite_params, you MUST provide ALL 7 parameters IN ORDER:
+1. thought (string) - KEEP BRIEF (1-2 sentences max)
+2. plan (array) - KEEP BRIEF (3-5 short items)
+3. criticism (string) - KEEP BRIEF (1 sentence max)
 4. function_name (string) - e.g., "action_0"
 5. params (string) - Complete JSON as string
-6. comments (string) 
-7. TODO (array)
+6. comments (string) - Brief description
+7. TODO (array) - 2-3 items max
 
+⚠️ IMPORTANT: Keep thought/plan/criticism CONCISE to ensure ALL parameters fit in response.
 If you omit ANY parameter, the call will FAIL. No exceptions.
+
+CORRECT Example:
+{
+  "thought": "Need to fix Slack channel parameter",
+  "plan": ["Update channelId to 'general'", "Test Slack integration"],
+  "criticism": "Current value includes unnecessary #",
+  "function_name": "action_1",
+  "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"}}",
+  "comments": "Send joke to Slack #general channel",
+  "TODO": ["Test Slack message", "Verify delivery"]
+}
 
 PSEUDO_NODE_GUIDANCE:
 CRITICAL: Different parameter formats for different node types:
@@ -197,27 +209,27 @@ Example aiCompletion params (PSEUDO NODE):
 NOT: {"messages": "={{$json['messages']}}"}
 
 PSEUDO_NODE_OUTPUT_GUIDANCE:
-CRITICAL: aiCompletion pseudo node output format differs from real n8n nodes:
+CRITICAL: aiCompletion pseudo node output format is simplified to match n8n standards:
 
 REAL N8N NODE OUTPUT (like googleSheets):
 [{"json": {"Headlines": "title"}, "pairedItem": {...}}]
 
-PSEUDO NODE OUTPUT (aiCompletion):  
-[{"json": {"choices": [{"text": "AI response text"}]}, "pairedItem": {...}}]
+PSEUDO NODE OUTPUT (aiCompletion):
+[{"json": {"text": "AI response text"}, "pairedItem": {...}}]
 
-For aiCompletion parsing in workflows:
-1. Check if ai_output[0]["json"]["choices"] exists
-2. Extract text: ai_output[0]["json"]["choices"][0]["text"]
-3. Parse the text content (not JSON structure)
+For aiCompletion output in workflows:
+1. The AI response is in the "text" field
+2. Access it directly: ai_output[0]["json"]["text"]
+3. Use in expressions: "={{$json["text"]}}"
 
-Example correct parsing:
-try:
-    if "choices" in ai_output[0]["json"]:
-        ai_text = ai_output[0]["json"]["choices"][0]["text"]
-    else:
-        ai_text = str(ai_output[0])
-except (KeyError, IndexError):
-    # Handle parsing error
+Example usage with Slack:
+ai_output = action_0(input_data=trigger_data)
+# ai_output = [{"json": {"text": "Generated joke here"}}]
+
+# Send to Slack using expression
+slack_params = {
+    "text": "={{$json["text"]}}"  # Simple, direct access
+}
     
 🚨 CRITICAL: aiCompletion Parameter Format 🚨
 
@@ -231,19 +243,21 @@ NOT:
     
 ROBUST_AI_PARSING_GUIDANCE:
 For aiCompletion output parsing, use defensive programming:
-STEP 1: Extract text with debugging
-STEP 2: Parse categories with multiple fallback methods  
-STEP 3: Validate count matches expected
+STEP 1: Extract text from the simplified structure: ai_output[0]["json"]["text"]
+STEP 2: Parse the content with multiple fallback methods
+STEP 3: Validate results match expected format
 STEP 4: Use explicit error handling, not silent defaults
 
-BETTER APPROACH:
+EXAMPLE - Extracting AI response text:
 try:
+    ai_text = ai_output[0]["json"]["text"]
+    # Now parse the text content as needed
     categories = re.findall(r"\d+\.\s*(technology|sport)", ai_text)
     if len(categories) != len(expected):
         # Try alternative parsing methods
         lines = ai_text.strip().split('\n')
         categories = [line.split('.')[-1].strip() for line in lines if line.strip()]
-except:
+except (KeyError, IndexError):
     categories = ["unknown"] * len(expected)
     print("PARSING FAILED: Using unknown categories")
 '''
