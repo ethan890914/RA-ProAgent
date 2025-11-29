@@ -101,6 +101,61 @@ def main(cfg: omegaconf.DictConfig):
 
     # slack put messages from googleSheets
     query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+        additional_information=[
+            "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
+            "2.1 Send the generate joke to slack"
+            "2.2 Choose #general for the Slack Channel."
+        ],
+        refine_prompt=""
+    )
+
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+        additional_information=[
+            "1 Use n8n-nodes-base.aiCompletion to generate a joke exceed 100 but within 200 words."
+            "2.1 Send the generate joke to slack"
+            "2.2 Choose #general for the Slack Channel."
+        ],
+        refine_prompt=""
+    )
+
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a small conversation between three people and send it to slack.",
+        additional_information=[
+            "1 Use n8n-nodes-base.aiCompletion to generate a small conversation between three people. Total word counts less than 500."
+            "2.1 Send the generate joke to slack"
+            "2.2 Choose #general for the Slack Channel."
+        ],
+        refine_prompt=""
+    )
+
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to determine the category of this news title and send it to slack.",
+        additional_information=[
+            "1.1 Use n8n-nodes-base.aiCompletion to determine the category of this news title"
+            "1.2 news title: Multiple snowstorms to bear down on Northeast, Ohio Valley in early December"
+            "2.1 Send the generate category to slack"
+            "2.2 Choose #general for the Slack Channel."
+        ],
+        refine_prompt=""
+    )
+
+    # slack put messages from googleSheets
+    query = userQuery(
+        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
+        additional_information=[
+            "1. All thoughts and comments should be in Chinese for me to understand.",
+            "2. news title: \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"",
+            "3. Use aiCompletion to check if this news title belongs to category technology or sport"
+            "4.1 Send the generate category to slack"
+            "4.2 Choose #general for the Slack Channel."
+        ],
+        refine_prompt=""
+    )
+
+    # slack put messages from googleSheets
+    query = userQuery(
         task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and use n8n-nodes-base.aiCompletion to check if this news belongs to category technology or sport. Send the result to slack at the end. Each slack message contains a single news - category pair.",
         additional_information=[
             "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
@@ -114,28 +169,6 @@ def main(cfg: omegaconf.DictConfig):
         ],
         refine_prompt=""
     )
-
-    # slack put messages from googleSheets
-    # query = userQuery(
-    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
-    #     additional_information=[
-    #         "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
-    #         "2.1 Send the generate joke to slack"
-    #         "2.2 Choose #general for the Slack Channel."
-    #     ],
-    #     refine_prompt=""
-    # )
-
-    # slack put messages from googleSheets
-    # query = userQuery(
-    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
-    #     additional_information=[
-    #         "1. All thoughts and comments should be in Chinese for me to understand.",
-    #         "2. news title: \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"",
-    #         "3. Use aiCompletion to check if this news title belongs to category technology or sport"
-    #     ],
-    #     refine_prompt=""
-    # )
 
     # # slack put messages from googleSheets
     # query = userQuery(
