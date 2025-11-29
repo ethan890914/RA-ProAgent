@@ -9,7 +9,7 @@ from ProAgent.n8n_tester.pseudo_node.utils import fill_return_data, replace_exp
 
 agent = OpenAIFunction()
 
-def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) -> str:
+def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) -> list:
     """
     Run a pseudo workflow using the provided input data and constant workflow.
 
@@ -18,7 +18,7 @@ def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) 
         constant_workflow (n8nPythonWorkflow): The constant workflow to be used.
 
     Returns:
-        str: The final return data of the pseudo workflow.
+        list: The final return data as a Python list.
     """
     # import pdb; pdb.set_trace()
     node_var:n8nPythonNode = constant_workflow['nodes'][-1]
@@ -28,10 +28,9 @@ def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) 
     params_list = [params_raw]
 
     if node_var['type'].split('.')[-1] == 'aiCompletion':
-        # return_list = run_ai_completion(params_list)
-        return_list = run_ai_completion(input_data)
+        return_list = run_ai_completion(params_list)
     else:
         return_list = []
-    final_return_data = fill_return_data(return_list)
 
-    return final_return_data
+    # Return the list directly, not as a formatted string
+    return return_list
