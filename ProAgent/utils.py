@@ -122,6 +122,7 @@ class Action():
 
 @dataclass
 class userQuery():
+    ID: str
     task: str
     additional_information: List[str] = field(default_factory= lambda : [])
     refine_prompt: str = field(default_factory= lambda : "")
