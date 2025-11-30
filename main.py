@@ -29,7 +29,8 @@ def main(cfg: omegaconf.DictConfig):
     """
 
     if CONFIG.environment == ENVIRONMENT.Production_quick:
-        run("./records/2025_11_30_10_21_25", cfg)
+        # run("./records/2025_11_30_10_21_25", cfg)
+        run("./apa_case_storage/ID_18", cfg)
         return
     
     recorder = RunningRecoder() # default root directory: ./records
