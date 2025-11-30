@@ -34,6 +34,10 @@ class Credentials():
                             self.credential_data[node_type_name] = []
                         self.credential_data[node_type_name].append(item_info)
                 else:
+                    if self.credential_data.get(item["type"], -1) == -1:
+                        self.credential_data[item["type"]] = []
+                    self.credential_data[item["type"]].append(item_info)
+
                     # Map credential types to actual node types from your workflow
                     type_mapping = {
                         "openAiApi": [
