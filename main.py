@@ -30,7 +30,7 @@ def main(cfg: omegaconf.DictConfig):
 
     if CONFIG.environment == ENVIRONMENT.Production_quick:
         # run("./records/2025_11_30_10_21_25", cfg)
-        run("./apa_case_storage/ID_18", cfg)
+        run("./apa_case_storage/ID_default", cfg)
         return
     
     recorder = RunningRecoder() # default root directory: ./records
@@ -58,7 +58,7 @@ def main(cfg: omegaconf.DictConfig):
     # )
 
     query_loader_ = query_loader()
-    query = query_loader_.get_single_query(ID='18')
+    query = query_loader_.get_single_query(ID='default')
 
     compiler = Compiler(cfg, recorder)
 
