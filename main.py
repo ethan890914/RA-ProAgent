@@ -86,157 +86,156 @@ def main(cfg: omegaconf.DictConfig):
     # )
 
     # # slack put messages from googleSheets
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
-        additional_information=[
-            "1. All thoughts and comments should be in Chinese for me to understand.",
-            "2.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
-            "2.2 The sheetName of Google is: news",
-            "2.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below."
-            "3.1 Choose #general for the Slack Channel.",
-            "3.2 Send headlines you got from googlesheet row by row to slack. "
-        ],
-        refine_prompt=""
-    )
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.",
+    #         "2.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "2.2 The sheetName of Google is: news",
+    #         "2.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below."
+    #         "3.1 Choose #general for the Slack Channel.",
+    #         "3.2 Send headlines you got from googlesheet row by row to slack. "
+    #     ],
+    #     refine_prompt=""
+    # )
 
-    # slack put messages from googleSheets
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
-        additional_information=[
-            "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
-            "2.1 Send the generate joke to slack"
-            "2.2 Choose #general for the Slack Channel."
-        ],
-        refine_prompt=""
-    )
-
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
-        additional_information=[
-            "1 Use n8n-nodes-base.aiCompletion to generate a joke exceed 100 but within 200 words."
-            "2.1 Send the generate joke to slack"
-            "2.2 Choose #general for the Slack Channel."
-        ],
-        refine_prompt=""
-    )
-
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a small conversation between three people and send it to slack.",
-        additional_information=[
-            "1 Use n8n-nodes-base.aiCompletion to generate a small conversation between three people. Total word counts less than 500."
-            "2.1 Send the generate joke to slack"
-            "2.2 Choose #general for the Slack Channel."
-        ],
-        refine_prompt=""
-    )
-
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to determine the category of this news title and send it to slack.",
-        additional_information=[
-            "1.1 Use n8n-nodes-base.aiCompletion to determine the category of this news title"
-            "1.2 news title: Multiple snowstorms to bear down on Northeast, Ohio Valley in early December"
-            "2.1 Send the generate category to slack"
-            "2.2 Choose #general for the Slack Channel."
-            "2.3 Slack message format: 'News: [title]\nCategory: [category]"
-        ],
-        refine_prompt=""
-    )
+    # # slack put messages from googleSheets
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+    #     additional_information=[
+    #         "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
+    #         "2.1 Send the generate joke to slack"
+    #         "2.2 Choose #general for the Slack Channel."
+    #     ],
+    #     refine_prompt=""
+    # )
     #
-    # slack put messages from googleSheets
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
-        additional_information=[
-            "1. All thoughts and comments should be in Chinese for me to understand.",
-            "2. news title: \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"",
-            "3. Use aiCompletion to check if this news title belongs to category technology or sport"
-            "4.1 Send the generate category to slack"
-            "4.2 Choose #general for the Slack Channel."
-            "4.3 Slack message format: 'News: [title]\nCategory: [category]"
-        ],
-        refine_prompt=""
-    )
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+    #     additional_information=[
+    #         "1 Use n8n-nodes-base.aiCompletion to generate a joke exceed 100 but within 200 words."
+    #         "2.1 Send the generate joke to slack"
+    #         "2.2 Choose #general for the Slack Channel."
+    #     ],
+    #     refine_prompt=""
+    # )
+    #
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a small conversation between three people and send it to slack.",
+    #     additional_information=[
+    #         "1 Use n8n-nodes-base.aiCompletion to generate a small conversation between three people. Total word counts less than 500."
+    #         "2.1 Send the generate joke to slack"
+    #         "2.2 Choose #general for the Slack Channel."
+    #     ],
+    #     refine_prompt=""
+    # )
+    #
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to determine the category of this news title and send it to slack.",
+    #     additional_information=[
+    #         "1.1 Use n8n-nodes-base.aiCompletion to determine the category of this news title"
+    #         "1.2 news title: Multiple snowstorms to bear down on Northeast, Ohio Valley in early December"
+    #         "2.1 Send the generate category to slack"
+    #         "2.2 Choose #general for the Slack Channel."
+    #         "2.3 Slack message format: 'News: [title]\nCategory: [category]"
+    #     ],
+    #     refine_prompt=""
+    # )
+    # #
+    # # slack put messages from googleSheets
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
+    #     additional_information=[
+    #         "1. All thoughts and comments should be in Chinese for me to understand.",
+    #         "2. news title: \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"",
+    #         "3. Use aiCompletion to check if this news title belongs to category technology or sport"
+    #         "4.1 Send the generate category to slack"
+    #         "4.2 Choose #general for the Slack Channel."
+    #         "4.3 Slack message format: 'News: [title]\nCategory: [category]"
+    #     ],
+    #     refine_prompt=""
+    # )
+    #
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: news",
+    #         "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+    #
+    #         "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
+    #         "2.3 User prompt: Include the actual headline text",
+    #         "2.4 aiCompletion should process each of the 10 headlines separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (technology or sport)",
+    #         "3.2 Send results to Slack channel #general",
+    #         "3.3 Each Slack message format: 'News: [headline]\nCategory: [category]'",
+    #         "3.4 Total 10 messages should be sent to Slack"
+    #     ],
+    #     refine_prompt=""
+    # )
+    #
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: news",
+    #         "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+    #
+    #         "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
+    #         "2.3 User prompt: Include the actual headline text",
+    #         "2.4 aiCompletion should process each of the headlines separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (technology or sport)",
+    #         "3.2 Send results to Slack channel #general",
+    #         "3.3 Each Slack message format: '[i]. News: [headline]\nCategory: [category]'",
+    #         "3.4 i is the index of the news. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
 
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.",
-        additional_information=[
-            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
-            "1.2 The sheetName of Google is: news",
-            "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
 
-            "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
-            "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
-            "2.3 User prompt: Include the actual headline text",
-            "2.4 aiCompletion should process each of the 10 headlines separately",
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which send an email to qwuqwuqwu@gmail.com",
+    #     additional_information=[
+    #         "1.2 email title: ProAgent testing",
+    #         "1.1 email content: Hi qwuqwuqwu!"
+    #     ],
+    #     refine_prompt=""
+    # )
 
-            "3.1 Parse aiCompletion output to extract the category (technology or sport)",
-            "3.2 Send results to Slack channel #general",
-            "3.3 Each Slack message format: 'News: [headline]\nCategory: [category]'",
-            "3.4 Total 10 messages should be sent to Slack"
-        ],
-        refine_prompt=""
-    )
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to qwuqwuqwu@gmail.com.",
+    #     additional_information=[
+    #         "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
+    #         "2.1 Send the generated joke to email address: qwuqwuqwu@gmail.com"
+    #         "2.2 email title: ProAgent Joking",
+    #         "2.3 email content: [joke]"
+    #     ],
+    #     refine_prompt=""
+    # )
 
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.",
-        additional_information=[
-            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
-            "1.2 The sheetName of Google is: news",
-            "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
-
-            "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
-            "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
-            "2.3 User prompt: Include the actual headline text",
-            "2.4 aiCompletion should process each of the headlines separately",
-
-            "3.1 Parse aiCompletion output to extract the category (technology or sport)",
-            "3.2 Send results to Slack channel #general",
-            "3.3 Each Slack message format: '[i]. News: [headline]\nCategory: [category]'",
-            "3.4 i is the index of the news. start from 1"
-        ],
-        refine_prompt=""
-    )
-
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which send an email to qwuqwuqwu@gmail.com",
-        additional_information=[
-            "1.2 email title: ProAgent testing",
-            "1.1 email content: Hi qwuqwuqwu!"
-        ],
-        refine_prompt=""
-    )
-
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to qwuqwuqwu@gmail.com.",
-        additional_information=[
-            "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words."
-            "2.1 Send the generated joke to email address: qwuqwuqwu@gmail.com"
-            "2.2 email title: ProAgent Joking",
-            "2.3 email content: [joke]"
-        ],
-        refine_prompt=""
-    )
-
-    query = userQuery(
-        task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends each result to qwuqwuqwu@gmail.com. Each email message contains a single news-category pair.",
-        additional_information=[
-            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
-            "1.2 The sheetName of Google is: news",
-            "1.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
-
-            "2.1 For each headline from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
-            "2.2 System prompt: 'You are a news classifier. Classify as technology or sport.'",
-            "2.3 User prompt: Include the actual headline text",
-            "2.4 aiCompletion should process each of the headlines separately",
-
-            "3.1 Parse aiCompletion output to extract the category (technology or sport)",
-            "3.2 Send results to email qwuqwuqwu@gmail.com",
-            "3.3 Each email title: [i]. ProAgent News: [headline]"
-            "3.4 i is the index of the news. start from 1"
-            "3.5 Each email content: News: [headline]\nCategory: [category]"
-        ],
-        refine_prompt=""
-    )
-
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to slack. Each slack message contains a single Description-category pair.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: commercial",
+    #         "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+    #
+    #         "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as to Business or to Customer.'",
+    #         "2.3 User prompt: Include the actual commercial entry's Description text",
+    #         "2.4 aiCompletion should process each of the commercial entry separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (to Business or to Customer)",
+    #         "3.2 Send results to Slack channel #general",
+    #         "3.3 Each Slack message format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
+    #         "3.4 i is the index of the news. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
 
     # # slack put messages from googleSheets
     # query = userQuery(
@@ -261,6 +260,159 @@ def main(cfg: omegaconf.DictConfig):
     #     ],
     #     refine_prompt=""
     # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to qwuqwuqwu@gmail.com with Gmail. Each email message contains a single Description-category pair.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: commercial",
+    #         "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+    #
+    #         "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as to Business or to Customer.'",
+    #         "2.3 User prompt: Include the actual commercial entry's Description text",
+    #         "2.4 aiCompletion should process each of the commercial entry separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (to Business or to Customer)",
+    #         "3.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+    #         "3.3 Each email abstract: [i]. Commercial Entry: [Description]",
+    #         "3.3 Each email content format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
+    #         "3.4 i is the index of the news. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to qwuqwuqwu@gmail.com with Gmail. Each email message contains a single Description-category pair.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: commercial",
+    #         "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+    #
+    #         "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as to Business or to Customer.'",
+    #         "2.3 User prompt: Include the actual commercial entry's Description text",
+    #         "2.4 aiCompletion should process each of the commercial entry separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (to Business or to Customer)",
+    #         "3.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+    #         "3.3 Only send to Customer category commercial entry, and ignore to Business one."
+    #         "3.3 Each email abstract: [i]. Commercial Entry: [Description]",
+    #         "3.3 Each email content format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
+    #         "3.4 i is the index of the news. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to slack. Each slack message contains a single Description-category pair.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: commercial",
+    #         "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+    #
+    #         "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as to Business or to Customer.'",
+    #         "2.3 User prompt: Include the actual commercial entry's Description text",
+    #         "2.4 aiCompletion should process each of the commercial entry separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (to Business or to Customer)",
+    #         "3.2 Send results to slack channel #general",
+    #         "3.3 Only send to Business category commercial entry, and ignore to Customer one."
+    #         "3.4 Each slack message format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
+    #         "3.5 i is the index of the news. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and emails the result or send it to slack.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: commercial",
+    #         "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+    #
+    #         "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "2.2 System prompt: 'You are a news classifier. Classify as to Business or to Customer.'",
+    #         "2.3 User prompt: Include the actual commercial entry's Description text",
+    #         "2.4 aiCompletion should process each of the commercial entry separately",
+    #
+    #         "3.1 Parse aiCompletion output to extract the category (to Business or to Customer)",
+    #         "3.2 If it's a to Business commercial entry, then send it through slack."
+    #         "3.3 If it's a to Customer commercial entry, then send it through email."
+    #
+    #         "4.1 slack format:"
+    #         "4.2 Send results to slack channel #general",
+    #         "4.3 Each slack message format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
+    #         "4.4 i is the index of the sent commercial entry. start from 1"
+    #
+    #         "5.1 email format:"
+    #         "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+    #         "5.3 Each email abstract: [i]. Commercial Entry: [Description]",
+    #         "5.4 Each email content format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
+    #         "5.5 i is the index of the sent commercial entry. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    # query = userQuery(
+    #     task="Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, calculate the profit of each entry(= sales - cost), uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to slack. Each slack message contains a single pair of Description-profit-category.",
+    #     additional_information=[
+    #         "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+    #         "1.2 The sheetName of Google is: commercial",
+    #         "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+    #
+    #         "2 For each commercial entry from Google Sheets, calculate its profit(= sales - cost)",
+    #
+    #         "3.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+    #         "3.2 System prompt: 'You are a news classifier. Classify as to Business or to Customer.'",
+    #         "3.3 User prompt: Include the actual commercial entry's Description text",
+    #         "3.4 aiCompletion should process each of the commercial entry separately",
+    #
+    #         "4.1 Parse aiCompletion output to extract the category (to Business or to Customer)",
+    #         "4.2 Send results(Description, profit, and category) to slack channel #general",
+    #         "4.3 Each slack message format: '[i]. Commercial Entry: [Description]\n Profit: [profit]\n Category: [category]'",
+    #         "4.4 i is the index of the news. start from 1"
+    #     ],
+    #     refine_prompt=""
+    # )
+
+    query = userQuery(
+            task="Whenever I trigger the Manual Trigger, execute the workflow,\
+             which reads data from googleSheets, calculate the profit of each entry(= sales - cost),\
+              uses first aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer',\
+               and sends each result to slack. Each slack message contains a single pair of Description-profit-category. \
+               After that, use the second aiCompletion to write a reminder email for each 'to Customer' commercial flow. \
+               At the end, send those reminder emails to qwuqwuqwu@gmail.com with Gmail.",
+
+            additional_information=[
+                "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+                "1.2 The sheetName of Google is: commercial",
+                "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+
+                "2 For each commercial entry from Google Sheets, calculate its profit(= sales - cost)",
+
+                "3.1 For each commercial entry from Google Sheets, create the first aiCompletion input with messages array containing system prompt and user prompt",
+                "3.2 System prompt: 'You are a news classifier. Classify as 'to Business' or 'to Customer'.'",
+                "3.3 User prompt: Include the actual commercial entry's Description text",
+                "3.4 The first aiCompletion should process each of the commercial entry separately",
+
+                "4.1 Parse the first aiCompletion's output to extract the category ('to Business' or 'to Customer')",
+                "4.2 Send results(Description, profit, and category) to slack channel #general",
+                "4.3 Each slack message format: 'Commercial Entry: [Description]\n Profit: [profit]\n Category: [category]'",
+
+                "5.1 Create the second aiCompletion input with messages array containing system prompt and user prompt",
+                "5.2 System prompt: 'You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows",
+                "5.4 User prompt: Include only the 'to Customer' commercial entry's Description text",
+                "5.5 The second aiCompletion should process each of the commercial entry separately",
+
+                "6.1 Parse the second aiCompletion output to extract the reminder content"
+                "6.2 Send results to qwuqwuqwu@gmail.com wigh Gmail"
+                "6.3 Each email abstract: 'To Customer' commercial flows reminder"
+                "6.4 Each email content: [reminder content]"
+            ],
+            refine_prompt=""
+        )
 
     # original ProAgent demo example
     # query = userQuery(
