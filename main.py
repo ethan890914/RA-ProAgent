@@ -12,7 +12,9 @@ from ProAgent.handler.ReACT import ReACTHandler
 from ProAgent.utils import userQuery
 from ProAgent.running_recorder import RunningRecoder
 from query_loader import query_loader
-
+from execute_from_tool_calls import run
+from ProAgent.router.utils import ENVIRONMENT
+from ProAgent.config import CONFIG
 
 @hydra.main(config_path="ProAgent/configs", config_name="generate_n8n_query")
 def main(cfg: omegaconf.DictConfig):
@@ -25,6 +27,10 @@ def main(cfg: omegaconf.DictConfig):
     Returns:
         None
     """
+
+    if CONFIG.environment == ENVIRONMENT.Production_quick:
+        run("./records/2025_11_30_10_21_25", cfg)
+        return
     
     recorder = RunningRecoder() # default root directory: ./records
 
@@ -51,7 +57,7 @@ def main(cfg: omegaconf.DictConfig):
     # )
 
     query_loader_ = query_loader()
-    query = query_loader_.get_single_query(ID='1')
+    query = query_loader_.get_single_query(ID='18')
 
     compiler = Compiler(cfg, recorder)
 

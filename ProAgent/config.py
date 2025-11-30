@@ -138,15 +138,12 @@ class RPAgentConfig(CfgNode):
         C.default_knowledge = knowledge
 
         # C.environment = ENVIRONMENT.Production
-        C.environment = ENVIRONMENT.Development
-        # - Development：不访问缓存，从头开始
-        # - Refine：访问缓存，但
-        # user
-        # messages
-        # 必须一致，若不一致（例如节点返回值变化）则停止访问缓存
-        # - Production：无条件访问缓存，将
-        # record
-        # 重播一遍
+        C.environment = ENVIRONMENT.Production_quick
+        # C.environment = ENVIRONMENT.Refine
+        # - Development：不访问缓存，从头开始 (No cache, rebuild from scratch)
+        # - Refine：访问缓存，但 user messages 必须一致，若不一致（例如节点返回值变化）则停止访问缓存
+        #   (Use cache if query matches, stop if node returns change)
+        # - Production：无条件访问缓存，将 record 重播一遍 (Always use cache, replay record)
 
         return C
     
