@@ -88,7 +88,11 @@ class n8nPythonNode():
                 param_json[key] = param
 
 
-        param_str = json.dumps(param_json, indent = 2, ensure_ascii=False)
+        # Use repr() instead of json.dumps() to get Python syntax (True/False/None instead of true/false/null)
+        param_str = repr(param_json).replace("'", '"')  # Convert single quotes to double quotes for consistency
+        # Format with indentation
+        import pprint
+        param_str = pprint.pformat(param_json, indent=2, width=120)
         param_str = param_str.splitlines(True)
         param_str = [line.strip("\n") for line in param_str]
         prefix = "  params = "
@@ -138,7 +142,11 @@ class n8nPythonNode():
                 param_json[key] = param
 
 
-        param_str = json.dumps(param_json, indent = 2, ensure_ascii=False)
+        # Use repr() instead of json.dumps() to get Python syntax (True/False/None instead of true/false/null)
+        param_str = repr(param_json).replace("'", '"')  # Convert single quotes to double quotes for consistency
+        # Format with indentation
+        import pprint
+        param_str = pprint.pformat(param_json, indent=2, width=120)
         param_str = param_str.splitlines(True)
         param_str = [line.strip("\n") for line in param_str]
         prefix = "  params = "
