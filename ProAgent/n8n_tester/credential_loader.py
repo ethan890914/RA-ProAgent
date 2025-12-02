@@ -71,7 +71,11 @@ class Credentials():
                             "gmailTrigger",
                             "GmailTrigger",
                             "Gmail account"
-                        ]
+                        ],
+                        "googleDriveOAuth2Api": ["googleDrive"],
+                        "httpHeaderAuth": [
+                            "NewsAPI",
+                        ],
                         # Add more mappings as needed
                     }
 
