@@ -32,8 +32,56 @@ Data-Format: We ensure all the input/output data in transparent action functions
 3.Some functions' json items have a additional "binary" field, which contains raw data of images, csv, etc.
 4.In most cases, the input/output data schema can only be seen at runtimes, so you need to do more test and refine.
 
+🚨 CRITICAL: n8n Data Flow Rules 🚨
+
+1. Action input_data structure:
+   - ALWAYS: [{"json": {...}, "pairedItem": {...}}]
+   - The "json" field contains your actual data
+   - Access fields with: ={{$json["fieldName"]}}
+
+2. Passing data between actions - TWO scenarios:
+
+   **Scenario A: Action params DON'T need specific fields (pass directly)**
+   ✅ CORRECT:
+       file_search_output = action_1(folder_input)
+       download_output = action_2(file_search_output)  # Pass entire output!
+
+   Use this when action_2's params use expressions like ={{$json["id"]}}
+   to extract fields from the input_data directly.
+
+   **Scenario B: Action params NEED specific fields (rewrap required)**
+   ✅ ALSO CORRECT:
+       folder_output = action_0(trigger_input)
+       folder_id = folder_output[0]['json']['id']
+       # Rewrap to provide specific field for next action's expression
+       file_input = [{"json": {"folderId": folder_id}}]
+       file_output = action_1(file_input)
+
+   Use this when action_1's params need a specific field name that's different
+   from the previous output structure. The expression ={{$json["folderId"]}}
+   needs input_data to have a "folderId" field.
+
+   ❌ WRONG (unnecessary rewrapping when direct pass works):
+       file_search_output = action_1(folder_input)
+       # Don't rewrap if action_2 can use ={{$json["id"]}} directly!
+       download_input = [{"json": {"fileId": file_search_output[0]["json"]["id"]}}]
+       download_output = action_2(download_input)  # Should pass file_search_output directly!
+
+3. Parameter expressions:
+   - Use ={{$json["fieldName"]}} to access input_data
+   - n8n automatically applies expression to each item in the list
+   - The expression accesses fields from the CURRENT item's json field
+
+4. Binary data extraction (e.g., Google Drive downloads):
+   ⚠️ Binary data is often NESTED:
+   ✅ CORRECT: binary_data = output[0].get('binary', {}).get('data', {}).get('data')
+   ❌ WRONG: binary_data = output[0].get('binary', {}).get('data')  # This is a dict!
+
+   RULE: Always check actual output structure. Binary content is usually at:
+         output[0]['binary']['data']['data'] (nested 3 levels deep)
+
 Java-Script-Expression:
-1.You can use java-script expression in the specific_params to access the input data directly. Use it by a string startswith "=", and provide expression inside a "{{...}}" block. 
+1.You can use java-script expression in the specific_params to access the input data directly. Use it by a string startswith "=", and provide expression inside a "{{...}}" block.
 2. Use "{{$json["xxx"]}}" to obtain the "json" field in each item of the input data.
 3. You can use expression in "string" , "number", "boolean" and "json" type, such as:
 string: "=Hello {{$json["name"]}}, you are {{$json["age"]}} years old
@@ -61,6 +109,59 @@ When you set the field "message text" as "=Hello {{$json["name"]}}, you are {{$j
     "Hello Alice, you are 15 years old.",
     "Hello Jack, you are 20 years old.",
 ]
+
+🚨 CRITICAL: n8n Expression Syntax Rules 🚨
+
+When using JavaScript expressions in params (strings starting with "="):
+✅ CORRECT: "={{$json[\"fieldName\"]}}"
+✅ CORRECT for complex: "=name = '{{$json[\"fileName\"]}}' and '{{$json[\"folderId\"]}}' in parents"
+❌ WRONG: "='{{' + $json[\"fieldName\"] + '}}'"  (NO string concatenation!)
+❌ WRONG: "={{$json.fieldName}}"  (Use bracket notation!)
+❌ WRONG: "=name = '" + $json["fileName"] + "'"  (NO + operator!)
+
+RULE: Expressions are evaluated as a single JavaScript expression.
+      Use {{...}} blocks for variable interpolation, NOT string concatenation.
+      The entire expression string is one unit - you cannot concatenate parts with +.
+
+Common mistakes to avoid:
+- Trying to use JavaScript + operator for string building
+- Using dot notation instead of bracket notation
+- Forgetting quotes around field names in brackets
+- Mixing expression syntax with regular string concatenation
+
+🚨 CRITICAL: When to Use "=" Prefix in Param Values 🚨
+
+The "=" prefix tells n8n to evaluate the string as a JavaScript expression.
+WITHOUT the "=" prefix, the string is treated as LITERAL TEXT and {{...}} blocks are NOT interpolated!
+
+**Three types of param values:**
+
+1. **Fixed literal strings** (NO expressions):
+   ✅ CORRECT: "searchMethod": "query"
+   ✅ CORRECT: "fileName": "myfile.txt"
+
+2. **Simple expression** (entire value is an expression):
+   ✅ CORRECT: "fileId": "={{$json[\"id\"]}}"
+   ✅ CORRECT: "age": "={{$json[\"age\"] + 5}}"
+
+3. **Complex expression** (text with {{...}} interpolation):
+   ✅ CORRECT: "queryString": "=name = '{{$json[\"fileName\"]}}' and '{{$json[\"folderId\"]}}' in parents"
+   ❌ WRONG: "queryString": "name = '{{$json[\"fileName\"]}}' and '{{$json[\"folderId\"]}}' in parents"  (NO = prefix!)
+   ❌ WRONG: "queryString": "name = '{{$json[\"fileName\"]}}' and '={{$json[\"folderId\"]}}' in parents"  (= in wrong place!)
+
+**CRITICAL RULE:**
+If your string contains {{...}} blocks that need interpolation, the ENTIRE param value MUST start with "=" prefix!
+
+**Why this matters:**
+Without "=" prefix: "name = '{{$json[\"fileName\"]}}'" → Treated as literal string, searches for file literally named "{{$json[\"fileName\"]}}"
+With "=" prefix: "=name = '{{$json[\"fileName\"]}}'" → Evaluated as expression, {{...}} gets replaced with actual value
+
+**Common mistake pattern:**
+❌ Tool Call 1: "queryString": "name = '{{$json[\"fileName\"]}}'"  → 404 error (literal string)
+❌ Tool Call 2: "queryString": "name = '={{$json[\"fileName\"]}}'"  → Still wrong (= in middle)
+✅ Tool Call 3: "queryString": "=name = '{{$json[\"fileName\"]}}'"  → SUCCESS! (= at start)
+
+**When you get 404 errors with Google Drive queries:** Check if you forgot the "=" prefix!
 
 Based on the above information, the full RPA-Python-Code looks like the following:
 ```
@@ -159,6 +260,72 @@ Remember:
 2.Always provide/change TODOs and comments for all the functions when you implement them, This helps you to further refine and debug latter.
 3.We will test functions automatically, you only need to change the pinned data.
 
+🚨 CRITICAL: Tool Selection Rules 🚨
+
+To modify ACTION/TRIGGER params:
+  ✅ Use: function_rewrite_params
+  ✅ Valid function_name: "action_0", "action_1", "trigger_0", etc.
+
+To modify WORKFLOW code:
+  ✅ Use: workflow_implment
+  ✅ Valid workflow_name: "mainWorkflow", "subworkflow_1", etc.
+
+❌ NEVER call function_rewrite_params with function_name="mainWorkflow"
+❌ NEVER call workflow_implment with workflow_name="action_0"
+
+Before calling any tool, verify:
+1. All required parameters are provided
+2. Parameter types match the schema
+3. You're using the correct tool for the target (action vs workflow)
+
+🚨 CRITICAL: Parameter Validation Before Tool Calls 🚨
+
+Before calling function_rewrite_params:
+☑ Check: Is function_name provided? (e.g., "action_0")
+☑ Check: Is params a complete JSON string? (not empty {})
+☑ Check: Is comments provided?
+☑ Check: Is TODO array provided?
+
+If ANY parameter is missing or empty, DO NOT make the tool call.
+Instead, think about what the correct values should be first.
+
+RULE: function_rewrite_params requires ALL 7 parameters:
+      1. thought
+      2. plan
+      3. criticism
+      4. function_name
+      5. params
+      6. comments
+      7. TODO
+
+🚨 CRITICAL: Error Recovery Strategy 🚨
+
+When you encounter errors:
+1. Read the error message carefully
+2. Identify the ROOT CAUSE (not just the symptom)
+3. Check similar successful examples in the codebase
+4. Make ONE targeted fix at a time
+5. Don't repeat the same mistake twice
+
+Common error patterns:
+- "404 Not Found" in Google Drive queries → Check if queryString starts with "=" prefix!
+  Example: "=name = 'file.txt' and '{{$json[\"folderId\"]}}' in parents"
+- "404 Not Found" for files/folders → Check if IDs/paths are correct in expressions
+- "TypeError: expected str, got dict" → Check data structure extraction (e.g., binary.data.data)
+- "RequiredParamUnprovided" → You forgot a required parameter in tool call
+- "Expression syntax error" → Check {{}} blocks, quotes, and NO + operator
+- "fileNotExportable" → Wrong file type or wrong download operation
+- "403 Forbidden" after query 404s → Likely query syntax issue, not credentials!
+
+RULE: If you get the same error twice, STOP and reconsider your approach.
+      The problem is likely in your understanding, not the implementation.
+
+Example - Learning from error:
+❌ First attempt: "=name = '{{' + $json[\"fileName\"] + '}}'"  → ERROR
+❌ Second attempt: Same error again → STOP! Don't try the same thing!
+✅ Correct approach: Read rules, understand expressions are single units
+✅ Third attempt: "=name = '{{$json[\"fileName\"]}}'"  → SUCCESS
+
 🚨 CRITICAL: function_rewrite_params REQUIRES ALL PARAMETERS 🚨
 
 When calling function_rewrite_params, you MUST provide ALL 7 parameters IN ORDER:
@@ -166,29 +333,103 @@ When calling function_rewrite_params, you MUST provide ALL 7 parameters IN ORDER
 2. plan (array) - KEEP BRIEF (3-5 short items)
 3. criticism (string) - KEEP BRIEF (1 sentence max)
 4. function_name (string) - e.g., "action_0"
-5. params (string) - Complete JSON as string
+5. params (string) - JSON string - USE JSON SYNTAX (lowercase true/false/null)!
 6. comments (string) - Brief description
 7. TODO (array) - 2-3 items max
+
+⚠️ CRITICAL FOR params PARAMETER ⚠️
+The "params" field is a JSON STRING that will be parsed as JSON first, then converted to Python!
+You MUST use JSON syntax (lowercase true/false/null) in the params string:
+- Use true (lowercase), NOT True ❌
+- Use false (lowercase), NOT False ❌
+- Use null (lowercase), NOT None ❌
+
+❌ WRONG Example (Python booleans in params - will cause parse error):
+{
+  "function_name": "action_0",
+  "params": "{\"returnAll\": True, \"enabled\": False}",  ❌ WRONG!
+  ...
+}
+
+✅ CORRECT Example (JSON booleans in params):
+{
+  "function_name": "action_0",
+  "params": "{\"returnAll\": true, \"enabled\": false, \"value\": null}",  ✅ CORRECT!
+  ...
+}
 
 ⚠️ IMPORTANT: Keep thought/plan/criticism CONCISE to ensure ALL parameters fit in response.
 If you omit ANY parameter, the call will FAIL. No exceptions.
 
-CORRECT Example:
+COMPLETE CORRECT Example:
 {
   "thought": "Need to fix Slack channel parameter",
   "plan": ["Update channelId to 'general'", "Test Slack integration"],
   "criticism": "Current value includes unnecessary #",
   "function_name": "action_1",
-  "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"}}",
+  "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"},\"messageType\":\"text\",\"returnAll\":true}",
   "comments": "Send joke to Slack #general channel",
   "TODO": ["Test Slack message", "Verify delivery"]
 }
+
+🚨 CRITICAL: Google Drive Specific Guidance 🚨
+
+When working with Google Drive file operations:
+
+1. SEARCH operations:
+   - Search for FOLDER first to get folder ID
+   - Then search for FILE within that folder using folder ID
+   - Use searchMethod "query" with proper query string for file search
+   - Query format: "=name = 'filename.txt' and '{{$json[\"folderId\"]}}' in parents and trashed = false"
+   - ⚠️ CRITICAL: Query string MUST start with "=" to enable {{...}} interpolation!
+
+2. DOWNLOAD operations:
+   - Downloaded file content is in BINARY format (Base64 encoded)
+   - Binary data location: output[0]['binary']['data']['data'] (nested!)
+   - Must decode Base64 in workflow: base64.b64decode(binary_content)
+   - Then decode bytes to string: decoded_bytes.decode('utf-8')
+
+3. Common Google Drive errors:
+   - "404 Not Found" → File/folder ID is incorrect or expression not resolved
+   - "Export only supports Docs Editors files" → Using export instead of download
+   - "fileNotExportable" → Plain files (.txt, .pdf) need download, not export
+
+4. Complete example pattern (based on successful Query ID=27):
+   ```python
+   import base64
+
+   # Step 1: Search folder (pass trigger_input directly)
+   folder_output = action_folder_search(trigger_input)
+   folder_id = folder_output[0]['json']['id']
+
+   # Step 2: Search file - REWRAP because action needs "folderId" field
+   # The file search action's params use: queryString="=name = '00005_code.txt' and '{{$json[\"folderId\"]}}' in parents..."
+   # NOTE: queryString starts with "=" to enable {{...}} interpolation!
+   # So we MUST provide input_data with "folderId" field
+   file_input = [{"json": {"folderId": folder_id}}]  # ← Rewrapping IS correct here!
+   file_output = action_file_search(file_input)
+
+   # Step 3: Download - PASS DIRECTLY because download action's params use: fileId="={{$json[\"id\"]}}"
+   # The file_output already has "id" field, so no rewrapping needed
+   download_output = action_download(file_output)  # ← Pass directly!
+
+   # Step 4: Extract and decode Base64
+   base64_content = download_output[0].get('binary', {}).get('data', {}).get('data')
+   file_bytes = base64.b64decode(base64_content)
+   file_text = file_bytes.decode('utf-8')
+
+   # Step 5: Use the decoded text - Rewrap for Slack message format
+   slack_input = [{"json": {"text": f"File content:\n{file_text}"}}]
+   slack_output = action_slack(slack_input)
+   ```
+
+   RULE: Rewrap when action's param expressions need a field name that doesn't exist in previous output.
 
 PSEUDO_NODE_GUIDANCE:
 CRITICAL: Different parameter formats for different node types:
 
 REAL N8N NODES (googleSheets, slack, etc.):
-- Use n8n expressions: "={{$json['FieldName']}}"
+- Use n8n expressions: "={{$json[\"FieldName\"]}}"  (use double quotes for consistency)
 - Parameters go through n8n CLI execution
 
 PSEUDO NODES (aiCompletion):
