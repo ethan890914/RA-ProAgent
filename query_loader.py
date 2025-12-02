@@ -518,6 +518,52 @@ class query_loader():
         )
         self.load_single_query(query)
 
+        # Google Drive - list files in ProAgentWorkspace folder
+        query = userQuery(
+            ID='26',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which lists all files in my Google Drive ProAgentWorkspace folder and sends the file list to Slack.",
+            additional_information=[
+                "1. Use googleDrive.file.list to list all files in the folder named 'ProAgentWorkspace'",
+                "2. Send the list of files to Slack channel #general",
+                "3. Each message should contain file name and file ID",
+                "4. Message format: 'Files in ProAgentWorkspace:\n[list of files with names and IDs]'"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
+        # Google Drive - list files in ProAgentWorkspace folder
+        query = userQuery(
+            ID='27',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which first download the file 00005_code.txt from Google Drive, and then sends its content to slack.",
+            additional_information=[
+                "1. Use googleDrive to download the file '00005_code.txt' under folder 'ProAgentWorkspace'",
+                "1.2 Search instruction: Use folder name to search for the specific folder."
+                "1.2 Download instruction: Use fileId to download the file."
+                "1.3 Decode the Base64 file content to get actual text"
+                "2. Send the file content to Slack channel #general",
+                "3. Message format: '00005_code.py:\n [file content]'"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
+        query = userQuery(
+            ID='28',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which first download a file from Google Drive, and then sends parts of its content to slack.",
+            additional_information=[
+                "1. Use googleDrive to download the file 'abc-news_chunked_1day_articles_2025-11-11_1.csv' under folder 'ProAgentWorkspace/newsapi_data/2025-11-11'",
+                "1.2 Search instruction: Use folder name to search for the specific folder."
+                "1.2 Download instruction: Use fileId to download the file."
+                "2.1 Decode the Base64 file content to get actual text"
+                "2.2 The first line of this file is the schema for this csv file, Extract the schema"
+                "2.3 Send the schema to Slack channel #news",
+                "3. Message format: 'abc-news_chunked_1day_articles_2025-11-11_1.csv schema:\n [schema]'"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
     def load_single_query(self, userQuery):
         if userQuery.ID in self.queries:
             # overwrite the old query
