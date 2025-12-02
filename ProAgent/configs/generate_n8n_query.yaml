@@ -16,7 +16,8 @@ parser:
     "googleSheets.sheet.read",
     "mongoDb.default.find",
     "gmail.message.send",
-    "aiCompletion.default.default"
+    "aiCompletion.default.default",
+    "googleDrive"
   ]
 
 
