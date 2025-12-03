@@ -634,6 +634,60 @@ class query_loader():
         )
         self.load_single_query(query)
 
+        # PostgreSQL - simple query
+        query = userQuery(
+            ID='34',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which queries the PostgreSQL database and sends the result to Slack",
+            additional_information=[
+                "1. Use postgres to execute SQL query: SELECT * FROM bloomberg_articles LIMIT 1;",
+                "2. Extract the query result",
+                "3. Send the result to Slack channel #general",
+                "4. Message format: 'PostgreSQL Query Result:\n[result]'"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
+        # PostgreSQL - query with specific columns
+        query = userQuery(
+            ID='35',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which queries specific columns from PostgreSQL database and sends the result to Slack",
+            additional_information=[
+                "1. Use postgres to execute SQL query: SELECT title, author FROM bloomberg_articles LIMIT 5;",
+                "2. Extract the query result with title and author fields",
+                "3. Send the results to Slack channel general",
+                "4. Message format: '[i]. Title: [title]\nAuthor: [author]'",
+                "5. i is the index starting from 1"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
+        # PostgreSQL - query and send via email
+        query = userQuery(
+            ID='36',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate queries to PostgreSQL, and then using PostgreSQL to execute the query, and then sends the result via slack",
+            additional_information=[
+                "1. Create the aiCompletion input with messages array containing system prompt and user prompt"
+                "1.2 System prompt: 'You are a professional PostgreSQL programmer, please only output a SQL string'",
+                "1.3 User prompt: Please write a SQL query, which select first three rows from table 'bloomberg_articles' and limit the rows to 3."
+                "1.4 Call the aiCompletion with designed input"
+
+                "2. Extract the query generated, and use PostgreSQL to execute the query",
+                "3. Be careful about the format, you should use a string to query PostgreSQL"
+
+                "3. Extract the PostgreSQL output, we need title and author in the later process",
+                "4. Send the results to Slack channel general",
+                "5. Message format: '[i]. Title: [title]\nAuthor: [author]'",
+                "6. i is the index starting from 1"
+                # "3. Send results to qwuqwuqwu@gmail.com with Gmail",
+                # "4. Email subject: Bloomberg Articles - Database Query Results",
+                # "5. Email content format: 'Database Query Results:\n[formatted results]'"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
     def load_single_query(self, userQuery):
         if userQuery.ID in self.queries:
             # overwrite the old query
