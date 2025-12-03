@@ -19,7 +19,8 @@ parser:
     "aiCompletion.default.default",
     "googleDrive",
     "httpRequest",  # For NewsAPI and other HTTP-based integrations
-    "openWeatherMap"  # OpenWeatherMap integration
+    "openWeatherMap",  # OpenWeatherMap integration
+    "postgres"  # PostgreSQL integration
   ]
 
 

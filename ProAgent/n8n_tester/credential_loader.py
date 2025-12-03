@@ -81,6 +81,12 @@ class Credentials():
                         "openWeatherMapApi": [
                             "openWeatherMap",  # Standard OpenWeatherMap node
                             "OpenWeatherMap"
+                        ],
+                        "postgres": [
+                            "postgres",  # PostgreSQL node
+                            "Postgres",
+                            "postgreSql",
+                            "PostgreSQL"
                         ]
                         # Add more mappings as needed
                     }
