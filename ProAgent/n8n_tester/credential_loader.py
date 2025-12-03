@@ -77,6 +77,10 @@ class Credentials():
                             "httpRequest",  # HTTP Request node
                             "HttpRequest",
                             "newsapi"  # Alias for NewsAPI usage
+                        ],
+                        "openWeatherMapApi": [
+                            "openWeatherMap",  # Standard OpenWeatherMap node
+                            "OpenWeatherMap"
                         ]
                         # Add more mappings as needed
                     }

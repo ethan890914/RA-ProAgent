@@ -18,7 +18,8 @@ parser:
     "gmail.message.send",
     "aiCompletion.default.default",
     "googleDrive",
-    "httpRequest"  # For NewsAPI and other HTTP-based integrations
+    "httpRequest",  # For NewsAPI and other HTTP-based integrations
+    "openWeatherMap"  # OpenWeatherMap integration
   ]
 
 
