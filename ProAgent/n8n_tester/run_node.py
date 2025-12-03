@@ -165,6 +165,11 @@ def run_node(node: n8nPythonNode, input_data: list[dict] = [{}]) -> tuple[Any, s
         param_json["authentication"] = "oAuth2"
     elif node.node_meta.integration_name == 'slack':
         param_json["authentication"] = "accessToken"
+    elif node.node_meta.integration_name == 'httpRequest':
+        # For httpRequest with credentials, set authentication to use the credential type
+        if cred_item:
+            param_json["authentication"] = "genericCredentialType"
+            param_json["genericAuthType"] = cred_item["type"]
 
     # Process custom parameters with proper type handling
     for key, value in node.params.items():

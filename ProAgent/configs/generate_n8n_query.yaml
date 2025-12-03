@@ -17,7 +17,8 @@ parser:
     "mongoDb.default.find",
     "gmail.message.send",
     "aiCompletion.default.default",
-    "googleDrive"
+    "googleDrive",
+    "httpRequest"  # For NewsAPI and other HTTP-based integrations
   ]
 
 

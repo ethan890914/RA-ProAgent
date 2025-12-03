@@ -74,8 +74,10 @@ class Credentials():
                         ],
                         "googleDriveOAuth2Api": ["googleDrive"],
                         "httpHeaderAuth": [
-                            "NewsAPI",
-                        ],
+                            "httpRequest",  # HTTP Request node
+                            "HttpRequest",
+                            "newsapi"  # Alias for NewsAPI usage
+                        ]
                         # Add more mappings as needed
                     }
 
