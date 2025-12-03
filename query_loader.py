@@ -564,6 +564,20 @@ class query_loader():
         )
         self.load_single_query(query)
 
+        query = userQuery(
+            ID='29',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which first using NewsAPI to fetch news, and then sends news to slack.",
+            additional_information=[
+                "1. Get 5 technology news headlines from the US by NewsAPI", # NewsAPI always return 5-1 news (seems like a NewsAPI's bug)
+                "2. Extract the first 2 news."
+                "2. Send the extracted 2 news to Slack channel #news",
+                "3. Message format: '[i] [news]'",
+                "4. i is the incremental index count from the first news"
+            ],
+            refine_prompt=""
+        )
+        self.load_single_query(query)
+
     def load_single_query(self, userQuery):
         if userQuery.ID in self.queries:
             # overwrite the old query

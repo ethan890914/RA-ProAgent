@@ -425,6 +425,121 @@ When working with Google Drive file operations:
 
    RULE: Rewrap when action's param expressions need a field name that doesn't exist in previous output.
 
+🚨 CRITICAL: httpRequest Node Guidance (NewsAPI, REST APIs, etc.) 🚨
+
+When using httpRequest to call external APIs (NewsAPI, REST APIs, webhooks, etc.):
+
+1. **Authentication via headerParameters with credential expression**:
+   ✅ CORRECT - Use credential expression in headerParameters:
+   ```json
+   {
+     "method": "GET",
+     "url": "https://newsapi.org/v2/top-headlines",
+     "sendQuery": true,
+     "specifyQuery": "keypair",
+     "queryParameters": {
+       "parameters": [
+         {"name": "category", "value": "technology"},
+         {"name": "country", "value": "us"},
+         {"name": "pageSize", "value": "5"}
+       ]
+     },
+     "sendHeaders": true,
+     "specifyHeaders": "keypair",
+     "headerParameters": {
+       "parameters": [
+         {"name": "X-Api-Key", "value": "={{$credentials.httpHeaderAuth.value}}"}
+       ]
+     },
+     "sendBody": false,
+     "options": {}
+   }
+   ```
+
+   ❌ WRONG - Don't use "authentication" parameter (NOT SUPPORTED!):
+   ```json
+   {
+     "authentication": "headerAuth"  ← ERROR! UndefinedParam!
+   }
+   ```
+
+2. **How authentication works in ProAgent**:
+   - ⚠️ ProAgent does NOT support `"authentication"` parameter!
+   - Use `"sendHeaders": true` and `headerParameters` instead
+   - Reference credentials with expression: `"={{$credentials.httpHeaderAuth.value}}"`
+   - ProAgent loads the httpHeaderAuth credential at runtime
+   - NEVER put actual API key values in params
+
+3. **Minimal required parameters for GET requests**:
+   ```json
+   {
+     "method": "GET",
+     "url": "https://api.example.com/endpoint",
+     "sendQuery": true,
+     "specifyQuery": "keypair",
+     "queryParameters": {"parameters": [...]},
+     "sendHeaders": true,
+     "specifyHeaders": "keypair",
+     "headerParameters": {
+       "parameters": [
+         {"name": "X-Api-Key", "value": "={{$credentials.httpHeaderAuth.value}}"}
+       ]
+     },
+     "sendBody": false,
+     "options": {}
+   }
+   ```
+
+   NOTE: You DON'T need body, rawContentType, or contentType for simple GET!
+
+4. **NewsAPI complete example (COPY THIS EXACTLY)**:
+   ```json
+   {
+     "method": "GET",
+     "url": "https://newsapi.org/v2/top-headlines",
+     "sendQuery": true,
+     "specifyQuery": "keypair",
+     "queryParameters": {
+       "parameters": [
+         {"name": "category", "value": "technology"},
+         {"name": "country", "value": "us"},
+         {"name": "pageSize", "value": "5"}
+       ]
+     },
+     "sendHeaders": true,
+     "specifyHeaders": "keypair",
+     "headerParameters": {
+       "parameters": [
+         {"name": "X-Api-Key", "value": "={{$credentials.httpHeaderAuth.value}}"}
+       ]
+     },
+     "sendBody": false,
+     "options": {}
+   }
+   ```
+
+5. **Common httpRequest errors**:
+   - "UndefinedParam: authentication" → Don't use `authentication`, use headerParameters!
+   - 401 Unauthorized → Check credential expression: `={{$credentials.httpHeaderAuth.value}}`
+   - "Undefined: $credentials" → Ensure httpHeaderAuth credential exists in c.json
+
+6. **Response format**:
+   - HTTP response: `output[0]['json']`
+   - NewsAPI articles: `output[0]['json']['articles']`
+   - Article fields: `title`, `description`, `url`, `publishedAt`, `source`, etc.
+
+7. **Supported parameters** (from ProAgent schema):
+   - method, url, sendQuery, specifyQuery, queryParameters
+   - sendHeaders, specifyHeaders, headerParameters
+   - sendBody, contentType, specifyBody, bodyParameters
+   - body, inputDataFieldName, rawContentType, options
+   - ❌ NOT SUPPORTED: authentication, genericAuthType, genericCredentialType
+
+RULE: For httpRequest with API keys:
+      1. Set `"sendHeaders": true`
+      2. Add header in headerParameters: `{"name": "X-Api-Key", "value": "={{$credentials.httpHeaderAuth.value}}"}`
+      3. NEVER use `"authentication"` parameter (it's not supported)!
+
 PSEUDO_NODE_GUIDANCE:
 CRITICAL: Different parameter formats for different node types:
 
@@ -674,6 +789,134 @@ Before submitting workflow code, verify:
 4. ✅ Each dict in the input list = one AI call
 5. ✅ Return values are always lists, never single dicts
 6. ✅ Imports (if needed) are INSIDE function body
+
+🚨 CRITICAL: User Requirement Precision Rules 🚨
+
+NEVER use hardcoded values that contradict user requirements!
+
+❌ WRONG - Hardcoded count ignores user requirement:
+User query: "Get 4 technology news headlines"
+```python
+def mainWorkflow(trigger_input):
+    news_output = action_0(trigger_input)  # Fetches 10 items
+    articles = news_output[0]['json']['articles']
+    first_three = articles[:3]  # ❌ WRONG! User asked for 4, not 3!
+    ...
+```
+
+✅ CORRECT - Use exact count from user requirement:
+User query: "Get 4 technology news headlines"
+```python
+def mainWorkflow(trigger_input):
+    news_output = action_0(trigger_input)  # Fetches items
+    articles = news_output[0]['json']['articles']
+    # Use exactly 4 as user requested
+    for i, article in enumerate(articles[:4], start=1):  # ✅ Correct!
+        ...
+```
+
+RULE: When user specifies a number (e.g., "4 news", "top 5 items", "first 3 results"):
+1. Configure API calls to request AT LEAST that many items
+2. Process EXACTLY that many items in the workflow
+3. NEVER substitute your own number (like [:3] when user asked for 4)
+4. If API returns fewer items, process all available items (don't crash)
+
+Example requirements mapping:
+- "4 technology news" → pageSize=4 or higher, process [:4]
+- "top 5 items" → pageSize=5 or higher, process [:5]
+- "first 3 results" → pageSize=3 or higher, process [:3]
+- "10 headlines" → pageSize=10, process [:10]
+
+🚨 CRITICAL: workflow_implment Tool Behavior 🚨
+
+IMPORTANT: The workflow_implment tool REPLACES all workflow functions!
+
+When you call workflow_implment with workflow_name="mainWorkflow":
+- You must provide the COMPLETE code for ALL functions in the workflow
+- This includes: trigger_0, action_0, action_1, mainWorkflow, etc.
+- The tool will REPLACE the entire workflow code with your provided code
+- DO NOT define the same function twice in your code!
+
+❌ WRONG - Duplicate function definitions:
+```python
+def trigger_0():  # First definition
+    params = {}
+    function = transparent_trigger(...)
+    return function.run(input_data=None, params=params)
+
+def action_0(input_data):
+    ...
+
+def trigger_0(input_data):  # ❌ DUPLICATE! This creates two trigger_0 functions!
+    params = {}
+    function = transparent_trigger(...)
+    return function.run(input_data=input_data, params=params)
+
+def mainWorkflow(trigger_input):
+    ...
+```
+
+✅ CORRECT - Each function defined only once:
+```python
+def trigger_0():  # Only ONE definition
+    params = {}
+    function = transparent_trigger(...)
+    return function.run(input_data=None, params=params)
+
+def action_0(input_data):
+    ...
+
+def action_1(input_data):
+    ...
+
+def mainWorkflow(trigger_input):
+    ...
+```
+
+RULE: Before calling workflow_implment:
+1. Review the current code to see which functions exist
+2. Include each function EXACTLY ONCE in your new code
+3. If you need to modify a function, replace its definition entirely
+4. DO NOT copy-paste a function and then modify it - that creates duplicates!
+5. Verify no function name appears twice in your code
+
+🚨 CRITICAL: Task Completion Rules 🚨
+
+Call task_submit IMMEDIATELY when ALL of these conditions are met:
+1. ✅ All functions are defined and implemented
+2. ✅ Workflow runs successfully (Status: FunctionExecuteSuccess)
+3. ✅ Output matches user requirements (correct data sent to target)
+4. ✅ No errors in the last execution
+
+DO NOT continue refining/testing after success - call task_submit!
+
+❌ WRONG - Continuing after successful execution:
+```
+Last execution: FunctionExecuteSuccess
+Output: [3 messages sent to Slack successfully]
+Next action: Let me test one more time... # ❌ STOP! Call task_submit!
+```
+
+✅ CORRECT - Submit immediately after success:
+```
+Last execution: FunctionExecuteSuccess
+Output: [3 messages sent to Slack successfully]
+Next action: task_submit  # ✅ Task is complete!
+```
+
+EXCEPTION: If the output is WRONG (e.g., user asked for 4 items but only 3 were sent),
+DO NOT call task_submit - fix the issue first!
+
+Example scenario:
+- User query: "Get 4 technology news headlines"
+- Workflow sends: 3 messages to Slack
+- Status: FunctionExecuteSuccess (technically worked)
+- Action: DON'T submit! Fix workflow to send 4 items instead of 3
+
+RULE: Always verify output matches user requirements before calling task_submit:
+- User asked for 4 items? Check workflow sends exactly 4
+- User asked for specific format? Verify format matches
+- User asked for specific channel? Confirm correct destination
 '''
 
 system_prompt_3 = '''The user query:
