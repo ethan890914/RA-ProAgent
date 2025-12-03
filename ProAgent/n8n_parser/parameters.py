@@ -110,7 +110,7 @@ class n8nParameter():
 
 
         if "displayOptions" in param_json.keys():
-            if "show" in param_json.keys():
+            if "show" in param_json["displayOptions"].keys():
                 for instance in param_json["displayOptions"]["show"]:
                     if instance not in ["resource", "operation"]:
                         expression = f"{instance} in {param_json['displayOptions']['show'][instance]}"

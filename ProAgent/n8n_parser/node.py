@@ -78,7 +78,9 @@ class n8nPythonNode():
     def print_self_clean(self):
         """Returns a multiline text."""
         lines = []
-        input_data = "input_data: List[Dict] =  [{...}]" if self.node_meta.node_type == NodeType.action else ""
+        # Triggers also need input_data parameter because the runner always calls functions with input_data argument
+        # Triggers just don't use the input_data (they generate their own output)
+        input_data = "input_data: List[Dict] =  [{...}]"
         define_line = f"def {self.get_name()}({input_data}):"
         lines.append(define_line)
         param_json = {}
@@ -121,7 +123,9 @@ class n8nPythonNode():
     def print_self(self):
         """Returns a multiline text."""
         lines = []
-        input_data = "input_data: List[Dict] =  [{...}]" if self.node_meta.node_type == NodeType.action else ""
+        # Triggers also need input_data parameter because the runner always calls functions with input_data argument
+        # Triggers just don't use the input_data (they generate their own output)
+        input_data = "input_data: List[Dict] =  [{...}]"
         define_line = f"def {self.get_name()}({input_data}):"
         lines.append(define_line)
         if self.node_comments != "" or self.note_todo != []:
@@ -197,11 +201,13 @@ class n8nPythonNode():
                 tool_status = ToolCallStatus.UndefinedParam
                 return tool_status, json.dumps({"error": f"Undefined input parameter \"{key}\" for {self.get_name()}.Supported parameters: {list(new_params.keys())}", "result": "Nothing happened.", "status": tool_status.name})
             if type(param_json[key]) == str and (len(param_json[key]) == 0):
-                # Only reject empty strings for REQUIRED parameters
-                if new_params[key].required:
+                # Only reject empty strings for REQUIRED parameters that don't have displayOptions conditions
+                # If a parameter has display_string (displayOptions), skip empty string validation
+                # The parameter will be ignored by n8n if its display condition isn't met
+                if new_params[key].required and not new_params[key].display_string:
                     tool_status = ToolCallStatus.RequiredParamUnprovided
                     return tool_status, json.dumps({"error": f"Required parameter \"{key}\" for {self.get_name()} cannot be empty. Please provide a value.", "result": "Nothing happened.", "status": tool_status.name})
-                # For optional parameters, empty string is acceptable - continue to parse_value()
+                # For optional parameters or conditionally displayed parameters, empty string is acceptable
             parse_status, parse_output = new_params[key].parse_value(param_json[key])
             if parse_status != ToolCallStatus.ToolCallSuccess:
                 tool_status = parse_status
