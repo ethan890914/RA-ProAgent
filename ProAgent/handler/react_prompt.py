@@ -80,6 +80,61 @@ Data-Format: We ensure all the input/output data in transparent action functions
    RULE: Always check actual output structure. Binary content is usually at:
          output[0]['binary']['data']['data'] (nested 3 levels deep)
 
+5. Data transformation between actions with incompatible schemas:
+   ⚠️ CRITICAL: Don't pass action outputs directly if schemas don't match!
+
+   **Check compatibility BEFORE connecting actions:**
+   - Does the previous action's output have the fields that the next action expects?
+   - If NO, you MUST transform the data in mainWorkflow!
+
+   **Example: OpenWeatherMap → Slack**
+   ❌ WRONG (incompatible schemas):
+   ```python
+   def mainWorkflow(trigger_input):
+       weather_output = action_openweather(trigger_input)
+       # weather_output[0]['json'] = {"coord": {...}, "main": {"temp": ...}, "visibility": ...}
+
+       slack_output = action_slack(weather_output)  # ❌ Slack expects {"text": "..."}!
+       return slack_output
+   ```
+
+   ✅ CORRECT (transform in mainWorkflow):
+   ```python
+   def mainWorkflow(trigger_input):
+       # Step 1: Get weather data
+       weather_output = action_openweather(trigger_input)
+
+       # Step 2: Extract fields from OpenWeatherMap response
+       weather_json = weather_output[0]['json']
+       coord = weather_json['coord']
+       temp = weather_json['main']['temp']
+       visibility = weather_json['visibility']
+
+       # Step 3: Format message for Slack
+       message = f"Coordinates: {coord}\nTemperature: {temp}°C\nVisibility: {visibility}m"
+
+       # Step 4: Wrap in Slack's expected format
+       slack_input = [{"json": {"text": message}}]
+
+       # Step 5: Send to Slack
+       slack_output = action_slack(slack_input)
+       return slack_output
+   ```
+
+   **Common incompatible action pairs:**
+   - OpenWeatherMap → Slack: Weather data has nested objects, Slack needs flat "text" field
+   - HTTP API → Slack: API responses vary, Slack needs "text" field
+   - Google Sheets → HTTP Request: Sheet rows are arrays, API might need specific JSON structure
+
+   **When to transform data:**
+   1. Previous action returns nested objects (coord, main, weather arrays, etc.)
+   2. Next action expects specific field names (text, message, body, etc.)
+   3. Output has arrays/lists that need to be formatted as strings
+   4. Need to combine multiple fields into one (e.g., formatting a message)
+
+   **RULE: Always extract, format, and rewrap data when action schemas don't match!**
+   Don't assume n8n will automatically convert incompatible data structures.
+
 Java-Script-Expression:
 1.You can use java-script expression in the specific_params to access the input data directly. Use it by a string startswith "=", and provide expression inside a "{{...}}" block.
 2. Use "{{$json["xxx"]}}" to obtain the "json" field in each item of the input data.
