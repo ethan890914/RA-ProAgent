@@ -18,12 +18,13 @@ from func_timeout import func_set_timeout
 import func_timeout
 import random
 from ProAgent.config import CONFIG
-
+from dotenv import load_dotenv
+from openai import OpenAI
 from ProAgent.loggers.logs import logger
 from ProAgent.running_recorder import RunningRecoder
 from ProAgent.utils import LLMStatusCode
 
-
+load_dotenv()
 def _chat_completion_request_atomic(**json_data):
     """
     Creates a chat completion request with the given JSON data.
@@ -34,12 +35,29 @@ def _chat_completion_request_atomic(**json_data):
     Returns:
         The response from the OpenAI ChatCompletion API.
     """
-    openai.api_key = os.environ.get('OPENAI_API_KEY')
-    openai.api_base = os.environ.get('OPENAI_API_BASE')
-    response = openai.ChatCompletion.create(
+    # openai.api_key = os.environ.get('OPENAI_API_KEY')
+    # openai.api_base = os.environ.get('OPENAI_API_BASE')
+    # openai.api_key = os.environ.get('GEMINI_API_KEY')
+    # openai.api_base = os.environ.get('GEMINI_API_BASE')
+    cleaned = []
+    for msg in json_data["messages"]:
+        if msg['role'] == 'assistant':
+            cleaned.append(clean_message_for_gemini(msg))
+        else:
+            cleaned.append(msg)
+    json_data["messages"] = cleaned
+    print(json_data)
+
+    client = OpenAI(
+        api_key=os.environ.get('OPENAI_API_KEY'),
+        base_url=os.environ.get('OPENAI_API_BASE'),
+    )
+    response = client.chat.completions.create(
+        # model="gemini-2.5-flash",
+        reasoning_effort="low",
                 **json_data,
             )
-    return response
+    return response.model_dump_json()
 
 @func_set_timeout(60)
 def _chat_completion_request_without_retry(default_completion_kwargs, messages, functions=None,function_call=None, stop=None,restrict_cache_query=True ,recorder:RunningRecoder=None, **args):
@@ -93,8 +111,8 @@ def _chat_completion_request_without_retry(default_completion_kwargs, messages, 
 
         if response == None:
             response = _chat_completion_request_atomic(**json_data)
+            print(response)
             response = json.loads(str(response))
-
         if recorder:
             recorder.regist_llm_inout(base_kwargs = default_completion_kwargs,
                                     messages=messages, 
@@ -142,3 +160,49 @@ def _chat_completion_request(**args):
         except func_timeout.exceptions.FunctionTimedOut: #TLE
             logger.info(f"LLM response time out")
             continue
+
+def transform_gemini_tool_function(f):
+        gemini_tool = {
+        "type" : "function",
+        "function": f
+        }
+        return gemini_tool
+
+
+def clean_message_for_gemini(message):
+    """Remove OpenAI-specific fields that Gemini doesn't support"""
+    cleaned = {
+        'role': message['role'],
+        'content': message.get('content'),
+    }
+
+    # Only include tool_calls if present and not None
+    if message.get('tool_calls'):
+        cleaned['tool_calls'] = message['tool_calls']
+
+    # Remove None content (Gemini requires content or tool_calls)
+    if cleaned['content'] is None:
+        cleaned.pop('content')
+
+    return cleaned
+
+
+def normalize_tool_call_arguments(tool_calls):
+    """Convert Gemini's object arguments to JSON strings (OpenAI format)"""
+    if not tool_calls:
+        return tool_calls
+
+    for tool_call in tool_calls:
+        if 'function' in tool_call:
+            args = tool_call['function'].get('arguments')
+
+            # If arguments is a dict/object, convert to JSON string
+            if isinstance(args, dict):
+                tool_call['function']['arguments'] = json.dumps(args)
+            elif args is None:
+                tool_call['function']['arguments'] = "{}"
+
+    return tool_calls
+
+
+

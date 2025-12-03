@@ -4,7 +4,7 @@ import json
 from colorama import Fore, Style
 
 from ProAgent.loggers.logs import logger
-from ProAgent.agent.utils import _chat_completion_request
+from ProAgent.agent.utils import _chat_completion_request, normalize_tool_call_arguments
 
 
 class OpenAIFunction():
@@ -25,7 +25,7 @@ class OpenAIFunction():
             None.
         """
         retry_time = 1
-        max_time = 3
+        max_time = 1
         for i in range(max_time):
             output = _chat_completion_request(**args)
 
@@ -34,8 +34,10 @@ class OpenAIFunction():
                 message = output["choices"][0]["message"]
                 print(usage)
 
-                if "function_call" in message.keys():
+                # if "function_call" in message.keys():
+                if "tool_calls" in message.keys():
                     break
+
                 else:
                     args['messages'].append({"role": "assistant", "content": message['content']})
                     args['messages'].append({"role": 'user', "content": "No Function call here! You should always use a function call as your response."})
@@ -46,10 +48,17 @@ class OpenAIFunction():
             error_str = "Failed to generate chat response."
             logger._log(error_str, Fore.LIGHTBLACK_EX, level=logging.ERROR)
             raise TimeoutError(error_str)
-
-        function_name = message["function_call"]["name"]
-        function_arguments = json.loads(message["function_call"]["arguments"], strict=False)
-
+        # if "function_call" in message.keys():
+        # function_name = message["function_call"]["name"]
+        # function_arguments = json.loads(message["function_call"]["arguments"], strict=False)
+        function_name = "function_name"
+        function_arguments = json.loads("{}")
+        if message["tool_calls"]:
+            message["tool_calls"] = normalize_tool_call_arguments(message["tool_calls"])
+            function_name = message["tool_calls"][0]["function"]["name"]
+            print("ARGUMENTS", json.loads(message["tool_calls"][0]["function"]["arguments"]))
+            function_arguments = json.loads(message["tool_calls"][0]["function"]["arguments"], strict=False)
+        print(function_name)
         content = ""
         if "content" in message.keys():
             content = message["content"]

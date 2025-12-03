@@ -97,17 +97,19 @@ class RPAgentConfig(CfgNode):
         C = CfgNode()
 
         C.default_completion_kwargs = {
-            'model': 'gpt-4-32k',
+            # 'model': 'gpt-4-32k',
+            'model': 'gemini-2.5-pro',
             'temperature': 0.5,
-            'request_timeout':30,
+            # 'request_timeout':30,
             'max_tokens': 4096,
-            'frequency_penalty': 0, 
-            'presence_penalty': 0
+            # 'frequency_penalty': 0,
+            # 'presence_penalty': 0
         }
 
         C.default_knowledge = knowledge
 
-        C.environment = ENVIRONMENT.Production
+        # C.environment = ENVIRONMENT.Production
+        C.environment = ENVIRONMENT.Development
 
         return C
     

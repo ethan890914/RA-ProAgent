@@ -363,7 +363,7 @@ class Compiler():
                    - The ToolCallStatus indicates the status of the tool call.
                    - The string contains the output of the tool call.
         """
-        function_name = tool_input["function_name"]
+        function_name = "" if "function_name" not in tool_input else tool_input["function_name"]
         available_names = [node.get_name() for node in self.nodes]
         if function_name not in available_names:
             output_status = ToolCallStatus.NoSuchFunction
@@ -381,8 +381,8 @@ class Compiler():
                 if param_rewrite_status != ToolCallStatus.ToolCallSuccess:
                     return param_rewrite_status, output_str
 
-                node.note_todo = tool_input["TODO"]
-                node.node_comments = tool_input["comments"]
+                node.note_todo = [] if "TODO" not in tool_input else tool_input["TODO"]
+                node.node_comments = "" if "comments" not in tool_input else tool_input["comments"]
                 return param_rewrite_status, output_str
         assert False
 
@@ -408,7 +408,7 @@ class Compiler():
             integration_name = transparent_function["integration_name"]
             resource_name = transparent_function["resource_name"]
             operation_name = transparent_function["operation_name"]
-            comments = transparent_function["comments"].strip()
+            comments = str(transparent_function["comments"]).strip()
             TODO = transparent_function["TODO"]
 
 

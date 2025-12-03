@@ -1,6 +1,8 @@
 from copy import deepcopy
 from typing import List, Dict
 import json
+
+from ProAgent.agent.utils import transform_gemini_tool_function
 from ProAgent.frontend.highlight_code import highlight_code
 from ProAgent.running_recorder import RunningRecoder
 
@@ -94,11 +96,11 @@ class ReACTHandler():
 
             messages.append({"role":"user","content": user_prompt})
             
-            functions = get_intrinsic_functions()
+            functions = [transform_gemini_tool_function(f) for f in get_intrinsic_functions()]
 
             agent = OpenAIFunction()
             content, function_name, function_arguments, message = agent.parse(messages=messages,
-                                                            functions=functions,
+                                                            tools=functions,
                                                             default_completion_kwargs=CONFIG.default_completion_kwargs,
                                                             recorder=self.recorder)
             action = self.compiler.tool_call_handle(content, function_name, function_arguments)

@@ -83,7 +83,7 @@ def get_intrinsic_functions():
         "name": "function_rewrite_params",
         "description": "Give params of a already defined function with the provided param descriptions, This will overwrite now params",
         "parameters":{
-            "type": "object",
+            "type": "string",
             "properties": {
                 "thought": {
                     "type": "string",
@@ -105,7 +105,7 @@ def get_intrinsic_functions():
                     "description": "Such as 'Action_x' or 'Trigger_x'. Must be a already defined function.",
                 },
                 "params": {
-                    "type": "string",
+                    "type": "object",
                     "description": "The json object of the input params. The field descriptions should refer to the Function defination in the code",
                 },
                 "comments": {

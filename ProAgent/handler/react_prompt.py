@@ -156,7 +156,7 @@ system_prompt_2 = '''You will define and implement functions progressively for m
 
 Remember:
 1.Always provide thought, plans and criticisim before giving an action.
-2.Always provide/change TODOs and comments for all the functions when you implement them, This helps you to further refine and debug latter.
+2.Always provide/change function_name, TODOs and comments for all the functions when you implement them, This helps you to further refine and debug latter.
 3.We will test functions automatically, you only need to change the pinned data.
 
 '''

@@ -24,11 +24,12 @@ class Credentials():
                     "id": item["id"],
                     "type": item["type"],
                 }
-                for node_type in item["nodesAccess"]:
-                    node_type_name = node_type["nodeType"].split(".")[-1]
-                    if self.credential_data.get(node_type_name,-1) == -1:
-                        self.credential_data[node_type_name] = []
-                    self.credential_data[node_type_name].append(item_info)
+                if "nodesAccess" in item and item["nodesAccess"]:
+                    for node_type in item["nodesAccess"]:
+                        node_type_name = node_type["nodeType"].split(".")[-1]
+                        if self.credential_data.get(node_type_name,-1) == -1:
+                            self.credential_data[node_type_name] = []
+                        self.credential_data[node_type_name].append(item_info)
         with open(os.path.join(base_file_path,"w.json"),"r", encoding="utf-8") as reader:
             workflow_data = json.load(reader)
             self.workflow_id = workflow_data[0]["id"]

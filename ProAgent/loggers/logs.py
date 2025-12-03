@@ -468,7 +468,7 @@ def print_action_base(action: Action):
             f"Plan:", Fore.YELLOW,
         )
         for line in action.plan:
-            line = line.lstrip("- ")
+            line = str(line).lstrip("- ")
             logger.typewriter_log("- ", Fore.GREEN, line.strip())
     logger.typewriter_log(
         f"Criticism:", Fore.YELLOW, f"{action.criticism}"
