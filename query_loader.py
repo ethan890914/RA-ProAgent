@@ -595,6 +595,45 @@ class query_loader():
         )
         self.load_single_query(query)
 
+        query = userQuery(
+            ID='31',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which get the current weather for New York and send it to Slack",
+            additional_information=[
+                "1. Use OpenWeatherMap to fetch current weather for New York",
+                "2. Extract temperature and wind",
+                "3. Send the results to Slack.",
+                "3.1 Choose weathers for the Slack Channel."
+                "3.2 Message format: New York temperature: [temperature] \n wind: [wind]",
+            ]
+        )
+        self.load_single_query(query)
+
+        query = userQuery(
+            ID='32',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which get the current weather for Austin and send it to Slack",
+            additional_information=[
+                "1. Use OpenWeatherMap to fetch current weather for Austin",
+                "2. Extract coord, temperature and visibility",
+                "3. Send the results to Slack.",
+                "3.1 Choose weathers for the Slack Channel."
+                "3.2 Message format: Austin coord: [coord] \n temperature: [temperature] \n visibility: [visibility]",
+            ]
+        )
+        self.load_single_query(query)
+
+        query = userQuery(
+            ID='33',
+            task="Whenever I trigger the Manual Trigger, execute the workflow, which get the current weather for Dubai and send it to Slack",
+            additional_information=[
+                "1. Use OpenWeatherMap to fetch current weather for Dubai",
+                "2. Extract temperature and wind",
+                "3. Send the results to Slack.",
+                "3.1 Choose weathers for the Slack Channel."
+                "3.2 Message format: Dubai temperature: [temperature] \n wind: [wind]",
+            ]
+        )
+        self.load_single_query(query)
+
     def load_single_query(self, userQuery):
         if userQuery.ID in self.queries:
             # overwrite the old query
