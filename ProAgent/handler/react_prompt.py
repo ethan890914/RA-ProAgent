@@ -372,6 +372,42 @@ Common error patterns:
 - "fileNotExportable" → Wrong file type or wrong download operation
 - "403 Forbidden" after query 404s → Likely query syntax issue, not credentials!
 
+**PostgreSQL-specific errors:**
+- "syntax error at or near" → AI returned markdown (```sql...```), clean the query first
+- "relation does not exist" → Table name mismatch in query, verify table name
+- "column does not exist" → Column name mismatch, check database schema
+- "ErrorRaisedHere" in postgres action → Check query is in BOTH input_data and params
+
+**Slack-specific errors:**
+- "ErrorRaisedHere" with no error details → Missing params["text"] field
+- Empty messages sent to Slack → params["text"] not using expression: "={{$json[\"text\"]}}"
+- Multiple Slack messages not sent → Check each item in input_data has {"json": {"text": "..."}}
+- "text is required" → Must add params["text"] = "={{$json[\"text\"]}}"
+
+**AI + Database + Messaging workflow errors:**
+1. Check AI output is cleaned (no markdown delimiters like ```sql)
+2. Check DB action has query in BOTH input_data AND params
+3. Check messaging action has text/message field in params with expression syntax
+4. Check input_data structure is correct for each action type
+
+**Recovery pattern for AI → PostgreSQL → Slack workflows:**
+```
+Step 1: AI generates query
+  - Check: ai_output[0]['json']['choices'][0]['text'] exists
+  - Clean: Remove ```sql and ``` markers
+  - Validate: Query starts with SELECT/INSERT/UPDATE/DELETE
+
+Step 2: PostgreSQL executes query
+  - Check: pg_input has [{"json": {"query": cleaned_query}}]
+  - Check: action params has {"query": query_from_input_data, "options": {}}
+  - Verify: Both input_data AND params have the query
+
+Step 3: Slack sends results
+  - Check: slack_input has [{"json": {"text": formatted_message}}]
+  - Check: action params has {"text": "={{$json[\"text\"]}}", "channelId": {...}, ...}
+  - Verify: params["text"] uses expression to extract from input_data
+```
+
 RULE: If you get the same error twice, STOP and reconsider your approach.
       The problem is likely in your understanding, not the implementation.
 
@@ -595,6 +631,98 @@ RULE: For httpRequest with API keys:
       2. Add header in headerParameters: `{"name": "X-Api-Key", "value": "={{$credentials.httpHeaderAuth.value}}"}`
       3. NEVER use `"authentication"` parameter (it's not supported)!
 
+🚨 CRITICAL: PostgreSQL Node Guidance 🚨
+
+When using postgres.database.executeQuery:
+
+1. **Query Parameter Requirements**:
+   - Query string MUST be in params["query"]
+   - Query string MUST also be accessible from input_data for validation
+   - Use this pattern:
+   ```python
+   # In mainWorkflow:
+   pg_input = [{"json": {"query": sql_query}}]  # Wrap query in input_data
+   pg_output = action_postgres(pg_input)
+
+   # In action function:
+   def action_postgres(input_data):
+       query = input_data[0]['json'].get('query', '')  # Extract from input_data
+       params = {"query": query, "options": {}}  # Put in params
+       function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
+       output_data = function.run(input_data=input_data, params=params)
+       return output_data
+   ```
+
+2. **Common PostgreSQL Errors**:
+   - "syntax error" → Check if query contains markdown (```sql...```)
+   - Always clean AI-generated queries before execution
+   - Strip markdown delimiters: `query.replace('```sql', '').replace('```', '').strip()`
+
+3. **PostgreSQL Output Format**:
+   - Results: Each item in output list represents a row
+   - Row data: `output[i]['json']` contains all column values
+   - Access columns: `row['json']['column_name']`
+   - Example: `row['json']['title']`, `row['json']['author']`
+
+RULE: PostgreSQL needs query in BOTH input_data AND params!
+      - input_data provides the query for ProAgent validation
+      - params["query"] provides the query for n8n execution
+
+🚨 CRITICAL: Slack Node Text Parameter Guidance 🚨
+
+When using slack.message.post with messageType="text":
+
+1. **Text Parameter is MANDATORY in params**:
+   ❌ WRONG - Missing text param:
+   ```python
+   params = {
+       "select": "channel",
+       "channelId": {"mode": "name", "value": "general"},
+       "messageType": "text"
+       # Missing "text" param!
+   }
+   slack_input = [{"json": {"text": "Hello"}}]  # This alone is NOT enough!
+   ```
+
+   ✅ CORRECT - Include text param with expression:
+   ```python
+   params = {
+       "select": "channel",
+       "channelId": {"mode": "name", "value": "general"},
+       "messageType": "text",
+       "text": "={{$json[\"text\"]}}"  # Extract from input_data
+   }
+   slack_input = [{"json": {"text": "Hello"}}]
+   ```
+
+2. **How Slack Text Works**:
+   - Build message text in mainWorkflow
+   - Wrap in input_data: `[{"json": {"text": "your message"}}]`
+   - Reference in params with expression: `"text": "={{$json[\"text\"]}}"`
+   - n8n extracts the text from each input_data item and sends separate messages
+
+3. **Sending Multiple Slack Messages**:
+   ```python
+   # In mainWorkflow:
+   slack_messages = []
+   for i, item in enumerate(results, 1):
+       message_text = f"{i}. Title: {item['title']}\nAuthor: {item['author']}"
+       slack_messages.append({"json": {"text": message_text}})
+
+   slack_output = action_slack(slack_messages)  # Sends N messages
+   ```
+
+4. **Common Slack Errors**:
+   - "ErrorRaisedHere" with no details → Missing "text" param in params
+   - Empty messages sent → Check params["text"] has correct expression syntax
+   - Multiple messages not sent → Ensure each item in list has {"json": {"text": "..."}}
+   - "text is required" → Add params["text"] = "={{$json[\"text\"]}}"
+
+RULE: For Slack text messages:
+      1. Build text in mainWorkflow
+      2. Wrap in input_data with "text" field
+      3. MUST add params["text"] = "={{$json[\"text\"]}}"
+
 PSEUDO_NODE_GUIDANCE:
 CRITICAL: Different parameter formats for different node types:
 
@@ -672,6 +800,70 @@ For aiCompletion output in workflows:
 1. The AI response is in choices[0]["text"]
 2. Access it: ai_output[0]["json"]["choices"][0]["text"]
 3. For Slack, extract text first in workflow
+
+⚠️ CRITICAL: Cleaning AI-Generated Content ⚠️
+
+When using aiCompletion output for structured tasks (SQL queries, code, API calls, etc.):
+
+1. **AI May Include Formatting**:
+   - AI often wraps code in markdown: ```sql SELECT * ... ``` or ```python ... ```
+   - AI may add explanations before/after the code
+   - AI may include line numbers, comments, or extra whitespace
+
+2. **Always Clean AI Output Before Use**:
+   ```python
+   # Get AI output
+   ai_text = ai_output[0]['json']['choices'][0]['text'].strip()
+
+   # Clean markdown code blocks (common for SQL, Python, etc.)
+   if ai_text.startswith('```'):
+       # Remove language identifier (e.g., ```sql, ```python, ```json)
+       if '\n' in ai_text:
+           # Multi-line code block
+           lines = ai_text.split('\n')
+           lines = lines[1:] if lines[0].startswith('```') else lines  # Remove first line
+           ai_text = '\n'.join(lines)
+       ai_text = ai_text.replace('```', '').strip()
+
+   # For SQL queries specifically:
+   if 'sql' in ai_text.lower()[:20]:  # Check if markdown was present
+       ai_text = ai_text.replace('```sql', '').replace('sql', '', 1).strip()
+   if ai_text.endswith('```'):
+       ai_text = ai_text[:-3].strip()
+   ```
+
+3. **Validation Before Use**:
+   - Check if cleaned text is not empty
+   - For SQL: verify it starts with SELECT/INSERT/UPDATE/DELETE/WITH
+   - For JSON: validate it's parseable with json.loads()
+   - Add error handling for unexpected formats
+
+4. **Common AI Output Issues**:
+   - SQL with markdown: ```sql\nSELECT * FROM table;\n```
+   - Extra explanations: "Here's the query:\nSELECT * FROM table"
+   - Comments in code: "-- This query selects all rows\nSELECT * FROM table"
+
+5. **Recommended Cleaning Pattern for SQL**:
+   ```python
+   sql_query = ai_output[0]['json']['choices'][0]['text'].strip()
+
+   # Remove markdown
+   if sql_query.startswith('```'):
+       sql_query = sql_query.split('\n', 1)[1] if '\n' in sql_query else sql_query[3:]
+   if sql_query.endswith('```'):
+       sql_query = sql_query.rsplit('```', 1)[0]
+
+   # Remove common prefixes
+   sql_query = sql_query.strip()
+
+   # Validate it's SQL
+   if not any(sql_query.upper().startswith(kw) for kw in ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'WITH']):
+       # Handle error or extract SQL from longer text
+       pass
+   ```
+
+RULE: NEVER pass AI output directly to execution nodes (postgres, httpRequest, etc.)
+      ALWAYS clean, validate, and extract the actual command/query first!
 
 ⚠️ CRITICAL: Build ai_input in WORKFLOW, not in action params! ⚠️
 
