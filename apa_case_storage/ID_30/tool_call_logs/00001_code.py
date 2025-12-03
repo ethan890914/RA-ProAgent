@@ -11,10 +11,10 @@ This function has been executed for 1 times. Last execution:
 """
 def trigger_0():
   """
-  comments: Trigger the workflow manually.
+  comments: Manual trigger to start the workflow on demand.
   TODOs: 
-    - Test trigger activation
-    - Integrate with mainWorkflow
+    - Test the manual trigger
+    - Ensure it activates the workflow correctly
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -73,15 +73,15 @@ This function has been executed for 0 times. Last execution:
 """
 def action_0(input_data: List[Dict] =  [{...}]):
   """
-  comments: Fetch 5 technology news headlines from the US using NewsAPI with proper query and headers.
+  comments: Fetch 5 business news headlines from the US using NewsAPI with proper query and header parameters.
   TODOs: 
-    - Test API response
-    - Parse news data
+    - Test the API call and response format
+    - Verify the fetched news count and content
   """
   params = { 'headerParameters': {'parameters': [{'name': 'X-Api-Key', 'value': '={{$credentials.httpHeaderAuth.value}}'}]},
              'method': 'GET',
              'options': {},
-             'queryParameters': { 'parameters': [ {'name': 'category', 'value': 'technology'},
+             'queryParameters': { 'parameters': [ {'name': 'category', 'value': 'business'},
                                                   {'name': 'country', 'value': 'us'},
                                                   {'name': 'pageSize', 'value': '5'}]},
              'sendBody': False,
@@ -127,15 +127,13 @@ This function has been executed for 0 times. Last execution:
 """
 def action_1(input_data: List[Dict] =  [{...}]):
   """
-  comments: Send messages to Slack channel #news with formatted text including index and news title.
+  comments: Send messages to Slack channel #news with formatted news headlines.
   TODOs: 
-    - Test Slack message delivery
-    - Verify message format
+    - Set channel to #news
+    - Format messages as '[i] [news]'
+    - Test Slack message sending
   """
-  params = { 'channelId': {'mode': 'name', 'value': 'news'},
-             'messageType': 'text',
-             'select': 'channel',
-             'text': '={{$json["index"] + 1}} {{$json["title"]}}'}
+  params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data

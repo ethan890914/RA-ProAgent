@@ -197,8 +197,11 @@ class n8nPythonNode():
                 tool_status = ToolCallStatus.UndefinedParam
                 return tool_status, json.dumps({"error": f"Undefined input parameter \"{key}\" for {self.get_name()}.Supported parameters: {list(new_params.keys())}", "result": "Nothing happened.", "status": tool_status.name})
             if type(param_json[key]) == str and (len(param_json[key]) == 0):
-                tool_status = ToolCallStatus.RequiredParamUnprovided
-                return tool_status, json.dumps({"error": f"input parameter is null, \"{key}\" for {self.get_name()}. You should put something in it.", "result": "Nothing happened.", "status": tool_status.name})
+                # Only reject empty strings for REQUIRED parameters
+                if new_params[key].required:
+                    tool_status = ToolCallStatus.RequiredParamUnprovided
+                    return tool_status, json.dumps({"error": f"Required parameter \"{key}\" for {self.get_name()} cannot be empty. Please provide a value.", "result": "Nothing happened.", "status": tool_status.name})
+                # For optional parameters, empty string is acceptable - continue to parse_value()
             parse_status, parse_output = new_params[key].parse_value(param_json[key])
             if parse_status != ToolCallStatus.ToolCallSuccess:
                 tool_status = parse_status

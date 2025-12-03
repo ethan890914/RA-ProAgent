@@ -11,9 +11,10 @@ This function has been executed for 1 times. Last execution:
 """
 def trigger_0():
   """
-  comments: Trigger the workflow manually by user action.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Test the manual trigger activation.
+    - Test trigger activation
+    - Integrate with mainWorkflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -72,10 +73,10 @@ This function has been executed for 0 times. Last execution:
 """
 def action_0(input_data: List[Dict] =  [{...}]):
   """
-  comments: Fetch 5 technology news headlines from the US using NewsAPI with correct query and headers.
+  comments: Fetch 5 technology news headlines from the US using NewsAPI with proper query and headers.
   TODOs: 
-    - Test fetching news data.
-    - Verify the response contains news articles.
+    - Test API response
+    - Parse news data
   """
   params = { 'headerParameters': {'parameters': [{'name': 'X-Api-Key', 'value': '={{$credentials.httpHeaderAuth.value}}'}]},
              'method': 'GET',
@@ -126,10 +127,11 @@ This function has been executed for 0 times. Last execution:
 """
 def action_1(input_data: List[Dict] =  [{...}]):
   """
-  comments: Send messages to Slack channel #news with formatted news headlines.
+  comments: Send messages to Slack channel #news.
   TODOs: 
-    - Format messages with index and news headline.
-    - Test sending messages to Slack.
+    - Set channel to #news
+    - Format message text
+    - Test Slack message delivery
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")

@@ -11,9 +11,10 @@ This function has been executed for 1 times. Last execution:
 """
 def trigger_0():
   """
-  comments: Trigger the workflow manually by user action.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Test the manual trigger activation.
+    - Test trigger activation
+    - Integrate with mainWorkflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -68,14 +69,14 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}}]
 
 3.Output:
-[{'json': {'status': 'ok', 'totalResults': 53, 'articles': [{'source': {'id': 'techcrunch', 'name': 'TechCrunch'}, 'author': 'Connie Loizos', 'title': 'Apple just named a new AI chief with Google and Microsoft expertise, as John Giannandrea steps down - TechCrunch', 'description': "His replacement is Amar Subramanya, a highly regarded Microsoft executive who spent 16 years at Google, most recently leading engineering for the Gemini Assistant. It's a savvy hire, given that Subramanya knows the competition intimately.", 'url': 'https://techcrunch.com/2025/12/01/apple-just-named-a-new-ai-chief-with-google-and-microsoft-expertise-as-john-giannandrea-steps-down/', 'urlToImage': 'https://techcrunch.com/wp-content/uploads/2017/09/tcdisrupt_sf17_johngiannadrea-3043.jpg?resize=1200,869', 'publishedAt': '2025-12-02T01:34:46Z', 'content': 'In a carefully worded announcement on Monday, Apple said John Giannandrea, who has been the company’s AI chief since 2018, is “stepping down” to, well, not work at Apple anymore. He’ll stick around t… [+3880 chars]'}, {'source': {'id': None, 'name': 'http://mp1st.com/category/news'}, 'author': 'Alex Co', 'title': 'PlayStation Store "End of Year" Sale Delivers Over 4,000 Discounted Items - MP1st', 'description': 'Sony has launched the PlayStation Store End of Year 2025 sale, bringing thousands of discounted items.', 'url': 'https://mp1st.com/news/playstation-store-end-of-year-sale-over-4000-discounted-items', 'urlToImage': 'https://mp1st.com/wp-content/uploads/2025/08/psn-store-full-size.jpg', 'publishedAt': '2025-12-02T00:55:44Z', 'content': 'While the Black Friday sale on the PlayStation Store ends today, Sony has already launched a new sale to take its place: the “End of Year” sale, which is a lot earlier than expected.\r\nThis sale house… [+305164 chars]'}, {'source': {'id': None, 'name': 'MacRumors'}, 'author': 'Juli Clover', 'title': 'When Will Apple Release iOS 26.2? - MacRumors', 'description': "We're getting closer to the launch of the final major iOS update of the year, with Apple set to release iOS 26.2 in December. We've had three...", 'url': 'https://www.macrumors.com/2025/12/01/ios-26-2-release-date/', 'urlToImage': 'https://images.macrumors.com/t/ifdDKhKqydTMZ-uYWr53vqHKk58=/2500x/article-new/2025/11/iOS-26.2-Whats-New-Feature.jpg', 'publishedAt': '2025-12-02T00:37:00Z', 'content': "We're getting closer to the launch of the final major iOS update of the year, with Apple set to release iOS 26.2 in December. We've had three betas so far and are expecting a fourth beta or a release… [+4390 chars]"}, {'source': {'id': 'ign', 'name': 'IGN'}, 'author': 'Wes Davis', 'title': 'Ayaneo Announces a Monster of a New Gaming Handheld - IGN', 'description': None, 'url': 'https://www.ign.com/articles/ayaneo-announces-a-monster-of-a-new-gaming-handheld', 'urlToImage': 'https://assets-prd.ignimgs.com/2025/12/01/ayaneo-next-ii-1764624275098.jpg?width=1280&format=jpg&auto=webp&quality=80', 'publishedAt': '2025-12-02T00:11:15Z', 'content': 'Over the holiday weekend, Ayaneo announced the Next II, a Windows-based handheld gaming PC. It looks beefy, full-featured and, from here, a whole lot like an overpowered, probably very expensive Stea… [+1665 chars]'}]}, 'pairedItem': {'item': 0}}]
+[{'json': {'status': 'ok', 'totalResults': 47, 'articles': [{'source': {'id': None, 'name': 'Pure Xbox'}, 'author': 'Ben Kerry', 'title': 'Rockstar Causes Confusion Over Red Dead Redemption Upgrade On Xbox - Pure Xbox', 'description': "It's not working properly right now", 'url': 'https://www.purexbox.com/news/2025/12/rockstar-causes-confusion-over-red-dead-redemption-upgrade-on-xbox', 'urlToImage': 'https://images.purexbox.com/88a568dafe9f8/large.jpg', 'publishedAt': '2025-12-02T11:00:00Z', 'content': "The new upgrade for Red Dead Redemption is out today on all platforms, and while the game is now live and playable on Xbox Series X|S, the upgrade path from the old Xbox 360 version isn't working for… [+2641 chars]"}, {'source': {'id': None, 'name': 'CarScoops'}, 'author': 'Thanos Pappas', 'title': 'Lexus Sports Car Will Be Unveiled Together With The GR GT - Carscoops', 'description': 'Toyota has teased three new sports cars, including the GR GT and what appears to be the production-ready Lexus Sport Concept', 'url': 'https://www.carscoops.com/2025/12/lexus-has-a-surprise-or-three-for-sports-car-fans/', 'urlToImage': 'https://www.carscoops.com/wp-content/uploads/2025/12/Toyota-and-Lexus-Sports-Models-2-copy.jpg', 'publishedAt': '2025-12-02T10:12:02Z', 'content': 'Toyota has teased three new sports cars, including the GR GT and what appears to be the production-ready Lexus Sport Concept \r\n<ul><li>Lexus will unveil the production Sport Concept during its Decemb… [+3328 chars]'}, {'source': {'id': None, 'name': 'Forbes'}, 'author': 'Zak Doffman', 'title': 'Google Starts Sharing All Your Text Messages With Your Employer - Forbes', 'description': "Warning: What happens on your Android, doesn’t stay on your Android — not if it's a work phone.", 'url': 'https://www.forbes.com/sites/zakdoffman/2025/12/02/google-starts-sharing-all-your-text-messages-with-your-employer/', 'urlToImage': 'https://imageio.forbes.com/specials-images/imageserve/973347862/0x0.jpg?format=jpg&crop=4535,2552,x1798,y1786,safe&height=900&width=1600&fit=bounds', 'publishedAt': '2025-12-02T09:01:23Z', 'content': 'Texts are no longer private.\r\nGetty\r\nUpdated on Dec. 2 with Googles response to the furor around this update.\r\nMicrosoft triggered a viral furor when it revealed a Teams update to tell your company w… [+3626 chars]'}, {'source': {'id': None, 'name': 'Android Authority'}, 'author': None, 'title': 'Updated Android Security Bulletin sets stage for a hefty December 2025 security patch - Android Authority', 'description': 'The Android Security Bulletin for December 2025 is live, listing dozens of new vulnerabilities impacting device with Android 13 and above.', 'url': 'https://www.androidauthority.com/december-2025-android-security-bulletin-3621152/', 'urlToImage': 'https://www.androidauthority.com/wp-content/uploads/2025/11/Android-16-QPR3-Beta-1-logo-on-a-Pixel-10_2.jpg', 'publishedAt': '2025-12-02T07:20:52Z', 'content': '<ul><li>Google has published the December 2025 Security Bulletin, revealing a long list of severe vulnerabilities in Android.</li><li>These issues are expected to be patched with device-specific secu… [+1828 chars]'}, {'source': {'id': 'mashable', 'name': 'Mashable'}, 'author': 'Haley Henschel', 'title': 'Best Cyber Monday 2025 deals at Best Buy: AirPods Max, Windows laptops, and more - Mashable', 'description': 'The Cyber Monday competition is really intense this year, but I scrounged up some gems at Best Buy.', 'url': 'https://mashable.com/article/best-cyber-monday-best-buy-deals-live-2025', 'urlToImage': 'https://helios-i.mashable.com/imagery/articles/0752T7R5LlZn69mCvlgmhvW/hero-image.fill.size_1200x675.v1764611296.png', 'publishedAt': '2025-12-02T05:10:58Z', 'content': None}]}, 'pairedItem': {'item': 0}}]
 """
 def action_0(input_data: List[Dict] =  [{...}]):
   """
-  comments: Fetch 5 technology news headlines from the US using NewsAPI with correct query and headers.
+  comments: Fetch 5 technology news headlines from the US using NewsAPI with proper query and headers.
   TODOs: 
-    - Test fetching news data.
-    - Verify the response contains news articles.
+    - Test API response
+    - Parse news data
   """
   params = { 'headerParameters': {'parameters': [{'name': 'X-Api-Key', 'value': '={{$credentials.httpHeaderAuth.value}}'}]},
              'method': 'GET',
@@ -119,22 +120,22 @@ def action_0(input_data: List[Dict] =  [{...}]):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'text': '[1] Apple just named a new AI chief with Google and Microsoft expertise, as John Giannandrea steps down - TechCrunch'}}, {'json': {'text': '[2] PlayStation Store "End of Year" Sale Delivers Over 4,000 Discounted Items - MP1st'}}]
+[{'json': {'index': 0, 'title': 'Rockstar Causes Confusion Over Red Dead Redemption Upgrade On Xbox - Pure Xbox'}}, {'json': {'index': 1, 'title': 'Lexus Sports Car Will Be Unveiled Together With The GR GT - Carscoops'}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764739587.072229', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '[1] Apple just named a new AI chief with Google and Microsoft expertise, as John Giannandrea steps down - TechCrunch', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'dwEZf', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[1] Apple just named a new AI chief with Google and Microsoft expertise, as John Giannandrea steps down - TechCrunch'}]}]}]}, 'message_timestamp': '1764739587.072229'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764739587.230409', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '[2] PlayStation Store "End of Year" Sale Delivers Over 4,000 Discounted Items - MP1st', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'MtuqM', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[2] PlayStation Store "End of Year" Sale Delivers Over 4,000 Discounted Items - MP1st'}]}]}]}, 'message_timestamp': '1764739587.230409'}, 'pairedItem': {'item': 1}}]
+[{'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764770695.640739', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '1 Rockstar Causes Confusion Over Red Dead Redemption Upgrade On Xbox - Pure Xbox', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'HCrr', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '1 Rockstar Causes Confusion Over Red Dead Redemption Upgrade On Xbox - Pure Xbox'}]}]}]}, 'message_timestamp': '1764770695.640739'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764770695.779229', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '2 Lexus Sports Car Will Be Unveiled Together With The GR GT - Carscoops', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Zlvz', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '2 Lexus Sports Car Will Be Unveiled Together With The GR GT - Carscoops'}]}]}]}, 'message_timestamp': '1764770695.779229'}, 'pairedItem': {'item': 1}}]
 """
 def action_1(input_data: List[Dict] =  [{...}]):
   """
-  comments: Send formatted news messages to Slack channel #news with correct channel identification and message text.
+  comments: Send messages to Slack channel #news with formatted text including index and news title.
   TODOs: 
-    - Test Slack message sending.
-    - Verify messages appear in #news channel.
+    - Test Slack message delivery
+    - Verify message format
   """
-  params = { 'channelId': {'mode': 'name', 'value': '#news'},
+  params = { 'channelId': {'mode': 'name', 'value': 'news'},
              'messageType': 'text',
              'select': 'channel',
-             'text': '={{$json["text"]}}'}
+             'text': '={{$json["index"] + 1}} {{$json["title"]}}'}
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -149,13 +150,14 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764739587.072229', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '[1] Apple just named a new AI chief with Google and Microsoft expertise, as John Giannandrea steps down - TechCrunch', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'dwEZf', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[1] Apple just named a new AI chief with Google and Microsoft expertise, as John Giannandrea steps down - TechCrunch'}]}]}]}, 'message_timestamp': '1764739587.072229'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764739587.230409', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '[2] PlayStation Store "End of Year" Sale Delivers Over 4,000 Discounted Items - MP1st', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'MtuqM', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[2] PlayStation Store "End of Year" Sale Delivers Over 4,000 Discounted Items - MP1st'}]}]}]}, 'message_timestamp': '1764739587.230409'}, 'pairedItem': {'item': 1}}]
+[{'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764770695.640739', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '1 Rockstar Causes Confusion Over Red Dead Redemption Upgrade On Xbox - Pure Xbox', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'HCrr', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '1 Rockstar Causes Confusion Over Red Dead Redemption Upgrade On Xbox - Pure Xbox'}]}]}]}, 'message_timestamp': '1764770695.640739'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C0A042T5ENT', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764770695.779229', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': '2 Lexus Sports Car Will Be Unveiled Together With The GR GT - Carscoops', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Zlvz', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '2 Lexus Sports Car Will Be Unveiled Together With The GR GT - Carscoops'}]}]}]}, 'message_timestamp': '1764770695.779229'}, 'pairedItem': {'item': 1}}]
 """
 def trigger_0():
   """
-  comments: Trigger the workflow manually by user action.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Test the manual trigger activation.
+    - Test trigger activation
+    - Integrate with mainWorkflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -163,12 +165,12 @@ def trigger_0():
   return output_data
 
 
-def action_0(input_data: [{...}]):
+def action_0(input_data: list):
   """
-  comments: Fetch 5 technology news headlines from the US using NewsAPI with correct query and headers.
+  comments: Fetch 5 technology news headlines from the US using NewsAPI with proper query and headers.
   TODOs: 
-    - Test fetching news data.
-    - Verify the response contains news articles.
+    - Test API response
+    - Parse news data
   """
   params = { 'headerParameters': {'parameters': [{'name': 'X-Api-Key', 'value': '={{$credentials.httpHeaderAuth.value}}'}]},
              'method': 'GET',
@@ -187,49 +189,49 @@ def action_0(input_data: [{...}]):
   return output_data
 
 
-def action_1(input_data: [{...}]):
+def action_1(input_data: list):
   """
-  comments: Send messages to Slack channel #news with formatted news headlines.
+  comments: Send messages to Slack channel #news with formatted text including index and news title.
   TODOs: 
-    - Format messages with index and news headline.
-    - Test sending messages to Slack.
+    - Test Slack message delivery
+    - Verify message format
   """
-  # We expect input_data to have json with 'text' field and send to channel #news
-  params = {
-      "select": "channel",
-      "channelId": {"mode": "name", "value": "news"},
-      "messageType": "text",
-      "text": "={{$json[\"text\"]}}"
-  }
+  params = { 'channelId': {'mode': 'name', 'value': 'news'},
+             'messageType': 'text',
+             'select': 'channel',
+             'text': '={{$json["index"] + 1}} {{$json["title"]}}'}
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
 
 
-def mainWorkflow(trigger_input: [{...}]):
+def mainWorkflow(trigger_input: list):
   """
-  comments: Workflow triggered manually, fetch 5 technology news from US, extract first 2, send to Slack #news channel formatted as '[i] [news]'.
+  comments: Workflow triggered manually, fetch 5 tech news from US, extract 2 news, send them to Slack #news channel with index.
   TODOs: 
-    - Test end to end workflow.
+    - Test end-to-end workflow
+    - Handle empty or missing news gracefully
   """
-  # Step 1: Fetch news
+  # Step 1: Trigger input is not used for data, just trigger
+
+  # Step 2: Fetch news
   news_output = action_0(trigger_input)
 
-  # Step 2: Extract articles
-  articles = []
-  if news_output and news_output[0].get("json") and news_output[0]["json"].get("articles"):
-    articles = news_output[0]["json"]["articles"]
+  # Step 3: Extract articles from news_output
+  if not news_output or not news_output[0].get('json'):
+    return []
+  articles = news_output[0]['json'].get('articles', [])
 
-  # Step 3: Extract first 2 news
-  first_two = articles[:2]
+  # Step 4: Extract first 2 news
+  extracted_news = articles[:2]
 
-  # Step 4: Prepare Slack input with formatted messages
+  # Step 5: Prepare Slack input data
   slack_input = []
-  for i, article in enumerate(first_two, start=1):
-    headline = article.get("title", "No Title")
-    slack_input.append({"json": {"text": f"[{i}] {headline}"}})
+  for i, article in enumerate(extracted_news):
+    title = article.get('title', 'No Title')
+    slack_input.append({"json": {"index": i, "title": title}})
 
-  # Step 5: Send to Slack
+  # Step 6: Send messages to Slack
   slack_output = action_1(slack_input)
 
   return slack_output
