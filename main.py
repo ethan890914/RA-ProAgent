@@ -16,6 +16,48 @@ from execute_from_tool_calls import run
 from ProAgent.router.utils import ENVIRONMENT
 from ProAgent.config import CONFIG
 
+from proagent_rag import *
+
+
+def retrieval_samples(cfg):
+    query_file = "queries_data.json"
+
+    with open(query_file) as f:
+        query_library = json.load(f)
+
+    # task = '''
+    # Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.
+    # '''
+
+    task = '''
+        Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and emails the result or send it to slack.'''
+
+    additions = [
+        "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+        "1.2 The sheetName of Google is: commercial",
+        "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+        "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+        "2.2 System prompt: 'You are a news classifier. Classify as 'to Business' or 'to Customer'.'",
+        "2.3 User prompt: Include the actual commercial entry's Description text",
+        "2.4 aiCompletion should process each of the commercial entry separately",
+        "3.1 Parse aiCompletion output to extract the category ('to Business' or 'to Customer')",
+        "3.2 If it's a 'to Business' commercial entry, then send it through slack.",
+        "3.3 If it's a 'to Customer' commercial entry, then send it through email.",
+        "4.1 slack format:",
+        "4.2 Send results to slack channel #general",
+        "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
+        "5.1 email format:",
+        "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+        "5.3 Each email abstract: Commercial Entry: [Description]",
+        "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
+    ]
+    query = include_all_info(task, additions)
+
+    rag = ProAgentRAG(query_library)
+    rag.build_index()
+    res = rag.retrieve_similar(query)
+
+    return '21'
 def run_refine_oneshot_mode(cfg, new_query_id, old_id):
     """
     Run ProAgent in refine_oneshot mode.
@@ -113,6 +155,11 @@ def main(cfg: omegaconf.DictConfig):
         return
     elif CONFIG.environment == ENVIRONMENT.Refine_oneshot:
         run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id='21')
+        return
+    elif CONFIG.environment == ENVIRONMENT.RARefine:
+        old_id = retrieval_samples(cfg)
+        CONFIG.environment = ENVIRONMENT.Refine_oneshot
+        run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id=old_id)
         return
 
     recorder = RunningRecoder() # default root directory: ./records
