@@ -55,25 +55,8 @@
                 }
             ],
             "default": "default"
-        },
-        {
-            "displayName": "messages",
-            "name": "messages",
-            "description": "Set system and user prompts here. An Example:{\"messages\": [{\"role\": \"system\",\"content\": \"Please say hello to user.\"}, {\"role\": \"user\",\"content\": \"Hello!\"}]}",
-            "type": "list",
-            "default": "",
-            "required": true,
-            "displayOptions": {
-                "show": {
-                    "resource": [
-                        "default"
-                    ],
-                    "operation": [
-                        "default"
-                    ]
-                }
-            }
         }
     ],
+    "properties_note": "⚠️ PSEUDO NODE: aiCompletion does NOT use params! It reads messages from input_data only. Build input_data in mainWorkflow as: [{\"json\": {\"messages\": [{\"role\": \"system\", \"content\": \"...\"}, {\"role\": \"user\", \"content\": \"...\"}]}}]",
     "pseudoNode": true
 }

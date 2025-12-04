@@ -1,0 +1,53 @@
+{
+  "thought": "To implement the workflow, I need to define the required trigger and actions first, including manual trigger, reading Google Sheets, and AI completion.",
+  "plan": [
+    "Define manual trigger function for starting the workflow.",
+    "Define Google Sheets read action to fetch business flow data.",
+    "Define AI completion action to classify business flow type."
+  ],
+  "criticism": "Without defining these functions first, I cannot implement the main workflow properly.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "This trigger starts the workflow manually when the user clicks the button.",
+        "TODO": [
+          "Test the manual trigger works correctly.",
+          "Use it as the main trigger for the workflow."
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "Read all rows from the specified Google Sheet to get business flow data.",
+        "TODO": [
+          "Set documentId and sheetName parameters.",
+          "Test reading data from the sheet."
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Use OpenAI to classify the business flow description as B2B or B2C.",
+        "TODO": [
+          "Build messages parameter with the prompt and description.",
+          "Test AI completion returns correct classification."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

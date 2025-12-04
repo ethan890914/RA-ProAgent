@@ -1,0 +1,102 @@
+"""Function param descriptions: 
+This function doesn't need params
+
+This function has been executed for 1 times. Last execution:
+1.Status: TriggerAcivatedSuccess
+2.Input: 
+[]
+
+3.Output:
+[{'json': {}}]
+"""
+def trigger_0():
+  """
+  comments: Manual trigger to start the workflow when user clicks the button.
+  TODOs: 
+    - Implement the trigger function with proper params.
+    - Test the trigger function.
+  """
+  params = {}
+  function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
+  output_data = function.run(input_data=None, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+0 params["sendTo"]: string = "", Required: To. The email addresses of the recipients. Multiple addresses can be separated by a comma. e.g. jay@getsby.com, jon@smith.com.(info@example.com)
+1 params["subject"]: string = "", Required: Subject(Hello World!)
+2 params["emailType"]: enum[string] = "text", Required: Email Type  You can't use expression.. Available values:
+  2.0 value=="text": Text
+  2.1 value=="html": HTML
+3 params["message"]: string = "", Required: Message
+4 params["options"]: dict = {}: Options(Add Option) . properties description:
+  ...hidden...
+
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
+2.Input: 
+[]
+
+3.Output:
+[]
+"""
+def action_0(input_data: List[Dict] =  [{...}]):
+  """
+  comments: Send an email via Gmail API to the specified recipient with given subject and content.
+  TODOs: 
+    - Implement the action with email parameters.
+    - Test sending email.
+    - Handle errors and refine.
+  """
+  params = {}  # to be Implemented
+  function = transparent_action(integration="gmail", resource="message", operation="send")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""
+
+This function has been executed for 1 times. Last execution:
+1.Status: ErrorRaisedHere
+2.Input: 
+[{'json': {}}]
+
+3.Output:
+[]
+"""
+
+def mainWorkflow(trigger_input: [{...}]):
+  """
+  comments: You need to give comments when implementing mainWorkflow
+  TODOs: 
+    - first define some actions
+    - define a trigger
+    - then implement this
+  """
+  print("Please call Workflow-implement first")
+  raise NotImplementedError
+
+
+
+
+"""
+
+The directly running result for now codes with print results are as following:
+
+
+Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
+[Output Data Info]
+the output data of function `trigger_0` is: `[{'json': {}}]`
+the output data of function `action_0` is: `[]`
+
+------------------------
+In Function: mainWorkflow
+      print("Please call Workflow-implement first")
+-->   raise NotImplementedError
+------------------------
+NotImplementedError: 
+
+You can also see the runnning result for all functions in there comments.
+"""

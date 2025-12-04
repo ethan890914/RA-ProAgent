@@ -1,0 +1,53 @@
+{
+  "thought": "To fulfill the user's request, I need to define the manual trigger to start the workflow, an aiCompletion action to generate a joke, and a Gmail action to send the email.",
+  "plan": [
+    "Define a trigger for manual trigger resource default operation default.",
+    "Define an aiCompletion action to generate a joke within 30 words.",
+    "Define a Gmail action to send an email with the joke."
+  ],
+  "criticism": "The plan is straightforward but depends on correct parameter setting and data handling between nodes.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Trigger the workflow manually by user click.",
+        "TODO": [
+          "Test the manual trigger works correctly.",
+          "Ensure the output format is compatible with the workflow."
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Generate a joke within 30 words using AI completion.",
+        "TODO": [
+          "Set prompt to generate joke within 30 words.",
+          "Test the AI completion returns expected joke text."
+        ]
+      },
+      {
+        "integration_name": "gmail",
+        "resource_name": "message",
+        "operation_name": "send",
+        "comments": "Send the generated joke to the specified email address.",
+        "TODO": [
+          "Set email recipient, subject, and content dynamically.",
+          "Test email sending with joke content."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: aiCompletion->default->default",
+      "function_2 defined SUCCESS: gmail->message->send"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

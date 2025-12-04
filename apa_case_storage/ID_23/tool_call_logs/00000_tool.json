@@ -1,0 +1,89 @@
+{
+  "thought": "To fulfill the user's request, we need to define the necessary functions first: a manual trigger, reading Google Sheets data, two aiCompletion actions for classification and reminder generation, Slack message sending, and Gmail email sending.",
+  "plan": [
+    "Define manual trigger function for starting the workflow.",
+    "Define Google Sheets read function to get commercial entries.",
+    "Define first aiCompletion action for classification of Description.",
+    "Define Slack message post action to send classification results.",
+    "Define second aiCompletion action for reminder email content generation.",
+    "Define Gmail send message action to send reminder emails."
+  ],
+  "criticism": "The main challenge is to correctly handle data flow between steps, especially parsing AI outputs and filtering 'to Customer' entries for email sending.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Trigger the workflow manually by user click.",
+        "TODO": [
+          "Test trigger activation.",
+          "Ensure output format matches workflow input."
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "Read commercial entries from Google Sheets.",
+        "TODO": [
+          "Set documentId and sheetName parameters.",
+          "Test reading and output schema."
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Classify each Description as 'to Business' or 'to Customer'.",
+        "TODO": [
+          "Build input messages in workflow.",
+          "Parse classification output."
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send each commercial entry's classification result to Slack channel #general.",
+        "TODO": [
+          "Format message text correctly.",
+          "Test Slack message sending."
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Generate reminder email content for 'to Customer' entries.",
+        "TODO": [
+          "Build input messages in workflow.",
+          "Parse reminder content output."
+        ]
+      },
+      {
+        "integration_name": "gmail",
+        "resource_name": "message",
+        "operation_name": "send",
+        "comments": "Send reminder emails to specified email address.",
+        "TODO": [
+          "Format email subject and body.",
+          "Test email sending."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default",
+      "function_3 defined SUCCESS: slack->message->post",
+      "function_4 defined SUCCESS: aiCompletion->default->default",
+      "function_5 defined SUCCESS: gmail->message->send"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

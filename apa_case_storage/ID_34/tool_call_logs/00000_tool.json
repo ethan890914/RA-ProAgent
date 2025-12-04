@@ -1,0 +1,55 @@
+{
+  "thought": "To fulfill the user query, I need to define a manual trigger, a postgres action to execute the SQL query, and a slack action to send the message to the #general channel.",
+  "plan": [
+    "Define a manual trigger function to start the workflow.",
+    "Define a postgres action to execute the SQL query: SELECT * FROM bloomberg_articles LIMIT 1;",
+    "Define a slack action to send a text message to channel #general.",
+    "Implement the mainWorkflow to connect these functions."
+  ],
+  "criticism": "The plan is straightforward but the main challenge is to properly format the postgres query result and send it as a Slack message in the required format.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Manual trigger to start the workflow on demand.",
+        "TODO": [
+          "Test the trigger works.",
+          "Ensure the output format matches expected input for next action."
+        ]
+      },
+      {
+        "integration_name": "postgres",
+        "resource_name": "database",
+        "operation_name": "executeQuery",
+        "comments": "Execute the SQL query to get the top 1 row from bloomberg_articles table.",
+        "TODO": [
+          "Configure the query parameter properly.",
+          "Test the query execution and output."
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send the formatted query result to Slack channel #general.",
+        "TODO": [
+          "Set the channel to #general.",
+          "Format the message text properly.",
+          "Test sending message to Slack."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: postgres->database->executeQuery",
+      "function_2 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

@@ -11,6 +11,8 @@ from dataclasses import dataclass, field
 class LLMStatusCode(Enum):
     SUCCESS = 0
     ERROR = 1
+    AUTH_ERROR = 2
+    API_FAILURE = 3
 
 @unique
 class NodeType(Enum):
@@ -120,6 +122,7 @@ class Action():
 
 @dataclass
 class userQuery():
+    ID: str
     task: str
     additional_information: List[str] = field(default_factory= lambda : [])
     refine_prompt: str = field(default_factory= lambda : "")

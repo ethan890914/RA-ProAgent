@@ -1,0 +1,52 @@
+{
+  "thought": "首先定义一个手动触发器，一个读取Google Sheets的动作和一个调用AI完成的动作，构建基础工作流节点。",
+  "plan": [
+    "定义一个手动触发触发器，作为工作流入口。",
+    "定义一个Google Sheets读取动作，读取指定文档和工作表的数据。",
+    "定义一个aiCompletion动作，用于根据业务描述判断业务流类型。"
+  ],
+  "criticism": "当前没有定义任何函数，无法实现工作流，需要先定义函数。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "定义手动触发器，用户点击按钮触发工作流",
+        "TODO": [
+          "测试触发器是否正常触发"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "读取指定Google Sheets文档和工作表的所有行数据",
+        "TODO": [
+          "根据文档ID和工作表名配置参数",
+          "测试读取数据是否正确"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "调用AI完成，用于判断业务流类型（to B还是to C）",
+        "TODO": [
+          "构造AI输入消息",
+          "测试AI响应是否符合预期"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

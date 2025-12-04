@@ -2,261 +2,284 @@ import subprocess
 import tempfile
 import json
 import traceback
-from typing import Optional
+import os
+import re
 import uuid
-
 from termcolor import colored
+from typing import Optional, Dict, Any
 
 from ProAgent.n8n_tester.credential_loader import credentials
-from ProAgent.n8n_parser.node import n8nPythonNode, n8nNodeMeta
+from ProAgent.n8n_parser.node import n8nPythonNode
 from ProAgent.n8n_tester.pseudo_node.run_pseudo_node import run_pseudo_workflow
-from ProAgent.utils import NodeType
 from ProAgent.n8n_tester.prompts import success_prompt, error_prompt
 
-class n8nRunningException(Exception):
-    """封装报错类型，可以重载自己定义的错误类型，只需要说出来 error-message 比如：
-    1.mainWorkflow只能由trigger调用
-    2.所有action node的输入都是[{}]格式的
-    """
 
-    def __init__(self, message ):
+class n8nRunningException(Exception):
+    def __init__(self, message):
         super().__init__(message)
         self.code_stack = []
-        self.error_message = ""
-
+        self.error_message = message
 
     def add_context_stack(self, code_context):
-        """
-        Adds a code context to the code stack.
-
-        Parameters:
-            code_context (any): The code context to be added to the stack.
-
-        Returns:
-            None
-        """
         self.code_stack.append(code_context)
-        pass
+
 
 class anonymous_class():
-    def __init__(self, node: n8nPythonNode,*args, **kwargs):
+    def __init__(self, node: n8nPythonNode, *args, **kwargs):
         self.node = node
 
     def run(self, input_data, params):
-        """
-        Run the function with the given input data and parameters.
-
-        Args:
-            input_data (any): The input data for the function.
-            params (dict): The parameters for the function.
-
-        Returns:
-            any: The output data from the function.
-
-        Raises:
-            n8nRunningException: If there is an error while running the function.
-        """
-
         output_data, error = run_node(node=self.node, input_data=input_data)
-        if error != "":
-            my_error = n8nRunningException(error)
-            raise my_error
-        else:
-            return output_data
+        if error:
+            raise n8nRunningException(error)
+        return output_data
+
 
 def _get_constant_workflow(input_data):
-    """
-    Generates a constant workflow based on the provided input data.
-    
-    Parameters:
-        input_data (Any): The input data to be used in the workflow.
-        
-    Returns:
-        Dict: The generated workflow.
-    """
-    # node trigger
-    node_trigger_id = str(uuid.uuid4())
-    node_trigger = {
-        "id": node_trigger_id,
-        "name": "Execute Workflow Trigger",
-        "type": "n8n-nodes-base.executeWorkflowTrigger",
+    """Generates a workflow with Start -> Code (Inject Data) -> Target Node"""
+    node_start_name = "Start"
+    node_code_name = "Code_Inject_Data"
+    node_target_name = "Target_Node"
+
+    # 1. Start Node (Required for full workflow execution)
+    node_start = {
+        "id": str(uuid.uuid4()),
+        "name": node_start_name,
+        "type": "n8n-nodes-base.start",
         "typeVersion": 1,
         "position": [0, 0],
         "parameters": {}
     }
-    node_trigger_name = str(node_trigger["name"])
-    # node code
-    node_code_id = str(uuid.uuid4())
-    node_code_jsCode = f"return {json.dumps(input_data)}"
+
+    # 2. Code Node to inject input data
+    js_code = f"return {json.dumps(input_data)};"
     node_code = {
-        "id": node_code_id,
-        "name": "Code",
+        "id": str(uuid.uuid4()),
+        "name": node_code_name,
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
-        "position": [180, 0],
-        "parameters": {
-            "jsCode": node_code_jsCode
-        }
+        "position": [200, 0],
+        "parameters": {"jsCode": js_code}
     }
-    node_code_name = str(node_code["name"])
 
-    node_var = {
+    # 3. Target Node Placeholder (Details filled in run_node)
+    node_target = {
         "id": str(uuid.uuid4()),
-        "name": "node_var",
-        "position": [360, 0],
+        "name": node_target_name,
+        "position": [400, 0]
     }
 
-    workflow_connection = dict({
-        node_trigger_name: {
-            "main": [
-                [
-                    {
-                        "node": node_code_name,
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        node_code_name: {
-            "main": [
-                [
-                    {
-                        "node": node_var["name"],
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        }
-    })
-    
-    workflow_nodes = [node_trigger,node_code, node_var]
-
-    workflow_versionId = str(uuid.uuid4())
-    workflow_name = "Simple Workflow"
     workflow = {
-        # "id": workflow_id,
-        "versionId": workflow_versionId,
-        "name": workflow_name,
-        "nodes": workflow_nodes,
-        "connections": workflow_connection,
-        "active": False,
-        "settings": {
-            "executionOrder": "v1"
+        "name": f"AutoRun_{uuid.uuid4().hex[:8]}",
+        "nodes": [node_start, node_code, node_target],
+        "connections": {
+            node_start_name: {
+                "main": [[{"node": node_code_name, "type": "main", "index": 0}]]
+            },
+            node_code_name: {
+                "main": [[{"node": node_target_name, "type": "main", "index": 0}]]
+            }
         },
+        "active": False,
+        "settings": {"executionOrder": "v1"},
         "tags": []
     }
-
     return workflow
 
-def run_node(node: n8nPythonNode, input_data: list[dict] = [{}]) -> tuple[str, str]:
-    """Execute a specified node.
 
-    Args:
-        workflow_id (Optional[str], optional): ID of the workflow in which the node is located. The workflow ID must be in your n8n workflow database. You could create a workflow and pick that id. If not provided, the default workflow will be used. Defaults to None.
-        node (Optional[dict], optional): n8n node json dictionary. If not provided, the default slack send message node will be used. Defaults to None.
-        input_data (list[dict], optional): Input data for the node. Defaults to [{}].
+def parse_n8n_output(output_str, target_node_name):
+    """Parses the JSON output from n8n execution to find the target node's data."""
+    try:
+        # Find the JSON object in the stdout (n8n returns objects, not arrays)
+        start_idx = output_str.find('{')
+        end_idx = output_str.rfind('}') + 1
+        if start_idx == -1 or end_idx == 0:
+            return []
 
-    Returns:
-        tuple[str, str]: A tuple containing two strings. The first string represents the status of the node execution (e.g., "success", "failure"), and the second string provides additional information or error messages related to the execution.
-    """
-    # problem: execute parallelly
-    constant_workflow = _get_constant_workflow(input_data=input_data)
+        json_str = output_str[start_idx:end_idx]
+        execution_data = json.loads(json_str)
+        
+        # Navigate the n8n response structure: data.resultData.runData[target_node_name]
+        run_data = execution_data.get("data", {}).get("resultData", {}).get("runData", {})
+        target_node_data = run_data.get(target_node_name, [])
+        
+        if target_node_data and len(target_node_data) > 0:
+            # Get the successful execution data
+            latest_execution = target_node_data[-1]  # Use the latest execution
+            if latest_execution.get("executionStatus") == "success":
+                # Return the list of items from the first output of 'main'
+                return latest_execution.get("data", {}).get("main", [[]])[0]
+                
+    except Exception as e:
+        print(colored(f"Error parsing n8n output: {e}", "yellow"))
+        print(colored(f"Raw output: {output_str[:500]}...", "yellow"))  # Show first 500 chars for debugging
+    return []
 
-    constant_workflow["id"] = credentials.get_workflow_id()
-    node_var = constant_workflow["nodes"][-1]
+
+def get_workflow_id_by_name(target_name, env_vars):
+    """Fallback lookup if ID isn't in import output"""
+    try:
+        cmd = ["n8n", "export:workflow", "--all"]
+        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env_vars)
+        workflows = json.loads(res.stdout)
+        for wf in workflows:
+            if wf.get("name") == target_name:
+                return wf.get("id")
+    except:
+        pass
+    return None
+
+
+def run_node(node: n8nPythonNode, input_data: list[dict] = [{}]) -> tuple[Any, str]:
+    # 1. Prepare input data
+    if not input_data:
+        input_data = [{}]  # Ensure at least one item exists for flow
+
+    # 2. Create Workflow
+    workflow_json = _get_constant_workflow(input_data)
+    node_var = workflow_json["nodes"][-1]  # The target node is the last one
+
+    # 3. Configure Target Node (Credentials & Parameters)
     node_var["type"] = "n8n-nodes-base." + node.node_meta.integration_name
 
-    if credentials.query(node.node_meta.integration_name) != None:
-        credential_item = credentials.query(node.node_meta.integration_name)
+    # Inject Credentials
+    cred_item = credentials.query(node.node_meta.integration_name)
+    if cred_item:
         node_var["credentials"] = {
-            credential_item["type"]: {
-                "id": credential_item["id"],
-                "name": credential_item["name"],
+            cred_item["type"]: {
+                "id": cred_item["id"],
+                "name": cred_item["name"],
             }
         }
 
+    # Initialize parameters with base structure
     param_json = {}
-    for key, value in node.params.items():
-        param = value.to_json()
-        if param != None:
-            param_json[key] = param
     
-    if 'json' in input_data[0].keys():
-        node_var['parameters'] = input_data[0]['json']
-        node_var["parameters"].update(param_json)
-    else:
-        node_var["parameters"] = param_json
+    # Set standard operation and resource first
+    param_json["operation"] = node.node_meta.operation_name
+    param_json["resource"] = node.node_meta.resource_name
 
-
-    node_var["parameters"]["operation"] = node.node_meta.operation_name
-    node_var["parameters"]["resource"] = node.node_meta.resource_name
-
-    if node.node_meta.integration_name == 'slack':
-        node_var["parameters"]["authentication"] = "oAuth2"
-        
+    # Add integration-specific authentication and type version
     if node.node_meta.integration_name == 'googleSheets':
-        node_var["parameters"]["operation"] = node.node_meta.operation_name
         node_var["typeVersion"] = 4
-        node_var["parameters"]["columns"] = {
-                    "mappingMode": "autoMapInputData",
-                    "value": {},
-                    "matchingColumns": [
-                      "id"
-                    ]
-                }
+        param_json["authentication"] = "oAuth2"
+    elif node.node_meta.integration_name == 'slack':
+        param_json["authentication"] = "accessToken"
+    elif node.node_meta.integration_name == 'httpRequest':
+        # For httpRequest with credentials, set authentication to use the credential type
+        if cred_item:
+            param_json["authentication"] = "genericCredentialType"
+            param_json["genericAuthType"] = cred_item["type"]
 
+    # Process custom parameters with proper type handling
+    for key, value in node.params.items():
+        p_val = value.to_json()
+        if p_val is not None:
+            # Special handling for Google Sheets parameters
+            if node.node_meta.integration_name == 'googleSheets':
+                if key == "sheetName" and isinstance(p_val, dict) and p_val.get("mode") == "id":
+                    # Fix: Google Sheets V4 expects "name" mode for sheet names, not "id"
+                    param_json[key] = {"mode": "name", "value": p_val["value"]}
+                elif key == "documentId":
+                    # Ensure documentId is properly formatted
+                    if isinstance(p_val, dict):
+                        param_json[key] = p_val
+                    else:
+                        param_json[key] = {"mode": "id", "value": str(p_val)}
+                else:
+                    param_json[key] = p_val
+            # Special handling for Slack parameters  
+            elif node.node_meta.integration_name == 'slack':
+                # Ensure Slack parameters are properly formatted
+                if key == "channelId" and isinstance(p_val, dict) and p_val.get("mode") == "id":
+                    param_json[key] = {"mode": "name", "value": p_val["value"]}
+                else:
+                    param_json[key] = p_val
+            else:
+                param_json[key] = p_val
 
-    # handle workflow
+    # Set final parameters
+    node_var["parameters"] = param_json
+
+    # 4. Handle Pseudo Nodes (No Change)
     if 'pseudoNode' in node.node_json.keys() and node.node_json['pseudoNode']:
         try:
-            # import pdb; pdb.set_trace()
-            output = run_pseudo_workflow(input_data, constant_workflow)
-            error= ""
+            output = run_pseudo_workflow(input_data, workflow_json)
+            return output, ""
         except BaseException as e:
             traceback.print_exc()
-            print(e)
-            raise e
+            return [], str(e)
+
+    # Add debugging output
+    print(colored(f"### WORKFLOW DEBUG ({node.node_meta.integration_name}) ###", "yellow"))
+    print(f"Target Node: {node_var['name']}")
+    print(f"Node Type: {node_var['type']}")
+    print(f"Parameters: {json.dumps(node_var.get('parameters', {}), indent=2)}")
+    if cred_item:
+        print(f"Using credential: {cred_item['name']} (type: {cred_item['type']})")
     else:
-        temp_file = tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json")
-        json.dump(constant_workflow, temp_file)
-        temp_file.close()
-        temp_file_path = temp_file.name
-        # import pdb; pdb.set_trace()
-        result = subprocess.run(["n8n", "execute", "--file", temp_file_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
-        # Get the standard output
-        output = result.stdout.decode('utf-8')
-        error = result.stderr.decode('utf-8')
+        print(colored("WARNING: No credentials found!", "red"))
 
-    print(colored("###OUTPUT###", color="green"))
-    print(colored(output, color="green"))
+    # 5. Real Execution (The Fix)
+    temp_file = tempfile.NamedTemporaryFile(delete=False, mode="w", suffix=".json")
+    json.dump(workflow_json, temp_file)
+    temp_file.close()
+    temp_path = temp_file.name
 
-    print(colored("###ERROR###", color="red"))
-    print(colored(error, color="red"))
+    my_env = os.environ.copy()
+    my_env["N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS"] = "true"
 
-    output_data = ""
+    imported_id = None
+    output_data = []
     error = ""
 
-    # check input data
-    if input_data == None or len(input_data) == 0:
-        warning_prompt = "WARNING: There is nothing in input_data. This may cause the failure of current node execution.\n"
-        print(colored(warning_prompt, color='yellow'))
-        output_data += warning_prompt
+    try:
+        # A. Import
+        import_cmd = ["n8n", "import:workflow", "--input", temp_path]
+        imp_res = subprocess.run(import_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=my_env)
 
-    if success_prompt in output:
-        output_data = output.split(success_prompt)[-1]
-    else:
-        assert error_prompt in output_data
-        outputs = output.split(error_prompt)
-        assert len(outputs) == 2
-        output_data = outputs[0]
-        error = outputs[1].strip()
+        if imp_res.returncode != 0:
+            error = f"Import Failed: {imp_res.stderr}"
+        else:
+            # B. Get ID
+            match = re.search(r'\(ID: ([a-zA-Z0-9\-]+)\)', imp_res.stdout + imp_res.stderr)
+            if match:
+                imported_id = match.group(1)
+            else:
+                imported_id = get_workflow_id_by_name(workflow_json["name"], my_env)
 
-    if output_data != "":
-        output_data = json.loads(output_data)
-        output_data = output_data["data"]["resultData"]["runData"]["node_var"][0]["data"]["main"][0]
-    else:
-        output_data = []
+            if not imported_id:
+                error = "Could not find workflow ID after import."
+            else:
+                # C. Execute
+                exec_cmd = ["n8n", "execute", "--id", imported_id]
+                # print(f"Executing Node: {node.node_meta.integration_name} (ID: {imported_id})")
+                exec_res = subprocess.run(exec_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                                          env=my_env)
+
+                print(colored(f"### N8N STDOUT ({node.node_meta.integration_name}) ###", "green"))
+                print(colored(exec_res.stdout, "green"))
+
+                if exec_res.returncode != 0:
+                    error = f"Execution Failed: {exec_res.stderr}\nOutput: {exec_res.stdout}"
+                    print(colored(f"### N8N ERROR ###\n{error}", "red"))
+                else:
+                    # D. Extract Data for Target Node
+                    target_name = node_var["name"]  # "Target_Node"
+                    extracted = parse_n8n_output(exec_res.stdout, target_name)
+
+                    # Normalize output to match what ProAgent expects (list of dicts with 'json' key)
+                    # n8n extraction usually returns [{'json': {...}}, ...] which is correct.
+                    output_data = extracted
+
+    except Exception as e:
+        error = str(e)
+        traceback.print_exc()
+    finally:
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
+        if imported_id:
+            subprocess.run(["n8n", "delete:workflow", "--id", imported_id], stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL, env=my_env)
 
     return output_data, error

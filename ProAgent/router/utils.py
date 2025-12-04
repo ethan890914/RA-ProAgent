@@ -13,4 +13,5 @@ class ENVIRONMENT(Enum):
     Development = auto() # ok
     Refine = auto() # ok
     Production = auto() # ok
+    Production_quick = auto()
 

@@ -1,6 +1,3 @@
-
-
-
 run:
   max_chain_length: 100
   slide_window_size: 5
@@ -19,7 +16,11 @@ parser:
     "googleSheets.sheet.read",
     "mongoDb.default.find",
     "gmail.message.send",
-    "aiCompletion.default.default"
+    "aiCompletion.default.default",
+    "googleDrive",
+    "httpRequest",  # For NewsAPI and other HTTP-based integrations
+    "openWeatherMap",  # OpenWeatherMap integration
+    "postgres"  # PostgreSQL integration
   ]
 
 

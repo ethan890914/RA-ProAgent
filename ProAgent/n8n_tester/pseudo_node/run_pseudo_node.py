@@ -9,7 +9,7 @@ from ProAgent.n8n_tester.pseudo_node.utils import fill_return_data, replace_exp
 
 agent = OpenAIFunction()
 
-def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) -> str:
+def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) -> list:
     """
     Run a pseudo workflow using the provided input data and constant workflow.
 
@@ -18,19 +18,33 @@ def run_pseudo_workflow(input_data: list, constant_workflow: n8nPythonWorkflow) 
         constant_workflow (n8nPythonWorkflow): The constant workflow to be used.
 
     Returns:
-        str: The final return data of the pseudo workflow.
+        list: The final return data as a Python list.
     """
     # import pdb; pdb.set_trace()
     node_var:n8nPythonNode = constant_workflow['nodes'][-1]
     params_raw = node_var['parameters']
 
-    # params_list = replace_exp(input_data, params_raw)
-    params_list = [params_raw]
-
     if node_var['type'].split('.')[-1] == 'aiCompletion':
-        return_list = run_ai_completion(params_list)
+        # For aiCompletion, we need to merge params into input_data
+        # If input_data is empty, use params to build it
+        if not input_data or len(input_data) == 0:
+            # Single-item case: params contains messages as JSON string
+            # Build input_data from params
+            messages = params_raw.get('messages', '')
+            if isinstance(messages, str) and messages:
+                # Parse JSON string to list/dict
+                try:
+                    messages_json = json.loads(messages)
+                except:
+                    messages_json = messages
+                input_data = [{"json": {"messages": messages_json}}]
+            else:
+                # messages is already a list/dict
+                input_data = [{"json": {"messages": messages}}]
+
+        return_list = run_ai_completion(input_data)
     else:
         return_list = []
-    final_return_data = fill_return_data(return_list)
 
-    return final_return_data
+    # Return the list directly, not as a formatted string
+    return return_list

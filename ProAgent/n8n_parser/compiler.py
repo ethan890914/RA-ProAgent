@@ -234,12 +234,12 @@ class Compiler():
             tool_name=tool_name,
         )
         for react_key in ["thought","plan","criticism"]:
-            if react_key in tool_input.keys():
+            if react_key in tool_input.keys(): # if these three keys are in the LLM's output
                 action.__setattr__(react_key, tool_input[react_key])
                 tool_input.pop(react_key)
 
         action.tool_input = tool_input
-        print_action_base(action)
+        print_action_base(action) # content, thought, plan, and criticism
 
 
 
@@ -252,6 +252,7 @@ class Compiler():
         elif tool_name == "workflow_implment":
             tool_status_code, tool_output = self.handle_workflow_implement(tool_input=tool_input)
         elif tool_name == "ask_user_help":
+            print('ask_user_help')
             tool_status_code, tool_output = self.ask_user_help(tool_input=tool_input)
         elif tool_name == "task_submit":
             tool_status_code, tool_output = self.task_submit(tool_input=tool_input)
@@ -262,7 +263,7 @@ class Compiler():
         action.tool_output = tool_output
         action.tool_output_status = tool_status_code
 
-        print_action_tool(action)
+        print_action_tool(action) # Tool, Tool Input, Tool Output, and Tool Call Status
 
         if CONFIG.environment == ENVIRONMENT.Production:
             if self.recorder.is_final_cache():
@@ -270,7 +271,8 @@ class Compiler():
             pass
         else:
             if tool_status_code == ToolCallStatus.ToolCallSuccess:
-                self.update_runtime()
+                self.update_runtime() # run the generated code here!!
+
 
         self.recorder.regist_tool_call(
             action=action,
@@ -296,6 +298,13 @@ class Compiler():
         Raises:
             None
         """
+        # "required": ["thought", "plan", "criticism", "workflow_name", "code"],
+        if "workflow_name" not in tool_input or "code" not in tool_input:
+            output_status = ToolCallStatus.RequiredParamUnprovided
+            return output_status, json.dumps(
+                {"ERROR": "Function call error: missing 'workflow_name' or 'code'. \n\nCorrect format:\n{\n  \"thought\": \"...\"\,\n \"plan\": \"...\"\,\n \"criticism\": \"...\"\,\n \"workflow_name\": \"{...}\"\,\n  \"code\": \"{...}\" \n}",
+                 "result": "Nothing happened.", "status": output_status.name})
+
         workflow_name = tool_input["workflow_name"]
         implement_code = tool_input["code"]
 
@@ -363,6 +372,23 @@ class Compiler():
                    - The ToolCallStatus indicates the status of the tool call.
                    - The string contains the output of the tool call.
         """
+        # required: "thought", "plan", "criticism", "function_name", "params", "comments", "TODO"
+        if "function_name" not in tool_input:
+            output_status = ToolCallStatus.RequiredParamUnprovided
+            return output_status, json.dumps(
+                {"ERROR": """❌ FUNCTION CALL ERROR ❌
+
+Your previous function_rewrite_params call FAILED because you didn't provide 'function_name'.
+
+REQUIRED parameters you MUST include:
+- function_name: "action_0" or "action_1" 
+- params: "{...complete JSON...}"
+- comments: "Description of what this does"
+- TODO: ["List of next steps"]
+
+Please call function_rewrite_params again with ALL required parameters.""",
+                 "result": "Nothing happened.", "status": output_status.name})
+
         function_name = tool_input["function_name"]
         available_names = [node.get_name() for node in self.nodes]
         if function_name not in available_names:
@@ -404,6 +430,7 @@ class Compiler():
         assert "functions" in tool_input.keys()
         tool_call_status = []
         tool_call_result = []
+        # "required": ["integration_name", "resource_name", "operation_name", "comments", "TODO"]
         for k, transparent_function in enumerate(tool_input["functions"]):
             integration_name = transparent_function["integration_name"]
             resource_name = transparent_function["resource_name"]
@@ -499,6 +526,6 @@ class Compiler():
             "status": final_status.name,
         }
 
-        self.recorder.save_markdown(tool_input['result'])
+        self.recorder.save_markdown(tool_call_result['result'])
 
         return final_status, json.dumps(tool_call_result)

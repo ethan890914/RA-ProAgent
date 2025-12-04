@@ -1,0 +1,77 @@
+{
+  "thought": "To build the workflow, I need to define the necessary functions first: a manual trigger, a Google Sheets read action, an AI completion action for classification, a Slack message send action, and a Gmail send action.",
+  "plan": [
+    "Define a manual trigger to start the workflow",
+    "Define a Google Sheets read action to read commercial entries",
+    "Define an AI completion action to classify each Description",
+    "Define a Slack message send action to send 'to Business' entries",
+    "Define a Gmail send action to send 'to Customer' entries"
+  ],
+  "criticism": "The main challenge is to correctly handle the data flow between Google Sheets, AI completion, Slack, and Gmail with proper parsing and filtering.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "This trigger starts the workflow manually when user clicks the button.",
+        "TODO": [
+          "Test the manual trigger",
+          "Use it as the main workflow trigger"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "Read all rows from the specified Google Sheet with documentId and sheetName.",
+        "TODO": [
+          "Set documentId and sheetName",
+          "Test reading data from Google Sheets"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Use AI to classify each commercial entry Description as 'to Business' or 'to Customer'.",
+        "TODO": [
+          "Build messages array for each Description",
+          "Test AI classification"
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send classified 'to Business' commercial entries to Slack channel #general.",
+        "TODO": [
+          "Set channel to #general",
+          "Test Slack message sending"
+        ]
+      },
+      {
+        "integration_name": "gmail",
+        "resource_name": "message",
+        "operation_name": "send",
+        "comments": "Send classified 'to Customer' commercial entries via Gmail to specified email.",
+        "TODO": [
+          "Set recipient email address",
+          "Test Gmail sending"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default",
+      "function_3 defined SUCCESS: slack->message->post",
+      "function_4 defined SUCCESS: gmail->message->send"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

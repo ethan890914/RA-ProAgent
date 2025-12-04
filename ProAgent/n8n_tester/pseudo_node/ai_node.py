@@ -7,18 +7,18 @@ from ProAgent.agent.utils import _chat_completion_request
 
 def run_ai_completion(params_list:list) -> str:
     """
-    Generates a function comment for the given function body.
-    
+    Generates AI completion responses for each item in params_list.
+
     Args:
-        params_list (list): A list of parameters.
-        
+        params_list (list): A list of input data items, each with 'json'->{'messages': [...]} structure.
+
     Returns:
-        str: The function comment in markdown format.
+        list: List of AI completion results in {"json": {"choices": [{"text": ...}]}} format.
     """
     return_list = []
     completion_kwargs = CONFIG.default_completion_kwargs
     for params in params_list:
-        messages = params['messages']
+        messages = params['json']['messages']
         if isinstance(messages, str):
             messages_json = json.loads(messages)
         elif isinstance(messages, list):
