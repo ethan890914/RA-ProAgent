@@ -1,26 +1,30 @@
 {
-  "thought": "需要配置Slack发送消息动作的参数，确保消息发送到#general频道，内容为Hello World!",
+  "thought": "需要设置Slack发送消息动作的参数，指定发送到#general频道，消息内容将在工作流中动态传入。",
   "plan": [
-    "设置channelId参数，mode为name，value为#general",
-    "设置messageType为text",
-    "设置text为Hello World!",
-    "测试消息是否成功发送"
+    "设置action_0的参数，select为channel，channelId模式为name，值为general。",
+    "消息类型设置为text，消息内容用表达式从输入数据中读取。",
+    "测试动作能否正常发送消息。"
   ],
-  "criticism": "当前Slack发送消息动作未配置参数，无法正常发送消息。",
+  "criticism": "当前action_0没有设置参数，导致调用失败，必须补充完整参数。",
   "tool_name": "function_rewrite_params",
   "tool_input": {
     "function_name": "action_0",
-    "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"},\"messageType\":\"text\",\"text\":\"Hello World!\",\"blocksUi\":\"\",\"attachments\":[],\"otherOptions\":{}}",
-    "comments": "发送消息到Slack的#general频道，内容为Hello World!",
+    "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"},\"messageType\":\"text\",\"text\":\"={{$json[\\\"text\\\"]}}\"}",
+    "comments": "设置Slack发送消息动作，默认发送到#general频道，消息内容从输入数据读取。",
     "TODO": [
-      "测试Slack消息发送",
-      "确认消息格式正确"
+      "测试发送消息是否成功",
+      "验证消息内容格式",
+      "完善工作流实现"
     ]
   },
-  "tool_output_status": "RequiredParamUnprovided",
+  "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "error": "input parameter is null, \"blocksUi\" for action_0. You should put something in it.",
-    "result": "Nothing happened.",
-    "status": "RequiredParamUnprovided"
+    "result": [
+      "params[\"select\"] parsed as normal-string",
+      "params[\"channelId\"] parsed with \"mode\"=name",
+      "params[\"messageType\"] parsed as normal-string",
+      "params[\"text\"] parsed as expression"
+    ],
+    "status": "ToolCallSuccess"
   }
 }

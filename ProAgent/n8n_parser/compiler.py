@@ -281,6 +281,53 @@ class Compiler():
     
         return action
 
+    def _extract_workflow_function(self, code: str, workflow_name: str) -> str:
+        """
+        Extract only the target workflow function from code that may contain multiple function definitions.
+
+        This is needed because LLM sometimes includes action/trigger function definitions along with
+        the workflow function. We only want to keep the specific workflow function.
+
+        Args:
+            code (str): The code potentially containing multiple function definitions
+            workflow_name (str): The name of the workflow function to extract (e.g., "mainWorkflow")
+
+        Returns:
+            str: Only the target workflow function definition, or the original code if extraction fails
+        """
+        import ast
+
+        try:
+            # Parse the code into an AST
+            tree = ast.parse(code)
+
+            # Find the target function definition
+            target_function = None
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef) and node.name == workflow_name:
+                    target_function = node
+                    break
+
+            if target_function is None:
+                # Target function not found, return original code
+                return code
+
+            # Extract the source code for just this function
+            # Get line numbers
+            start_line = target_function.lineno - 1  # 0-indexed
+            end_line = target_function.end_lineno  # Inclusive
+
+            code_lines = code.split('\n')
+            extracted_lines = code_lines[start_line:end_line]
+            extracted_code = '\n'.join(extracted_lines)
+
+            return extracted_code
+
+        except Exception as e:
+            # If parsing fails, return original code with a warning in the result
+            print(f"Warning: Could not parse workflow code to extract {workflow_name}: {e}")
+            return code
+
     def handle_workflow_implement(self, tool_input) -> (ToolCallStatus, str):
         """
         Handles the implementation of a workflow.
@@ -306,7 +353,11 @@ class Compiler():
                  "result": "Nothing happened.", "status": output_status.name})
 
         workflow_name = tool_input["workflow_name"]
-        implement_code = tool_input["code"]
+        implement_code_raw = tool_input["code"]
+
+        # Extract only the target workflow function to avoid duplicates
+        # This filters out any action/trigger function definitions that LLM might have included
+        implement_code = self._extract_workflow_function(implement_code_raw, workflow_name)
 
         if workflow_name == "mainWorkflow":
             self.mainWorkflow.implement_code = implement_code

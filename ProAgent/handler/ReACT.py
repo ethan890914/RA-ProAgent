@@ -13,7 +13,7 @@ from ProAgent.n8n_parser.intrinsic_functions import get_intrinsic_functions
 from ProAgent.config import CONFIG
 
 class ReACTHandler():
-    def __init__(self, cfg, query:userQuery, compiler: Compiler, recorder: RunningRecoder):
+    def __init__(self, cfg, query:userQuery, compiler: Compiler, recorder: RunningRecoder, refine_oneshot_data=None):
         """
         Initializes a new instance of the class.
 
@@ -22,7 +22,9 @@ class ReACTHandler():
             query (userQuery): The query parameter description.
             compiler (Compiler): The compiler parameter description.
             recorder (RunningRecoder): The recorder parameter description.
-        
+            refine_oneshot_data (dict, optional): Data for refine_oneshot mode containing old query and workflow.
+                Should have keys: 'old_query' (userQuery), 'workflow_code' (str)
+
         Attributes:
             messages (List[Dict]): The messages attribute description.
             actions (List[Action]): The actions attribute description.
@@ -34,6 +36,7 @@ class ReACTHandler():
         self.recorder = recorder
         self.messages: List[Dict] = []
         self.actions: List[Action] = []
+        self.refine_oneshot_data = refine_oneshot_data
     def run(self):
         """
         Runs the main loop for the program.
@@ -63,39 +66,57 @@ class ReACTHandler():
             specific_prompt = specific_prompt.replace("{{flatten_tools}}", self.compiler.print_flatten_tools())
             messages.append({"role":"system","content": specific_prompt})
 
-            # cut some messages down, only allow for last_num messages
-            messages.append({"role": "system", "content": "In the following messages, three previous assistant response with tool output are given."})
-            last_num = 5
-            for k, (assistant_message, parsed_action) in enumerate(zip(self.messages, self.actions)):
-                if k < len(self.messages) - last_num:
-                    continue
-                if assistant_message != None:
-                    messages.append(assistant_message)
-                messages.append({
-                    # "role":"function",
-                    "role": "user",
-                    # "name": parsed_action.tool_name,
-                    "content": parsed_action.tool_output,
-                })
-            
+            # Inject refine_oneshot reference workflow if provided
+            if self.refine_oneshot_data is not None and len(self.messages) == 0:
+                # Only inject on first iteration
+                old_query = self.refine_oneshot_data.get('old_query')
+                workflow_code = self.refine_oneshot_data.get('workflow_code', '')
 
-            user_prompt = deepcopy(react_prompt.user_prompt)
+                if old_query and workflow_code:
+                    # Use the prompt template from react_prompt.py and fill in the placeholders
+                    refine_oneshot_prompt = react_prompt.refine_oneshot_prompt
+                    refine_oneshot_prompt = refine_oneshot_prompt.replace('{{old_query_id}}', str(old_query.ID))
+                    refine_oneshot_prompt = refine_oneshot_prompt.replace('{{old_query}}', old_query.print_self())
+                    refine_oneshot_prompt = refine_oneshot_prompt.replace('{{new_query_id}}', str(self.query.ID))
+                    refine_oneshot_prompt = refine_oneshot_prompt.replace('{{new_query}}', self.query.print_self())
+                    refine_oneshot_prompt = refine_oneshot_prompt.replace('{{workflow_code}}', workflow_code)
+                    messages.append({"role":"user","content": refine_oneshot_prompt})
+                else:
+                    assert False
+            else:
+                # cut some messages down, only allow for last_num messages
+                messages.append({"role": "system", "content": "In the following messages, three previous assistant response with tool output are given."})
+                last_num = 5
+                for k, (assistant_message, parsed_action) in enumerate(zip(self.messages, self.actions)):
+                    if k < len(self.messages) - last_num:
+                        continue
+                    if assistant_message != None:
+                        messages.append(assistant_message)
+                    messages.append({
+                        # "role":"function",
+                        "role": "user",
+                        # "name": parsed_action.tool_name,
+                        "content": parsed_action.tool_output,
+                    })
 
-            refine_prompt = ""
-            if len(self.refine_prompt) > 0:
-                refine_prompt = f"The user have some additional requirements to your work. Please refine your work based on the following requirements:\n ```\n{deepcopy(self.refine_prompt)}```\n"
 
-            user_prompt = user_prompt.replace("{{refine_prompt}}", refine_prompt)
+                user_prompt = deepcopy(react_prompt.user_prompt)
 
-            # print highlighted code
-            highlighted_code = highlight_code(self.compiler.code_runner.print_clean_code(indent=4))
-            user_prompt_colored = user_prompt.split("{{now_codes}}")
-            user_prompt_colored = highlighted_code.join(user_prompt_colored)
-            # logger.typewriter_log(user_prompt_colored)
+                refine_prompt = ""
+                if len(self.refine_prompt) > 0:
+                    refine_prompt = f"The user have some additional requirements to your work. Please refine your work based on the following requirements:\n ```\n{deepcopy(self.refine_prompt)}```\n"
 
-            user_prompt = user_prompt.replace("{{now_codes}}", self.compiler.code_runner.print_code())
+                user_prompt = user_prompt.replace("{{refine_prompt}}", refine_prompt)
 
-            messages.append({"role":"user","content": user_prompt})
+                # print highlighted code
+                highlighted_code = highlight_code(self.compiler.code_runner.print_clean_code(indent=4))
+                user_prompt_colored = user_prompt.split("{{now_codes}}")
+                user_prompt_colored = highlighted_code.join(user_prompt_colored)
+                # logger.typewriter_log(user_prompt_colored)
+
+                user_prompt = user_prompt.replace("{{now_codes}}", self.compiler.code_runner.print_code())
+
+                messages.append({"role":"user","content": user_prompt})
             
             functions = get_intrinsic_functions()
 
@@ -119,5 +140,5 @@ class ReACTHandler():
                 # exit()
             elif action.tool_name == 'task_submit':
                 print('task_submit finish!!!')
-                exit()
+                break # break while
             # exit()

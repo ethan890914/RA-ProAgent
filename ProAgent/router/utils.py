@@ -12,6 +12,7 @@ class ENVIRONMENT(Enum):
     # how to handle with different query？now it's loading the query defined in code instead of loading from cache.
     Development = auto() # ok
     Refine = auto() # ok
+    Refine_oneshot = auto()
     Production = auto() # ok
     Production_quick = auto()
 
