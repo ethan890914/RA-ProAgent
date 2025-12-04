@@ -1,11 +1,11 @@
 {
-  "thought": "用户需要在手动触发后发送消息到Slack指定频道。先定义手动触发的触发器和Slack发送消息的动作。",
+  "thought": "用户需求是手动触发后，向Slack频道#general发送消息。需要先定义一个手动触发的触发器和一个发送Slack消息的动作。",
   "plan": [
-    "定义一个手动触发器函数，监听手动触发事件",
-    "定义一个Slack发送消息动作，配置发送到#general频道",
-    "之后实现主工作流，将触发器和动作连接起来"
+    "定义一个手动触发的触发器trigger_0。",
+    "定义一个Slack发送消息的动作action_0，选择频道为#general，消息内容为空，后续在工作流中动态传入。",
+    "实现mainWorkflow，连接触发器和动作，构造消息内容并发送。"
   ],
-  "criticism": "当前没有任何函数定义，无法实现工作流。",
+  "criticism": "当前没有任何函数定义，无法实现工作流，需要先定义触发器和动作。",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -13,20 +13,21 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "手动触发器，用户点击按钮时触发工作流",
+        "comments": "手动触发器，用户点击按钮触发工作流执行。",
         "TODO": [
-          "测试触发器是否正确触发",
-          "确认触发器输出数据格式"
+          "测试触发器是否能正常触发",
+          "验证触发器输出格式"
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "发送消息到Slack的指定频道，这里配置发送到#general频道",
+        "comments": "发送消息到Slack频道#general，消息内容将在工作流中动态构造。",
         "TODO": [
-          "配置频道参数为#general",
-          "测试消息是否成功发送"
+          "设置频道为#general",
+          "测试发送消息功能",
+          "验证消息内容格式"
         ]
       }
     ]

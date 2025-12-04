@@ -42,7 +42,7 @@ class n8nNodeRunner():
         output_data_var_name = f"{self.node.get_name()}_output_data"
         self.name_space[input_data_var_name] = input_data
         self.name_space[f"transparent_{self.node.node_meta.node_type.name}"] = partial(anonymous_class,node=self.node)
-        node_code = "from typing import List, Dict\n"+"\n".join(self.node.print_self()) + f"\n{output_data_var_name}={self.node.get_name()}({input_data_var_name})"
+        node_code = "\n".join(self.node.print_self()) + f"\n{output_data_var_name}={self.node.get_name()}({input_data_var_name})"
 
         error = None
         tb = None

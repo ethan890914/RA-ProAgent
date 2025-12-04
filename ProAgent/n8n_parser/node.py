@@ -80,7 +80,7 @@ class n8nPythonNode():
         lines = []
         # Triggers also need input_data parameter because the runner always calls functions with input_data argument
         # Triggers just don't use the input_data (they generate their own output)
-        input_data = "input_data: List[Dict] =  [{...}]"
+        input_data = "input_data"
         define_line = f"def {self.get_name()}({input_data}):"
         lines.append(define_line)
         param_json = {}
@@ -125,7 +125,7 @@ class n8nPythonNode():
         lines = []
         # Triggers also need input_data parameter because the runner always calls functions with input_data argument
         # Triggers just don't use the input_data (they generate their own output)
-        input_data = "input_data: List[Dict] =  [{...}]"
+        input_data = "input_data"
         define_line = f"def {self.get_name()}({input_data}):"
         lines.append(define_line)
         if self.node_comments != "" or self.note_todo != []:

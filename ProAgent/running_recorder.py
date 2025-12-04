@@ -178,7 +178,7 @@ class RunningRecoder():
         """
 
         
-        if CONFIG.environment == ENVIRONMENT.Development or self.newly_start:
+        if CONFIG.environment == ENVIRONMENT.Development or CONFIG.environment == ENVIRONMENT.Refine_oneshot or self.newly_start:
             self.is_cached = False
             return None
         elif CONFIG.environment == ENVIRONMENT.Refine:
