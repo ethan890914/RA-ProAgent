@@ -51,7 +51,7 @@ def retrieval_samples(query):
     return str(res[0]) if res else None
 
 
-def run_refine_oneshot_mode(cfg, new_query_id, old_id):
+def run_refine_oneshot_mode(cfg, new_query, old_id, new_query_id=None):
     """
     Run ProAgent in refine_oneshot mode.
 
@@ -70,7 +70,8 @@ def run_refine_oneshot_mode(cfg, new_query_id, old_id):
     query_loader_ = query_loader()
 
     # Load new query
-    new_query = query_loader_.get_single_query(ID=new_query_id)
+    if new_query_id is not None:
+        new_query = query_loader_.get_single_query(ID=new_query_id)
 
     # Load old workflow data
     workflow_data = query_loader_.load_workflow_from_storage(old_ID=old_id)
@@ -157,31 +158,39 @@ def main(cfg: omegaconf.DictConfig):
         task = '''
                 Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and emails the result or send it to slack.'''
         additions = None
-        # additions = [
-        #     "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
-        #     "1.2 The sheetName of Google is: commercial",
-        #     "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
-        #     "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
-        #     "2.2 System prompt: 'You are a news classifier. Classify as 'to Business' or 'to Customer'.'",
-        #     "2.3 User prompt: Include the actual commercial entry's Description text",
-        #     "2.4 aiCompletion should process each of the commercial entry separately",
-        #     "3.1 Parse aiCompletion output to extract the category ('to Business' or 'to Customer')",
-        #     "3.2 If it's a 'to Business' commercial entry, then send it through slack.",
-        #     "3.3 If it's a 'to Customer' commercial entry, then send it through email.",
-        #     "4.1 slack format:",
-        #     "4.2 Send results to slack channel #general",
-        #     "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
-        #     "5.1 email format:",
-        #     "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
-        #     "5.3 Each email abstract: Commercial Entry: [Description]",
-        #     "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
-        # ]
+        additions = [
+            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+            "1.2 The sheetName of Google is: commercial",
+            "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+            "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+            "2.2 System prompt: 'You are a news classifier. Classify as 'to Business' or 'to Customer'.'",
+            "2.3 User prompt: Include the actual commercial entry's Description text",
+            "2.4 aiCompletion should process each of the commercial entry separately",
+            "3.1 Parse aiCompletion output to extract the category ('to Business' or 'to Customer')",
+            "3.2 If it's a 'to Business' commercial entry, then send it through slack.",
+            "3.3 If it's a 'to Customer' commercial entry, then send it through email.",
+            "4.1 slack format:",
+            "4.2 Send results to slack channel #news",
+            "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
+            "5.1 email format:",
+            "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+            "5.3 Each email abstract: Commercial Entry: [Description]",
+            "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
+        ]
         query = include_all_info(task, additions)
 
         old_id = retrieval_samples(query)
+
+        new_query = userQuery(
+            ID='temp',
+            task=task,
+            additional_information=additions
+        )
+
         if old_id is not None:
             CONFIG.environment = ENVIRONMENT.Refine_oneshot
-            run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id=old_id)
+            # run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id='21-2')
+            run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id=None)
             return
         else:
             CONFIG.environment = ENVIRONMENT.Development
