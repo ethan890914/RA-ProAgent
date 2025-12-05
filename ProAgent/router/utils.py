@@ -15,4 +15,5 @@ class ENVIRONMENT(Enum):
     Refine_oneshot = auto()
     Production = auto() # ok
     Production_quick = auto()
+    RARefine = auto() # retrieval augmented refinement
 

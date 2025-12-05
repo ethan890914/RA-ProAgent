@@ -41,3 +41,5 @@ XlsxWriter==3.1.9
 yarl==1.9.2
 func-timeout
 google-generativeai
+sentence_transformers
+numpy==1.26.4

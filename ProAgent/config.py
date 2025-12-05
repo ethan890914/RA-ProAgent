@@ -138,8 +138,9 @@ class RPAgentConfig(CfgNode):
         C.default_knowledge = knowledge
 
         # C.environment = ENVIRONMENT.Development
-        C.environment = ENVIRONMENT.Production_quick
+        # C.environment = ENVIRONMENT.Production_quick
         # C.environment = ENVIRONMENT.Refine_oneshot
+        C.environment = ENVIRONMENT.RARefine
         # C.environment = ENVIRONMENT.Production
         # C.environment = ENVIRONMENT.Refine
 

@@ -3,6 +3,7 @@ import omegaconf
 import logging
 from colorama import Fore, Style
 import json
+import os
 
 from mock_agent import mock_function_call_list
 
@@ -15,6 +16,40 @@ from query_loader import query_loader
 from execute_from_tool_calls import run
 from ProAgent.router.utils import ENVIRONMENT
 from ProAgent.config import CONFIG
+
+from proagent_rag import *
+
+
+def retrieval_samples(query):
+    query_file = "queries_data.json"
+
+    with open(query_file) as f:
+        query_library = json.load(f)
+
+    rag = ProAgentRAG(query_library)
+    rag.build_index()
+    res = rag.retrieve_similar(query)
+
+    # Find the first retrieved query that has NO ancestor workflow
+    # Check apa_case_storage to see if the workflow has an ancestor.json file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    storage_dir = os.path.join(current_dir, 'apa_case_storage')
+
+    for retrieved_query in res:
+        retrieved_query_id = retrieved_query['ID']
+        # Check if this query's workflow has an ancestor.json
+        workflow_dir = os.path.join(storage_dir, f'ID_{retrieved_query_id}')
+        ancestor_file = os.path.join(workflow_dir, 'ancestor.json')
+
+        # Only return this ID if it has NO ancestor (i.e., it's a base workflow)
+        if not os.path.exists(ancestor_file):
+            print(f"✓ Found base workflow (no ancestor): ID_{retrieved_query_id}")
+            return str(retrieved_query_id)
+
+    # If no workflow without ancestor found, return None or raise error
+    print("⚠️  Warning: All retrieved workflows have ancestors. Returning first result anyway.")
+    return str(res[0]) if res else None
+
 
 def run_refine_oneshot_mode(cfg, new_query_id, old_id):
     """
@@ -114,6 +149,42 @@ def main(cfg: omegaconf.DictConfig):
     elif CONFIG.environment == ENVIRONMENT.Refine_oneshot:
         run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id='21')
         return
+    elif CONFIG.environment == ENVIRONMENT.RARefine:
+        # task = '''
+        # Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.
+        # '''
+
+        task = '''
+                Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and emails the result or send it to slack.'''
+        additions = None
+        # additions = [
+        #     "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+        #     "1.2 The sheetName of Google is: commercial",
+        #     "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
+        #     "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
+        #     "2.2 System prompt: 'You are a news classifier. Classify as 'to Business' or 'to Customer'.'",
+        #     "2.3 User prompt: Include the actual commercial entry's Description text",
+        #     "2.4 aiCompletion should process each of the commercial entry separately",
+        #     "3.1 Parse aiCompletion output to extract the category ('to Business' or 'to Customer')",
+        #     "3.2 If it's a 'to Business' commercial entry, then send it through slack.",
+        #     "3.3 If it's a 'to Customer' commercial entry, then send it through email.",
+        #     "4.1 slack format:",
+        #     "4.2 Send results to slack channel #general",
+        #     "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
+        #     "5.1 email format:",
+        #     "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+        #     "5.3 Each email abstract: Commercial Entry: [Description]",
+        #     "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
+        # ]
+        query = include_all_info(task, additions)
+
+        old_id = retrieval_samples(query)
+        if old_id is not None:
+            CONFIG.environment = ENVIRONMENT.Refine_oneshot
+            run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id=old_id)
+            return
+        else:
+            CONFIG.environment = ENVIRONMENT.Development
 
     recorder = RunningRecoder() # default root directory: ./records
 
