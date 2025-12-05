@@ -3,6 +3,7 @@ import omegaconf
 import logging
 from colorama import Fore, Style
 import json
+import os
 
 from mock_agent import mock_function_call_list
 
@@ -57,7 +58,25 @@ def retrieval_samples(cfg):
     rag.build_index()
     res = rag.retrieve_similar(query)
 
-    return '21'
+    # Find the first retrieved query that has NO ancestor workflow
+    # Check apa_case_storage to see if the workflow has an ancestor.json file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    storage_dir = os.path.join(current_dir, 'apa_case_storage')
+
+    for retrieved_query in res:
+        retrieved_query_id = retrieved_query['ID']
+        # Check if this query's workflow has an ancestor.json
+        workflow_dir = os.path.join(storage_dir, f'ID_{retrieved_query_id}')
+        ancestor_file = os.path.join(workflow_dir, 'ancestor.json')
+
+        # Only return this ID if it has NO ancestor (i.e., it's a base workflow)
+        if not os.path.exists(ancestor_file):
+            print(f"✓ Found base workflow (no ancestor): ID_{retrieved_query_id}")
+            return str(retrieved_query_id)
+
+    # If no workflow without ancestor found, return None or raise error
+    print("⚠️  Warning: All retrieved workflows have ancestors. Returning first result anyway.")
+    return str(res[0]) if res else None
 def run_refine_oneshot_mode(cfg, new_query_id, old_id):
     """
     Run ProAgent in refine_oneshot mode.
@@ -158,9 +177,12 @@ def main(cfg: omegaconf.DictConfig):
         return
     elif CONFIG.environment == ENVIRONMENT.RARefine:
         old_id = retrieval_samples(cfg)
-        CONFIG.environment = ENVIRONMENT.Refine_oneshot
-        run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id=old_id)
-        return
+        if old_id is not None:
+            CONFIG.environment = ENVIRONMENT.Refine_oneshot
+            run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id=old_id)
+            return
+        else:
+            CONFIG.environment = ENVIRONMENT.Development
 
     recorder = RunningRecoder() # default root directory: ./records
 
