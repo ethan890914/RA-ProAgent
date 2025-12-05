@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually on button click.
+  comments: This is the manual trigger to start the workflow when user clicks the button.
   TODOs: 
-    - Test trigger activation
-    - Verify output data format
+    - Test the manual trigger activation
+    - Verify trigger output format
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -43,25 +43,17 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {'row_number': 2, 'Headlines': 'Alphabet’s AI Stock Rally Puts Google on Track for $4 Trillion Valuation'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 3, 'Headlines': 'Amazon Unveils “Leo Ultra,” Its Starlink Competitor for Enterprise'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 4, 'Headlines': 'Google and Accel Launch AI Futures Fund to Back Indian AI Startups'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 5, 'Headlines': 'Meta in Talks to Buy Google’s AI Chips'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 6, 'Headlines': 'Zoom Raises Forecast on Strong AI Companion 3.0 Adoption'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 7, 'Headlines': 'Gotham FC Wins 2025 NWSL Championship'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 8, 'Headlines': 'NCAA Rejects Proposal to Allow College Athletes to Bet on Pro Sports'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 9, 'Headlines': 'Connor McDavid’s Status Uncertain Ahead of Oilers vs. Stars Game'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 10, 'Headlines': '5th Khelo India University Games Kick Off in Jaipur'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 11, 'Headlines': 'South Dakota State Men’s Basketball Joins Cancun Challenge Tournament in Mexico'}, 'pairedItem': {'item': 0}}]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Read all rows from the specified Google Sheet containing news headlines.
+  comments: Read all rows from the specified Google Sheet document and sheet name 'news'.
   TODOs: 
-    - Test reading headlines
-    - Verify output data format
+    - Test reading rows from Google Sheets
+    - Verify output contains 10 news headlines
   """
-  params = {
-             "documentId": {
-               "mode": "id",
-               "value": "1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c"
-             },
-             "sheetName": {
-               "mode": "id",
-               "value": "news"
-             },
-             "filtersUI": {},
-             "options": {}
-           }
+  params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},
+             'filtersUI': {},
+             'options': {},
+             'sheetName': {'mode': 'id', 'value': 'news'}}
   function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -69,7 +61,7 @@ def action_0(input_data: List[Dict] =  [{...}]):
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
@@ -77,16 +69,16 @@ This function has been executed for 1 times. Last execution:
 [{'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Alphabet’s AI Stock Rally Puts Google on Track for $4 Trillion Valuation'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Amazon Unveils “Leo Ultra,” Its Starlink Competitor for Enterprise'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Google and Accel Launch AI Futures Fund to Back Indian AI Startups'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Meta in Talks to Buy Google’s AI Chips'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Zoom Raises Forecast on Strong AI Companion 3.0 Adoption'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Gotham FC Wins 2025 NWSL Championship'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'NCAA Rejects Proposal to Allow College Athletes to Bet on Pro Sports'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'Connor McDavid’s Status Uncertain Ahead of Oilers vs. Stars Game'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': '5th Khelo India University Games Kick Off in Jaipur'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as technology or sport.'}, {'role': 'user', 'content': 'South Dakota State Men’s Basketball Joins Cancun Challenge Tournament in Mexico'}]}}]
 
 3.Output:
-[{'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}]
+[{'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Classify each news headline as technology or sport using AI.
+  comments: Use AI completion to classify each news headline as technology or sport.
   TODOs: 
-    - Build messages input in workflow
-    - Test AI classification
+    - Build messages array in mainWorkflow
+    - Test AI classification output
   """
-  params = {}  # to be Implemented
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -97,19 +89,19 @@ def action_1(input_data: List[Dict] =  [{...}]):
 0 params["select"]: enum[string] = "", Required: Send Message To(Select...) . Available values:
   0.0 value=="channel": Channel
   0.1 value=="user": User
-1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
+1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required when (select in ['channel']), otherwise do not provide: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
   1.0 params["channelId"]["value"](when "mode"="id"): string: By ID(C0122KQ70S7E)
   1.1 params["channelId"]["value"](when "mode"="name"): string: By Name(#general)
   1.2 params["channelId"]["value"](when "mode"="url"): string: By URL(https://app.slack.com/client/TS9594PZK/B0556F47Z3A)
-2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}: User(Select a user...) . "mode" should be one of ['id', 'username']: 
+2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Activate(Not Required) when (select in ['user']), otherwise do not provide: User(Select a user...) . "mode" should be one of ['id', 'username']: 
   ...hidden...
 3 params["messageType"]: enum[string] = "text": Message Type. Whether to send a simple text message, or use Slack’s Blocks UI builder for more sophisticated messages that include form fields, sections and more . Available values:
   3.0 value=="text": Simple Text Message. Supports basic Markdown
   3.1 value=="block": Blocks. Combine text, buttons, form elements, dividers and more in Slack 's visual builder
   3.2 value=="attachment": Attachments
-4 params["text"]: string = "": Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
-5 params["blocksUi"]: string = "", Required: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
-6 params["attachments"]: list[dict] = [{}]: Attachments(Add attachment item) . properties description:
+4 params["text"]: string = "", Activate(Not Required) when (messageType in ['block']), otherwise do not provide: Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
+5 params["blocksUi"]: string = "", Required when (messageType in ['block']), otherwise do not provide: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
+6 params["attachments"]: list[dict] = [{}], Activate(Not Required) when (messageType in ['attachment']), otherwise do not provide: Attachments(Add attachment item) . properties description:
   ...hidden...
 7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
   ...hidden...
@@ -122,12 +114,13 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 []
 """
-def action_2(input_data: List[Dict] =  [{...}]):
+def action_2(input_data):
   """
-  comments: Send classification results as Slack messages to #general channel.
+  comments: Send classified news headlines with category to Slack channel #general.
   TODOs: 
-    - Set channel to #general
-    - Test sending messages
+    - Set Slack channel to #general
+    - Format message text with headline and category
+    - Test Slack message sending
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
@@ -148,42 +141,58 @@ This function has been executed for 1 times. Last execution:
 """
 def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Workflow to read news headlines from Google Sheets, classify with AI, and send results to Slack.
+    comments: Workflow to classify news headlines from Google Sheets using AI and send results to Slack.
     TODOs:
       - Test end-to-end workflow
-      - Verify Slack message delivery
-      - Handle empty or malformed data
+      - Handle empty or missing data gracefully
     """
-    # Step 1: Read news headlines from Google Sheets
-    news_data = action_0(trigger_input)
-
-    # Step 2: Build aiCompletion input messages
+    # Step 1: Trigger is manual, just start
+    # Step 2: Read rows from Google Sheets
+    sheet_data = action_0(trigger_input)
+    
+    # Step 3: Extract headlines
+    headlines = []
+    for item in sheet_data:
+        headline = item['json'].get('Headlines')
+        if headline:
+            headlines.append(headline)
+    
+    # Step 4: Build AI input for each headline
     ai_input = []
-    for item in news_data:
-        headline = item['json'].get('Headlines', '')
-        messages_data = [
+    for headline in headlines:
+        messages = [
             {"role": "system", "content": "You are a news classifier. Classify as technology or sport."},
             {"role": "user", "content": headline}
         ]
-        ai_input.append({"json": {"messages": messages_data}})
-
-    # Step 3: Call aiCompletion action
+        ai_input.append({"json": {"messages": messages}})
+    
+    # Step 5: Call AI completion
     ai_output = action_1(ai_input)
-
-    # Step 4: Parse AI output and prepare Slack messages
+    
+    # Step 6: Parse AI output and prepare Slack messages
     slack_input = []
     for i, item in enumerate(ai_output):
-        headline = news_data[i]['json'].get('Headlines', '')
-        ai_text = item['json']['choices'][0]['text'].lower()
-        category = "technology" if "technology" in ai_text else "sport"
-        slack_text = f"News: {headline}\nCategory: {category}"
-        slack_input.append({"json": {"text": slack_text}})
-
-    # Step 5: Send messages to Slack channel #general
+        ai_text = item['json']['choices'][0]['text'].strip().lower()
+        # Simple classification extraction
+        if 'technology' in ai_text:
+            category = 'technology'
+        elif 'sport' in ai_text:
+            category = 'sport'
+        else:
+            category = 'unknown'
+        headline = headlines[i]
+        message_text = f"News: {headline}\nCategory: {category}"
+        slack_input.append({"json": {"text": message_text}})
+    
+    # Step 7: Send messages to Slack channel #general
+    slack_params = {
+        "select": "channel",
+        "channelId": {"mode": "name", "value": "general"},
+        "messageType": "text",
+        "text": "={{$json[\"text\"]}}"
+    }
     slack_output = action_2(slack_input)
-
     return slack_output
-
 
 
 
@@ -196,13 +205,14 @@ Note: if there is 'KeyError' in the error message, it may be due to the wrong us
 [Output Data Info]
 the output data of function `trigger_0` is: `[{'json': {}}]`
 the output data of function `action_0` is: `[{'json': {'row_number': 2, 'Headlines': 'Alphabet’s AI Stock Rally Puts Google on Track for $4 Trillion Valuation'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 3, 'Headlines': 'Amazon Unveils “Leo Ultra,” Its Starlink Competitor for Enterprise'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 4, 'Headlines': 'Google and Accel Launch AI Futures Fund to Back Indian AI Startups'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 5, 'Headlines': 'Meta in Talks to Buy Google’s AI Chips'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 6, 'Headlines': 'Zoom Raises Forecast on Strong AI Companion 3.0 Adoption'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 7, 'Headlines': 'Gotham FC Wins 2025 NWSL Championship'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 8, 'Headlines': 'NCAA Rejects Proposal to Allow College Athletes to Bet on Pro Sports'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 9, 'Headlines': 'Connor McDavid’s Status Uncertain Ahead of Oilers vs. Stars Game'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 10, 'Headlines': '5th Khelo India University Games Kick Off in Jaipur'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 11, 'Headlines': 'South Dakota State Men’s Basketball Joins Cancun Challenge Tournament in Mexico'}, 'pairedItem': {'item': 0}}]`
-the output data of function `action_1` is: `[{'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_1` is: `[{'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Technology'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'sport'}]}, 'pairedItem': {'item': 0}}]`
 the output data of function `action_2` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-        # Step 5: Send messages to Slack channel #general
+        }
 -->     slack_output = action_2(slack_input)
+        return slack_output
 ------------------------
 In Function: transparent_action
       function = transparent_action(integration="slack", resource="message", operation="post")
@@ -210,8 +220,8 @@ In Function: transparent_action
       return output_data
 ------------------------
 n8nRunningException: Execution Failed: 
-Output: Problem with execution 863: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
-The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 863)
+Output: Problem with execution 2166: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
+The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 2166)
 Error executing workflow. See log messages for details.
 
 Execution error:

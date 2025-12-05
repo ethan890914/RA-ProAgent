@@ -9,11 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Manual trigger to start the workflow when user clicks the button.
+  comments: Manual trigger to start the workflow on button click.
   TODOs: 
-    - Test the manual trigger activation.
+    - Test manual trigger activation
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -42,25 +42,17 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Read all rows from the 'commercial' sheet of the given Google Sheet document.
+  comments: Read all rows from the specified Google Sheet document and sheet name 'commercial'.
   TODOs: 
-    - Test reading data from Google Sheets.
-    - Verify data schema for downstream usage.
+    - Test reading sheet data
+    - Verify data contains expected columns and rows
   """
-  params = {
-             "documentId": {
-               "mode": "id",
-               "value": "1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c"
-             },
-             "sheetName": {
-               "mode": "id",
-               "value": "commercial"
-             },
-             "filtersUI": {},
-             "options": {}
-           }
+  params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},
+             'filtersUI': {},
+             'options': {},
+             'sheetName': {'mode': 'id', 'value': 'commercial'}}
   function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -68,7 +60,7 @@ def action_0(input_data: List[Dict] =  [{...}]):
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 0 times. Last execution:
 1.Status: DidNotBeenCalled
@@ -78,14 +70,14 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Use AI to classify each commercial entry Description as 'to Business' or 'to Customer'.
+  comments: Call AI completion to classify each Description as 'to Business' or 'to Customer'.
   TODOs: 
-    - Build messages array input for AI.
-    - Test AI classification.
+    - Build messages array with system and user prompts
+    - Test AI classification output
   """
-  params = {}  # to be Implemented
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -110,13 +102,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_2(input_data: List[Dict] =  [{...}]):
+def action_2(input_data):
   """
-  comments: Send classification result emails to the specified email address.
+  comments: Send Gmail messages to the specified email address with classification results.
   TODOs: 
-    - Set recipient email address.
-    - Format email body and subject.
-    - Test email sending.
+    - Set recipient email and message content
+    - Test sending emails
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="gmail", resource="message", operation="send")

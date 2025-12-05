@@ -1,11 +1,11 @@
 {
-  "thought": "To fulfill the user's request, I need to define the manual trigger to start the workflow, an aiCompletion action to generate a joke, and a Gmail action to send the email.",
+  "thought": "To fulfill the user query, I need to define the trigger for manual trigger and two actions: one for AI completion to generate a joke, and one to send email via Gmail.",
   "plan": [
-    "Define a trigger for manual trigger resource default operation default.",
-    "Define an aiCompletion action to generate a joke within 30 words.",
-    "Define a Gmail action to send an email with the joke."
+    "Define trigger for manualTrigger.default.default",
+    "Define action for aiCompletion.default.default to generate a joke",
+    "Define action for gmail.message.send to send the generated joke email"
   ],
-  "criticism": "The plan is straightforward but depends on correct parameter setting and data handling between nodes.",
+  "criticism": "Currently no functions are defined, so nothing can be executed. Defining these three functions is the foundation for implementing the workflow.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -13,10 +13,10 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Trigger the workflow manually by user click.",
+        "comments": "Manual trigger to start the workflow when user clicks the button.",
         "TODO": [
-          "Test the manual trigger works correctly.",
-          "Ensure the output format is compatible with the workflow."
+          "Test the trigger",
+          "Verify it activates mainWorkflow"
         ]
       },
       {
@@ -25,18 +25,18 @@
         "operation_name": "default",
         "comments": "Generate a joke within 30 words using AI completion.",
         "TODO": [
-          "Set prompt to generate joke within 30 words.",
-          "Test the AI completion returns expected joke text."
+          "Implement params for joke generation prompt",
+          "Test joke generation output"
         ]
       },
       {
         "integration_name": "gmail",
         "resource_name": "message",
         "operation_name": "send",
-        "comments": "Send the generated joke to the specified email address.",
+        "comments": "Send the generated joke to the specified email with title and content.",
         "TODO": [
-          "Set email recipient, subject, and content dynamically.",
-          "Test email sending with joke content."
+          "Implement email params",
+          "Test sending email with joke content"
         ]
       }
     ]

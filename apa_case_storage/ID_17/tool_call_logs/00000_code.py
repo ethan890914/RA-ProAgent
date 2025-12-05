@@ -9,12 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: 手动触发器，用户点击按钮触发workflow
+  comments: 手动触发器，用户点击按钮触发流程
   TODOs: 
-    - 测试触发器是否能正常工作
-    - 作为workflow入口
+    - 测试触发器是否正常工作
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -43,11 +42,11 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: 读取Google Sheets中指定文档和工作表的数据
+  comments: 读取指定Google Sheet文档和表单的数据
   TODOs: 
-    - 设置文档ID和工作表名称
+    - 根据文档ID和sheetName配置参数
     - 测试读取数据是否正确
   """
   params = {}  # to be Implemented
@@ -75,12 +74,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: 使用Gmail发送邮件，将读取的数据作为邮件正文发送
+  comments: 发送邮件，将读取的Google Sheets数据作为邮件内容发送
   TODOs: 
-    - 设置收件人和邮件主题
-    - 测试邮件发送功能
+    - 配置收件人邮箱、邮件主题和邮件内容
+    - 测试邮件发送
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="gmail", resource="message", operation="send")

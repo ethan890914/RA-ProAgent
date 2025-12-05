@@ -1,26 +1,22 @@
 {
-  "thought": "I need to correctly set the params for the aiCompletion action using string expression format for the messages parameter as required, and set the Gmail action params with fixed recipient, subject, and dynamic message content.",
+  "thought": "The functions and trigger are defined but the mainWorkflow is not implemented. I will implement the mainWorkflow to connect the manual trigger, AI completion to generate a joke, and then send the joke via Gmail email.",
   "plan": [
-    "Set aiCompletion params with messages as a string expression for system and user prompts.",
-    "Set Gmail action params with recipient 'qwuqwuqwu@gmail.com', subject 'ProAgent Joking', and message from AI output.",
-    "Test both actions independently to ensure correct output format."
+    "Use trigger_0 to start the workflow",
+    "Call action_0 with a prompt to generate a joke within 30 words",
+    "Extract the joke text from AI completion output",
+    "Format the email input with recipient, subject, and joke as message",
+    "Call action_1 to send the email with the joke",
+    "Return the output of the email action"
   ],
-  "criticism": "The main risk is the correct usage of string expressions for the aiCompletion messages and mapping the AI output text to the email message content properly.",
-  "tool_name": "function_rewrite_params",
+  "criticism": "Currently, the mainWorkflow is not implemented, so the workflow does nothing. Implementing the mainWorkflow is crucial to fulfill the user request and test the entire flow.",
+  "tool_name": "workflow_implment",
   "tool_input": {
-    "function_name": "action_0",
-    "params": "{\"messages\":\"[{\\\"role\\\": \\\"system\\\", \\\"content\\\": \\\"You are a helpful assistant.\\\"}, {\\\"role\\\": \\\"user\\\", \\\"content\\\": \\\"Generate a short joke within 30 words.\\\"}]\"}",
-    "comments": "Generate a joke within 30 words using AI completion with correct string expression format for messages.",
-    "TODO": [
-      "Test the AI completion returns expected joke text.",
-      "Verify string expression format for messages parameter."
-    ]
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0():\n    \"\"\"\n    comments: Manual trigger to start the workflow when user clicks the button.\n    TODOs: \n      - Test the trigger\n      - Verify it activates mainWorkflow\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: Generate a joke within 30 words using AI completion with a prompt.\n    TODOs: \n      - Test joke generation output\n      - Refine prompt if joke is too long or irrelevant\n    \"\"\"\n    params = {}\n    function = transparent_action(integration=\"aiCompletion\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef action_1(input_data):\n    \"\"\"\n    comments: Send the generated joke to the specified email with title and content.\n    TODOs: \n      - Implement email params\n      - Test sending email with joke content\n    \"\"\"\n    # Expect input_data to have 'json' with 'text' field containing joke\n    # We need to set params accordingly\n    params = {\n        \"sendTo\": \"qwuqwuqwu@gmail.com\",\n        \"subject\": \"ProAgent Joking\",\n        \"emailType\": \"text\",\n        \"message\": \"={{$json[\\\"text\\\"]}}\",\n        \"options\": {}\n    }\n    function = transparent_action(integration=\"gmail\", resource=\"message\", operation=\"send\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input):\n    \"\"\"\n    comments: Workflow to generate a joke using AI and send it via Gmail when manually triggered.\n    TODOs: \n      - Test end-to-end workflow\n      - Verify joke length and email delivery\n    \"\"\"\n    # Step 1: Build AI input with prompt\n    ai_input = [{\n        \"json\": {\n            \"messages\": [\n                {\"role\": \"system\", \"content\": \"You are a funny assistant.\"},\n                {\"role\": \"user\", \"content\": \"Tell me a joke within 30 words.\"}\n            ]\n        }\n    }]\n\n    # Step 2: Call AI completion action\n    ai_output = action_0(ai_input)\n\n    # Step 3: Extract joke text\n    joke_text = ai_output[0][\"json\"][\"choices\"][0][\"text\"].strip()\n\n    # Step 4: Prepare email input\n    email_input = [{\"json\": {\"text\": joke_text}}]\n\n    # Step 5: Send email\n    email_output = action_1(email_input)\n\n    return email_output\n"
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "result": [
-      "params[\"messages\"] parsed as normal-string"
-    ],
+    "result": "mainWorkflow has been re-implemented",
     "status": "ToolCallSuccess"
   }
 }

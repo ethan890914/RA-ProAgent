@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually on user click.
+  comments: Trigger the workflow manually by user clicking the button.
   TODOs: 
-    - Test trigger functionality
-    - Ensure output data format matches expected input for workflow
+    - Test manual trigger activation.
+    - Verify trigger output format.
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -43,12 +43,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Read commercial entries from the specified Google Sheet.
+  comments: Read all rows from the specified Google Sheet document and sheetName.
   TODOs: 
-    - Set documentId and sheetName parameters
-    - Test reading data from Google Sheets
+    - Set documentId and sheetName in params.
+    - Test reading sheet data.
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
@@ -58,7 +58,7 @@ def action_0(input_data: List[Dict] =  [{...}]):
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 0 times. Last execution:
 1.Status: DidNotBeenCalled
@@ -68,14 +68,14 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Classify each Description as 'to Business' or 'to Customer' using AI.
+  comments: Use AI to classify each Description as 'to Business' or 'to Customer'.
   TODOs: 
-    - Build messages array for each Description
-    - Test AI classification output
+    - Build messages array in workflow.
+    - Test AI completion with sample inputs.
   """
-  params = {}  # to be Implemented
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -100,12 +100,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_2(input_data: List[Dict] =  [{...}]):
+def action_2(input_data):
   """
-  comments: Send classification results via Gmail to the specified email.
+  comments: Send classification results via Gmail to the specified email address.
   TODOs: 
-    - Format email subject and body
-    - Test sending emails
+    - Set recipient email and message content.
+    - Test sending email.
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="gmail", resource="message", operation="send")

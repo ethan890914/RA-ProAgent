@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Manual trigger to start the workflow when user clicks the button.
+  comments: Trigger the workflow manually by user click.
   TODOs: 
-    - Implement the trigger function with proper params.
-    - Test the trigger function.
+    - Test the manual trigger.
+    - Ensure it outputs the correct format for the workflow input.
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -41,20 +41,18 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Send an email via Gmail API to the specified recipient with given subject and content.
+  comments: Send an email to qwuqwuqwu@gmail.com with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!'.
   TODOs: 
-    - Test sending email.
-    - Handle errors and refine.
+    - Test sending email with given inputs.
+    - Handle errors if email sending fails.
   """
-  params = {
-             "sendTo": "qwuqwuqwu@gmail.com",
-             "subject": "ProAgent testing",
-             "emailType": "text",
-             "message": "Hi qwuqwuqwu!",
-             "options": {}
-           }
+  params = { 'emailType': 'text',
+             'message': 'Hi qwuqwuqwu!',
+             'options': {},
+             'sendTo': 'qwuqwuqwu@gmail.com',
+             'subject': 'ProAgent testing'}
   function = transparent_action(integration="gmail", resource="message", operation="send")
   output_data = function.run(input_data=input_data, params=params)
   return output_data

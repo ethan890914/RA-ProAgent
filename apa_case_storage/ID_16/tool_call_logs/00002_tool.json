@@ -1,25 +1,21 @@
 {
-  "thought": "需要为Slack发送消息动作配置参数，设置频道为#general，并将Google Sheets读取的数据转换为字符串发送。",
+  "thought": "实现主流程mainWorkflow，连接手动触发器、Google Sheets读取动作和Slack发送动作。",
   "plan": [
-    "设置Slack发送消息动作的频道为#general",
-    "将输入的Google Sheets数据转换为JSON字符串作为消息内容",
-    "测试消息发送功能是否正常"
+    "调用trigger_0获取触发输入",
+    "调用action_0读取Google Sheets数据",
+    "将读取的数据转换成json字符串格式，封装为Slack消息格式",
+    "调用action_1发送Slack消息",
+    "返回Slack发送结果"
   ],
-  "criticism": "当前Slack发送动作未配置参数，无法发送消息，需尽快配置参数以完成数据传递。",
-  "tool_name": "function_rewrite_params",
+  "criticism": "目前主流程未实现，无法完成用户需求；需要处理Google Sheets数据为空的情况，避免发送空消息。",
+  "tool_name": "workflow_implment",
   "tool_input": {
-    "function_name": "action_1",
-    "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"},\"messageType\":\"text\",\"text\":\"={{JSON.stringify($json)}}\",\"blocksUi\":\"\",\"attachments\":[],\"otherOptions\":{}}",
-    "comments": "将Google Sheets读取的数据转换为字符串并发送到Slack的#general频道",
-    "TODO": [
-      "测试消息发送是否成功",
-      "调整消息格式以适应需求"
-    ]
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0(input_data=None):\n    \"\"\"\n    comments: 手动触发器，用户点击按钮触发流程\n    TODOs:\n      - 测试触发器是否正常工作\n      - 确保触发器输出格式符合后续动作输入\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: 配置Google Sheets读取参数，指定文档ID和工作表名\n    TODOs:\n      - 测试读取是否成功\n      - 确认数据格式符合预期\n    \"\"\"\n    params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},\n               'filtersUI': {},\n               'options': {},\n               'sheetName': {'mode': 'id', 'value': 'commercial'}}\n    function = transparent_action(integration=\"googleSheets\", resource=\"sheet\", operation=\"read\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef action_1(input_data):\n    \"\"\"\n    comments: 将读取到的Google Sheets数据作为json字符串发送到Slack #general频道\n    TODOs:\n      - 配置频道为#general\n      - 确保消息文本格式正确\n      - 测试消息发送\n    \"\"\"\n    params = {\"select\": \"channel\",\n              \"channelId\": {\"mode\": \"name\", \"value\": \"general\"},\n              \"messageType\": \"text\",\n              \"text\": \"={{$json[\\\"text\\\"]}}\"}\n    function = transparent_action(integration=\"slack\", resource=\"message\", operation=\"post\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input):\n    \"\"\"\n    comments: 主流程，手动触发后读取Google Sheets数据，并将数据作为json字符串发送到Slack #general频道\n    TODOs:\n      - 处理Google Sheets返回空数据的情况\n      - 确保Slack消息格式正确\n      - 测试整体流程\n    \"\"\"\n    # Step 1: 手动触发器触发\n    trigger_output = trigger_0()\n\n    # Step 2: 读取Google Sheets数据\n    sheet_data = action_0(trigger_output)\n\n    # Step 3: 处理读取到的数据，转换为json字符串\n    import json\n    if not sheet_data or len(sheet_data) == 0:\n        message_text = \"Google Sheets没有读取到数据。\"\n    else:\n        try:\n            # 转换整个数据结构为json字符串，方便查看完整内容\n            message_text = json.dumps([item['json'] for item in sheet_data], ensure_ascii=False, indent=2)\n        except Exception as e:\n            message_text = f\"转换数据为JSON字符串时出错: {str(e)}\"\n\n    # Step 4: 封装为Slack消息输入格式\n    slack_input = [{\"json\": {\"text\": message_text}}]\n\n    # Step 5: 发送消息到Slack\n    slack_output = action_1(slack_input)\n\n    return slack_output\n"
   },
-  "tool_output_status": "RequiredParamUnprovided",
+  "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "error": "input parameter is null, \"blocksUi\" for action_1. You should put something in it.",
-    "result": "Nothing happened.",
-    "status": "RequiredParamUnprovided"
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
   }
 }

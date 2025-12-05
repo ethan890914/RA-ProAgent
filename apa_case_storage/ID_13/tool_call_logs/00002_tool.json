@@ -1,15 +1,15 @@
 {
-  "thought": "The main workflow should trigger on manual trigger and then send the email using the defined Gmail action.",
+  "thought": "The manual trigger outputs a list with an empty json object. The Gmail send action expects input data but does not require any fields from the input. I will implement the mainWorkflow to call the Gmail send action passing the trigger input directly to it, as no data transformation is needed.",
   "plan": [
-    "Use the manual trigger output as input to the main workflow.",
-    "Call the Gmail send email action with the trigger input.",
-    "Return the output of the email action as the workflow output."
+    "Receive trigger input from manual trigger.",
+    "Call the Gmail send action with the trigger input directly.",
+    "Return the output of the Gmail action as the workflow output."
   ],
-  "criticism": "The current mainWorkflow is not implemented, so the workflow cannot run end-to-end yet.",
+  "criticism": "Currently, mainWorkflow is not implemented and raises NotImplementedError, so the workflow does nothing and fails.",
   "tool_name": "workflow_implment",
   "tool_input": {
     "workflow_name": "mainWorkflow",
-    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: Triggered manually, send an email to qwuqwuqwu@gmail.com with given subject and content.\n    TODOs:\n      - Test the workflow end-to-end\n      - Handle errors if email sending fails\n    \"\"\"\n    output_data = action_0(trigger_input)\n    return output_data\n"
+    "code": "def trigger_0(input_data):\n  \"\"\"\n  comments: Trigger the workflow manually by user click.\n  TODOs: \n    - Test the manual trigger.\n    - Ensure it outputs the correct format for the workflow input.\n  \"\"\"\n  params = {}\n  function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n  output_data = function.run(input_data=None, params=params)\n  return output_data\n\n\ndef action_0(input_data):\n  \"\"\"\n  comments: Send an email to qwuqwuqwu@gmail.com with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!'.\n  TODOs: \n    - Test sending email with given inputs.\n    - Handle errors if email sending fails.\n  \"\"\"\n  params = { 'emailType': 'text',\n             'message': 'Hi qwuqwuqwu!',\n             'options': {},\n             'sendTo': 'qwuqwuqwu@gmail.com',\n             'subject': 'ProAgent testing'}\n  function = transparent_action(integration=\"gmail\", resource=\"message\", operation=\"send\")\n  output_data = function.run(input_data=input_data, params=params)\n  return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n  \"\"\"\n  comments: Connect manual trigger to Gmail send email action to send specified email.\n  TODOs: \n    - Test the workflow end-to-end.\n    - Verify email is sent correctly.\n  \"\"\"\n  # The Gmail send action does not require any specific fields from trigger_input, so pass it directly.\n  email_output = action_0(trigger_input)\n  return email_output\n"
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {

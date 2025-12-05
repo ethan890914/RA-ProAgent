@@ -1,12 +1,12 @@
 {
-  "thought": "To fulfill the user request, I need to define the necessary functions first: a manual trigger, reading from Google Sheets, calling AI completion, and sending emails via Gmail.",
+  "thought": "To fulfill the user's request, I need to define the required functions: a manual trigger, an action to read the Google Sheets data, an action to call the AI completion for classification, and an action to send Gmail messages.",
   "plan": [
-    "Define a manual trigger function to start the workflow.",
-    "Define a Google Sheets read action to get commercial entries.",
-    "Define an aiCompletion action to classify descriptions.",
-    "Define a Gmail send message action to send classification results."
+    "Define trigger for manual trigger",
+    "Define action to read Google Sheets with documentId and sheetName",
+    "Define action to call aiCompletion with messages input",
+    "Define action to send Gmail message to specified email"
   ],
-  "criticism": "The current plan lacks function definitions, so the workflow cannot be implemented or tested yet.",
+  "criticism": "The current code has no functions defined, so no actual workflow can run. I will define all needed functions first.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -14,40 +14,39 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Manual trigger to start the workflow when user clicks the button.",
+        "comments": "Manual trigger to start the workflow on button click.",
         "TODO": [
-          "Test the manual trigger activation."
+          "Test manual trigger activation"
         ]
       },
       {
         "integration_name": "googleSheets",
         "resource_name": "sheet",
         "operation_name": "read",
-        "comments": "Read all rows from the 'commercial' sheet of the given Google Sheet document.",
+        "comments": "Read all rows from the specified Google Sheet document and sheet name.",
         "TODO": [
-          "Set documentId and sheetName parameters.",
-          "Test reading data from Google Sheets."
+          "Set documentId and sheetName parameters",
+          "Test reading sheet data"
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Use AI to classify each commercial entry Description as 'to Business' or 'to Customer'.",
+        "comments": "Call AI completion to classify each Description as 'to Business' or 'to Customer'.",
         "TODO": [
-          "Build messages array input for AI.",
-          "Test AI classification."
+          "Build messages array with system and user prompts",
+          "Test AI classification output"
         ]
       },
       {
         "integration_name": "gmail",
         "resource_name": "message",
         "operation_name": "send",
-        "comments": "Send classification result emails to the specified email address.",
+        "comments": "Send Gmail messages to the specified email address with classification results.",
         "TODO": [
-          "Set recipient email address.",
-          "Format email body and subject.",
-          "Test email sending."
+          "Set recipient email and message content",
+          "Test sending emails"
         ]
       }
     ]
