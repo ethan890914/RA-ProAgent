@@ -668,5 +668,79 @@
       "6. i is the index starting from 1"
     ],
     "refine_prompt": ""
+  },
+  {
+    "ID": "36-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate queries to PostgreSQL, and then using PostgreSQL to execute the query, and then sends the result via slack",
+    "additional_information": [
+      "1. Create the aiCompletion input with messages array containing system prompt and user prompt",
+      "1.2 System prompt: 'You are a professional PostgreSQL programmer, please only output a SQL string'",
+      "1.3 User prompt: Please write a SQL query, which select first three rows from table 'bloomberg_articles' and limit the rows to 3, and sort with column published_at",
+      "1.4 Call the aiCompletion with designed input",
+      "2. Extract the query generated, and use PostgreSQL to execute the query",
+      "3. Be careful about the format, you should use a string to query PostgreSQL",
+      "3.1 Extract the PostgreSQL output, we need title and author in the later process",
+      "4. Send the results to Slack channel general",
+      "5. Message format: '[i]. Title: [title]\npublished_at: [published_at]'",
+      "6. i is the index starting from 1"
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "37",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which queries specific columns from PostgreSQL database and sends the result to Slack",
+    "additional_information": [
+      "1. Use postgres to execute SQL query: SELECT * FROM bloomberg_articles ORDER BY published_at DESC LIMIT 3;",
+      "2. Extract the query result with title and author fields",
+      "3. Send the results to Slack channel general",
+      "4. Message format: '[i]. Title: [title]\nAuthor: [author]\npublished_at: [published_at]'",
+      "5. i is the index starting from 1"
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "38",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate queries to PostgreSQL, and then using PostgreSQL to execute the query, and then sends the result via slack",
+    "additional_information": [
+      "1. Create the aiCompletion input with messages array containing system prompt and user prompt",
+      "1.2 System prompt: 'You are a professional PostgreSQL SQL programmer, please only output a SQL string'",
+      "1.3 User prompt: Please write a SQL query, which find distinct 'source_name' from the table 'bloomberg_articles'",
+      "1.4 Call the aiCompletion with designed input",
+      "2. Extract the query generated, and use PostgreSQL to execute the query",
+      "3. Be careful about the format, you should use a plain string to query PostgreSQL",
+      "3.1 Extract the PostgreSQL output, we might get a list of source_name",
+      "4. Send the results to Slack channel general"
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "39",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate queries to PostgreSQL, and then using PostgreSQL to execute the query, and then sends the result via slack",
+    "additional_information": [
+      "1. Create the aiCompletion input with messages array containing system prompt and user prompt",
+      "1.2 System prompt: 'You are a professional PostgreSQL SQL programmer, please only output a SQL string'",
+      "1.3 User prompt: Please write a SQL query, which find how many rows are there in the table 'bloomberg_articles'",
+      "1.4 Call the aiCompletion with designed input",
+      "2. Extract the query generated, and use PostgreSQL to execute the query",
+      "3. Be careful about the format, you should use a plain string to query PostgreSQL",
+      "3.1 Extract the PostgreSQL output, we might get a list of source_name",
+      "4. Send the results to Slack channel general"
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "40",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate queries to PostgreSQL, and then using PostgreSQL to execute the query, and then sends the result via slack",
+    "additional_information": [
+      "1. Create the aiCompletion input with messages array containing system prompt and user prompt",
+      "1.2 System prompt: 'You are a professional PostgreSQL SQL programmer, please only output a SQL string'",
+      "1.3 User prompt: Please write a SQL query, which use information schema to list column names, data types, and nullability in the table 'bloomberg_articles'",
+      "1.4 Call the aiCompletion with designed input",
+      "2. Extract the query generated, and use PostgreSQL to execute the query",
+      "3. Be careful about the format, you should use a plain string to query PostgreSQL",
+      "3.1 Extract the PostgreSQL output",
+      "4. Send the results to Slack channel general"
+    ],
+    "refine_prompt": ""
   }
 ]

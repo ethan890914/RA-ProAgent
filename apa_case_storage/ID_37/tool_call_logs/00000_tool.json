@@ -1,0 +1,53 @@
+{
+  "thought": "To fulfill the user's request, I need to define the trigger for manual start, the action to execute the PostgreSQL query, and the action to send messages to Slack.",
+  "plan": [
+    "Define the manual trigger function to start the workflow.",
+    "Define the PostgreSQL action to execute the specified SQL query.",
+    "Define the Slack action to send messages to the 'general' channel."
+  ],
+  "criticism": "Currently, no functions are defined or implemented, so the workflow cannot run.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Trigger the workflow manually by user click.",
+        "TODO": [
+          "Test the manual trigger functionality."
+        ]
+      },
+      {
+        "integration_name": "postgres",
+        "resource_name": "database",
+        "operation_name": "executeQuery",
+        "comments": "Execute the SQL query to get the latest 3 bloomberg_articles records.",
+        "TODO": [
+          "Implement the SQL query parameter.",
+          "Test the query execution."
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send formatted messages to Slack channel 'general'.",
+        "TODO": [
+          "Set the channel parameter to 'general'.",
+          "Format messages properly.",
+          "Test Slack message sending."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: postgres->database->executeQuery",
+      "function_2 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}
