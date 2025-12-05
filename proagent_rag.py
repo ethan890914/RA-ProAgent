@@ -41,7 +41,7 @@ class ProAgentRAG:
         results = []
         for idx in top_indices:
             results.append({
-                'id': self.history[idx]['ID'],
+                'ID': self.history[idx]['ID'],
                 'similarity': float(similarities[idx]),
                 'query': self.history[idx]['task']
             })
