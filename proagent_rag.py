@@ -3,7 +3,7 @@ import numpy as np
 from typing import List, Dict
 import json
 from query_loader import query_loader
-def include_all_info(query, additions):
+def include_all_info(query, additions=None):
     record = ""
     record += f"query: {query}"
     record += f"additional information: {additions}"
