@@ -9,12 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user
+  comments: Manual trigger to start the workflow on demand
   TODOs: 
-    - Test the manual trigger
-    - Verify output format
+    - Test the trigger to ensure it fires correctly
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -48,14 +47,13 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Fetch the current weather data for Dubai with metric units
+  comments: Get current weather data for Dubai with metric units
   TODOs: 
-    - Test fetching weather data for Dubai
-    - Verify output contains temperature and wind
+    - Test the action to ensure correct weather data is fetched
   """
-  params = {'cityName': 'Dubai', 'format': 'metric', 'locationSelection': 'cityName'}
+  params = {'cityName': 'Dubai', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -91,13 +89,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send formatted weather message to Slack channel
+  comments: Send a formatted weather message to Slack channel
   TODOs: 
-    - Set channel to weathers
-    - Format message with temperature and wind
-    - Test sending message
+    - Set specific_params for channel and message text
+    - Test sending message to Slack
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")

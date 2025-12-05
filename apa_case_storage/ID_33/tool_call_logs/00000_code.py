@@ -9,12 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user
+  comments: Manual trigger to start the workflow on demand
   TODOs: 
-    - Test the manual trigger
-    - Verify output format
+    - Test the trigger to ensure it fires correctly
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -48,12 +47,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Fetch the current weather data for Dubai
+  comments: Get current weather data for Dubai
   TODOs: 
-    - Set city to Dubai
-    - Test fetching weather data
+    - Set specific_params to query Dubai weather
+    - Test the action to ensure correct weather data is fetched
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
@@ -91,13 +90,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send formatted weather message to Slack channel
+  comments: Send a formatted weather message to Slack channel
   TODOs: 
-    - Set channel to weathers
-    - Format message with temperature and wind
-    - Test sending message
+    - Set specific_params for channel and message text
+    - Test sending message to Slack
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")

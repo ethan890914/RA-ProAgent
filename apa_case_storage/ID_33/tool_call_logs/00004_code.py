@@ -1,20 +1,19 @@
 """Function param descriptions: 
 This function doesn't need params
 
-This function has been executed for 1 times. Last execution:
-1.Status: TriggerAcivatedSuccess
+This function has been executed for 2 times. Last execution:
+1.Status: FunctionExecuteSuccess
 2.Input: 
-[]
+None
 
 3.Output:
-[{'json': {}}]
+[{'json': {}, 'pairedItem': {'item': 0}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user
+  comments: Manual trigger to start the workflow on demand
   TODOs: 
-    - Test the manual trigger
-    - Verify output format
+    - Test the trigger to ensure it fires correctly
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -43,19 +42,18 @@ def trigger_0(input_data: List[Dict] =  [{...}]):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {}}]
+[{'json': {}, 'pairedItem': {'item': 0}}]
 
 3.Output:
-[{'json': {'coord': {'lon': 55.3047, 'lat': 25.2582}, 'weather': [{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01n'}], 'base': 'stations', 'main': {'temp': 25.96, 'feels_like': 25.96, 'temp_min': 23.14, 'temp_max': 25.96, 'pressure': 1016, 'humidity': 65, 'sea_level': 1016, 'grnd_level': 1016}, 'visibility': 8000, 'wind': {'speed': 2.57, 'deg': 320}, 'clouds': {'all': 1}, 'dt': 1764777966, 'sys': {'type': 1, 'id': 7537, 'country': 'AE', 'sunrise': 1764730134, 'sunset': 1764768516}, 'timezone': 14400, 'id': 292223, 'name': 'Dubai', 'cod': 200}, 'pairedItem': {'item': 0}}]
+[{'json': {'coord': {'lon': 55.3047, 'lat': 25.2582}, 'weather': [{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01d'}], 'base': 'stations', 'main': {'temp': 27.96, 'feels_like': 27.77, 'temp_min': 27.14, 'temp_max': 27.96, 'pressure': 1017, 'humidity': 42, 'sea_level': 1017, 'grnd_level': 1017}, 'visibility': 10000, 'wind': {'speed': 5.66, 'deg': 320}, 'clouds': {'all': 0}, 'dt': 1764940466, 'sys': {'type': 1, 'id': 7537, 'country': 'AE', 'sunrise': 1764903017, 'sunset': 1764941328}, 'timezone': 14400, 'id': 292223, 'name': 'Dubai', 'cod': 200}, 'pairedItem': {'item': 0}}]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Fetch the current weather data for Dubai with metric units
+  comments: Get current weather data for Dubai with metric units
   TODOs: 
-    - Test fetching weather data for Dubai
-    - Verify output contains temperature and wind
+    - Test the action to ensure correct weather data is fetched
   """
-  params = {'cityName': 'Dubai', 'format': 'metric', 'locationSelection': 'cityName'}
+  params = {'cityName': 'Dubai', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -84,24 +82,21 @@ def action_0(input_data: List[Dict] =  [{...}]):
   ...hidden...
 
 This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+1.Status: ErrorRaisedHere
 2.Input: 
-[{'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'weathers'}, 'messageType': 'text', 'text': 'Dubai temperature: 25.96 \n wind: 2.57'}}]
+[{'json': {'text': 'Dubai temperature: 27.96 \n wind: 5.66'}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764778281.405669', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Dubai temperature: 25.96 \n wind: 2.57', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '+FN', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Dubai temperature: 25.96 \n wind: 2.57'}]}]}]}, 'message_timestamp': '1764778281.405669'}, 'pairedItem': {'item': 0}}]
+[]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Set Slack message parameters to send text to channel 'weathers'
+  comments: Send a formatted weather message to Slack channel
   TODOs: 
-    - Test Slack message sending
-    - Verify message appears in 'weathers' channel
+    - Set specific_params for channel and message text
+    - Test sending message to Slack
   """
-  params = { 'channelId': {'mode': 'name', 'value': 'weathers'},
-             'messageType': 'text',
-             'select': 'channel',
-             'text': '={{$json["text"]}}'}
+  params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -111,72 +106,41 @@ def action_1(input_data: List[Dict] =  [{...}]):
 """
 
 This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+1.Status: ErrorRaisedInner
 2.Input: 
 [{'json': {}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764778281.405669', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Dubai temperature: 25.96 \n wind: 2.57', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '+FN', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Dubai temperature: 25.96 \n wind: 2.57'}]}]}]}, 'message_timestamp': '1764778281.405669'}, 'pairedItem': {'item': 0}}]
+[]
 """
-def trigger_0(input_data=None):
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
-
-
-def action_0(input_data):
-    params = {'cityName': 'Dubai', 'format': 'metric', 'locationSelection': 'cityName'}
-    function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data):
-    params = { 'channelId': {'mode': 'name', 'value': 'weathers'},
-               'messageType': 'text',
-               'select': 'channel',
-               'text': '={{$json["text"]}}'}
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def mainWorkflow(trigger_input):
+def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Fetch current weather for Dubai and send formatted message to Slack channel 'weathers'
-    TODOs:
-      - Test full workflow
-      - Verify weather data extraction
-      - Verify Slack message format and sending
+    comments: Workflow triggered manually, gets Dubai weather and sends formatted message to Slack channel 'weathers'
+    TODOs: 
+      - Test complete workflow
+      - Handle missing weather data gracefully
     """
-    # Step 1: Call manual trigger (trigger_input is already from trigger)
-    manual_trigger_output = trigger_input
+    # Step 1: Get manual trigger output
+    manual_trigger_output = trigger_0(None)
 
-    # Step 2: Call action_0 to get current weather for Dubai
+    # Step 2: Get current weather for Dubai
     weather_output = action_0(manual_trigger_output)
 
-    if not weather_output or not weather_output[0]['json']:
-        # No weather data returned
-        return []
-
-    weather_json = weather_output[0]['json']
-
-    # Extract temperature and wind speed
-    temperature = weather_json.get('main', {}).get('temp', 'unknown')
+    # Step 3: Extract temperature and wind speed
+    weather_json = weather_output[0]['json'] if weather_output else {}
+    temp = weather_json.get('main', {}).get('temp', 'unknown')
     wind_speed = weather_json.get('wind', {}).get('speed', 'unknown')
 
-    # Format message
-    message_text = f"Dubai temperature: {temperature} \n wind: {wind_speed}"
+    # Step 4: Format message
+    message_text = f"Dubai temperature: {temp} \n wind: {wind_speed}"
 
-    # Prepare Slack input
-    slack_input = [{"json": {"select": "channel", "channelId": {"mode": "name", "value": "weathers"}, "messageType": "text", "text": message_text}}]
+    # Step 5: Prepare Slack input data
+    slack_input = [{"json": {"text": message_text}}]
 
-    # Call action_1 to send message
+    # Step 6: Send message to Slack
     slack_output = action_1(slack_input)
 
     return slack_output
-
 
 
 
@@ -185,6 +149,42 @@ def mainWorkflow(trigger_input):
 The directly running result for now codes with print results are as following:
 
 
+Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
+[Output Data Info]
+the output data of function `trigger_0` is: `[{'json': {}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_0` is: `[{'json': {'coord': {'lon': 55.3047, 'lat': 25.2582}, 'weather': [{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01d'}], 'base': 'stations', 'main': {'temp': 27.96, 'feels_like': 27.77, 'temp_min': 27.14, 'temp_max': 27.96, 'pressure': 1017, 'humidity': 42, 'sea_level': 1017, 'grnd_level': 1017}, 'visibility': 10000, 'wind': {'speed': 5.66, 'deg': 320}, 'clouds': {'all': 0}, 'dt': 1764940466, 'sys': {'type': 1, 'id': 7537, 'country': 'AE', 'sunrise': 1764903017, 'sunset': 1764941328}, 'timezone': 14400, 'id': 292223, 'name': 'Dubai', 'cod': 200}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_1` is: `[]`
+
+------------------------
+In Function: mainWorkflow
+        # Step 6: Send message to Slack
+-->     slack_output = action_1(slack_input)
+------------------------
+In Function: transparent_action
+      function = transparent_action(integration="slack", resource="message", operation="post")
+-->   output_data = function.run(input_data=input_data, params=params)
+      return output_data
+------------------------
+n8nRunningException: Execution Failed: 
+Output: Problem with execution 2491: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
+The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 2491)
+Error executing workflow. See log messages for details.
+
+Execution error:
+====================================
+The workflow has issues and cannot be executed for that reason. Please fix them first.
+undefined
+WorkflowHasIssuesError: The workflow has issues and cannot be executed for that reason. Please fix them first.
+    at WorkflowExecute.checkForWorkflowIssues (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1382:10)
+    at WorkflowExecute.processRunExecutionData (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1461:8)
+    at WorkflowExecute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:176:15)
+    at ManualExecutionService.runManually (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/manual-execution.service.ts:157:27)
+    at WorkflowRunner.runMainProcess (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:298:53)
+    at WorkflowRunner.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:175:4)
+    at Execute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/commands/execute.ts:95:23)
+    at CommandRegistry.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/command-registry.ts:67:4)
+    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/bin/n8n:63:2
+The workflow has issues and cannot be executed for that reason. Please fix them first.
 
 
 You can also see the runnning result for all functions in there comments.

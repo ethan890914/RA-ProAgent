@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually when user clicks the button.
+  comments: Manual trigger to start the workflow on user click
   TODOs: 
-    - Test the manual trigger works.
-    - Check the output data format.
+    - Test trigger activation
+    - Verify output format
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -40,22 +40,22 @@ def trigger_0(input_data: List[Dict] =  [{...}]):
 6 params["zipCode"]: string = "", Required when (locationSelection in ['zipCode']), otherwise do not provide: Zip Code. The ID of city to return the weather of. List can be downloaded here: http://bulk.openweathermap.org/sample/.(10115,de)
 7 params["language"]: string = "": Language. The two letter language code to get your output in (eg. en, de, ...).(en)
 
-This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
 2.Input: 
-[{'json': {}}]
+[]
 
 3.Output:
-[{'json': {'coord': {'lon': -97.7431, 'lat': 30.2672}, 'weather': [{'id': 804, 'main': 'Clouds', 'description': 'overcast clouds', 'icon': '04d'}], 'base': 'stations', 'main': {'temp': 11.49, 'feels_like': 10.81, 'temp_min': 10.65, 'temp_max': 12.77, 'pressure': 1017, 'humidity': 81, 'sea_level': 1017, 'grnd_level': 993}, 'visibility': 10000, 'wind': {'speed': 3.09, 'deg': 170}, 'clouds': {'all': 100}, 'dt': 1764778570, 'sys': {'type': 2, 'id': 2105175, 'country': 'US', 'sunrise': 1764767510, 'sunset': 1764804622}, 'timezone': -21600, 'id': 4671654, 'name': 'Austin', 'cod': 200}, 'pairedItem': {'item': 0}}]
+[]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Fetch current weather for Austin using cityName and metric units.
+  comments: Fetch current weather for Austin with metric units
   TODOs: 
-    - Test the action to verify it returns weather data for Austin.
-    - Handle possible errors in fetching data.
+    - Test API call and output
+    - Verify data contains coord, temperature, visibility
   """
-  params = {'cityName': 'Austin', 'format': 'metric', 'locationSelection': 'cityName'}
+  params = {'cityName': 'Austin', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -83,23 +83,25 @@ def action_0(input_data: List[Dict] =  [{...}]):
 7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
   ...hidden...
 
-This function has been executed for 1 times. Last execution:
-1.Status: ErrorRaisedHere
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
 2.Input: 
-[{'json': {'text': "Austin coord: {'lon': -97.7431, 'lat': 30.2672} \n temperature: 11.49 \n visibility: 10000"}}]
+[]
 
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send a message to a Slack channel with the weather information.
+  comments: Send formatted weather message to Slack channel 'weathers'
   TODOs: 
-    - Configure channel parameter to the weather channel.
-    - Format the message text with coord, temperature and visibility.
-    - Test the Slack message sending.
+    - Test message delivery
+    - Verify message format in Slack
   """
-  params = {}  # to be Implemented
+  params = { 'channelId': {'mode': 'name', 'value': 'weathers'},
+             'messageType': 'text',
+             'select': 'channel',
+             'text': '={{$json["text"]}}'}
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -109,88 +111,24 @@ def action_1(input_data: List[Dict] =  [{...}]):
 """
 
 This function has been executed for 1 times. Last execution:
-1.Status: ErrorRaisedInner
+1.Status: ErrorRaisedHere
 2.Input: 
 [{'json': {}}]
 
 3.Output:
 []
 """
-def trigger_0(input_data: list = [{"json": {}}]):
-    """
-    comments: Trigger the workflow manually when user clicks the button.
-    TODOs: 
-      - Test the manual trigger works.
-      - Check the output data format.
-    """
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
 
-
-def action_0(input_data: list):
-    """
-    comments: Fetch current weather for Austin using cityName and metric units.
-    TODOs: 
-      - Test the action to verify it returns weather data for Austin.
-      - Handle possible errors in fetching data.
-    """
-    params = {"cityName": "Austin", "format": "metric", "locationSelection": "cityName"}
-    function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data: list):
-    """
-    comments: Send a message to a Slack channel with the weather information.
-    TODOs: 
-      - Configure channel parameter to the weather channel.
-      - Format the message text with coord, temperature and visibility.
-      - Test the Slack message sending.
-    """
-    params = {"select": "channel", "channelId": {"mode": "name", "value": "weathers"}, "messageType": "text", "text": "={{$json[\"text\"]}}"}
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def mainWorkflow(trigger_input: list):
-    """
-    comments: Workflow to fetch current weather for Austin and send to Slack channel 'weathers'.
-    TODOs: 
-      - Test the entire workflow end to end.
-      - Handle possible errors in API calls.
-    """
-    # Step 1: Trigger input is not used directly, but passed to action_0
-    weather_output = action_0(trigger_input)
-
-    # Step 2: Extract coord, temperature, visibility
-    if not weather_output or not weather_output[0].get("json"):
-        raise ValueError("No weather data received.")
-    weather_json = weather_output[0]["json"]
-    coord = weather_json.get("coord")
-    main = weather_json.get("main")
-    visibility = weather_json.get("visibility")
-
-    if not coord or not main or visibility is None:
-        raise ValueError("Missing required weather data fields.")
-
-    temperature = main.get("temp")
-    if temperature is None:
-        raise ValueError("Temperature data missing.")
-
-    # Step 3: Format message
-    message_text = f"Austin coord: {coord} \n temperature: {temperature} \n visibility: {visibility}"
-
-    # Step 4: Prepare Slack input
-    slack_input = [{"json": {"text": message_text}}]
-
-    # Step 5: Send to Slack
-    slack_output = action_1(slack_input)
-
-    return slack_output
+def mainWorkflow(trigger_input: [{...}]):
+  """
+  comments: You need to give comments when implementing mainWorkflow
+  TODOs: 
+    - first define some actions
+    - define a trigger
+    - then implement this
+  """
+  print("Please call Workflow-implement first")
+  raise NotImplementedError
 
 
 
@@ -203,40 +141,15 @@ The directly running result for now codes with print results are as following:
 Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
 [Output Data Info]
 the output data of function `trigger_0` is: `[{'json': {}}]`
-the output data of function `action_0` is: `[{'json': {'coord': {'lon': -97.7431, 'lat': 30.2672}, 'weather': [{'id': 804, 'main': 'Clouds', 'description': 'overcast clouds', 'icon': '04d'}], 'base': 'stations', 'main': {'temp': 11.49, 'feels_like': 10.81, 'temp_min': 10.65, 'temp_max': 12.77, 'pressure': 1017, 'humidity': 81, 'sea_level': 1017, 'grnd_level': 993}, 'visibility': 10000, 'wind': {'speed': 3.09, 'deg': 170}, 'clouds': {'all': 100}, 'dt': 1764778570, 'sys': {'type': 2, 'id': 2105175, 'country': 'US', 'sunrise': 1764767510, 'sunset': 1764804622}, 'timezone': -21600, 'id': 4671654, 'name': 'Austin', 'cod': 200}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_0` is: `[]`
 the output data of function `action_1` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-        # Step 5: Send to Slack
--->     slack_output = action_1(slack_input)
+      print("Please call Workflow-implement first")
+-->   raise NotImplementedError
 ------------------------
-In Function: transparent_action
-      function = transparent_action(integration="slack", resource="message", operation="post")
--->   output_data = function.run(input_data=input_data, params=params)
-      return output_data
-------------------------
-n8nRunningException: Execution Failed: 
-Output: Problem with execution 1507: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
-The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 1507)
-Error executing workflow. See log messages for details.
-
-Execution error:
-====================================
-The workflow has issues and cannot be executed for that reason. Please fix them first.
-undefined
-WorkflowHasIssuesError: The workflow has issues and cannot be executed for that reason. Please fix them first.
-    at WorkflowExecute.checkForWorkflowIssues (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1382:10)
-    at WorkflowExecute.processRunExecutionData (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1461:8)
-    at WorkflowExecute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:176:15)
-    at ManualExecutionService.runManually (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/manual-execution.service.ts:157:27)
-    at WorkflowRunner.runMainProcess (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:298:53)
-    at WorkflowRunner.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:175:4)
-    at Execute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/commands/execute.ts:95:23)
-    at CommandRegistry.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/command-registry.ts:67:4)
-    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/bin/n8n:63:2
-The workflow has issues and cannot be executed for that reason. Please fix them first.
-
+NotImplementedError: 
 
 You can also see the runnning result for all functions in there comments.
 """

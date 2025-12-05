@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user pressing a button.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Implement the trigger function to start the workflow
-    - Test the trigger activation
+    - Test the manual trigger
+    - Ensure it activates the workflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -36,12 +36,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Execute the SQL query to select title and author from bloomberg_articles with a limit of 5.
+  comments: Execute SQL query to get title and author from bloomberg_articles.
   TODOs: 
-    - Test the query execution and output format
-    - Refine query if needed based on output
+    - Test query execution
+    - Verify output contains title and author fields
   """
   params = {'options': {}, 'query': 'SELECT title, author FROM bloomberg_articles LIMIT 5;'}
   function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
@@ -79,12 +79,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
   comments: Send formatted messages to Slack channel 'general'.
   TODOs: 
-    - Implement the Slack message sending action
-    - Test message formatting and delivery
+    - Implement message formatting and Slack channel config
+    - Test message sending
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
@@ -103,76 +103,31 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 []
 """
-def trigger_0(input_data=None):
+def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Trigger the workflow manually by user pressing a button.
-    TODOs:
-      - Implement the trigger function to start the workflow
-      - Test the trigger activation
-    """
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
-
-
-def action_0(input_data):
-    """
-    comments: Execute the SQL query to select title and author from bloomberg_articles with a limit of 5.
-    TODOs:
-      - Test the query execution and output format
-      - Refine query if needed based on output
-    """
-    params = {'options': {}, 'query': 'SELECT title, author FROM bloomberg_articles LIMIT 5;'}
-    function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data):
-    """
-    comments: Send formatted messages to Slack channel 'general'.
-    TODOs:
-      - Implement the Slack message sending action
-      - Test message formatting and delivery
-    """
-    params = {
-        "select": "channel",
-        "channelId": {"mode": "name", "value": "general"},
-        "messageType": "text",
-        "text": "={{$json[\"text\"]}}"
-    }
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def mainWorkflow(trigger_input):
-    """
-    comments: Main workflow to query PostgreSQL database and send formatted results to Slack channel 'general'.
-    TODOs:
+    comments: Workflow to query PostgreSQL and send formatted results to Slack channel 'general'.
+    TODOs: 
       - Test end-to-end workflow
-      - Verify message format and Slack delivery
+      - Verify message formatting
     """
-    # Step 1: Trigger manual trigger
+    # Step 1: Trigger manually
     trigger_output = trigger_0()
 
     # Step 2: Execute SQL query
     query_output = action_0(trigger_output)
 
-    # Step 3: Extract title and author from query_output
-    slack_input = []
+    # Step 3: Extract title and author, format messages
+    slack_messages = []
     for i, item in enumerate(query_output, start=1):
         title = item['json'].get('title', '')
         author = item['json'].get('author', '')
         message_text = f"{i}. Title: {title}\nAuthor: {author}"
-        slack_input.append({"json": {"text": message_text}})
+        slack_messages.append({"json": {"text": message_text}})
 
     # Step 4: Send messages to Slack
-    slack_output = action_1(slack_input)
+    slack_output = action_1(slack_messages)
 
     return slack_output
-
 
 
 
@@ -189,7 +144,7 @@ the output data of function `action_1` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-        # Step 1: Trigger manual trigger
+        # Step 1: Trigger manually
 -->     trigger_output = trigger_0()
 ------------------------
 TypeError: n8nNodeRunner.__call__() missing 1 required positional argument: 'input_data'

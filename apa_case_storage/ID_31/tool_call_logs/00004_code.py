@@ -4,17 +4,17 @@ This function doesn't need params
 This function has been executed for 2 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {}}]
+None
 
 3.Output:
 [{'json': {}, 'pairedItem': {'item': 0}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger when the user manually triggers the workflow.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Test the manual trigger.
-    - Ensure it activates the mainWorkflow correctly.
+    - Test trigger
+    - Use as workflow input
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -46,14 +46,14 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}, 'pairedItem': {'item': 0}}]
 
 3.Output:
-[{'json': {'coord': {'lon': -74.006, 'lat': 40.7143}, 'weather': [{'id': 601, 'main': 'Snow', 'description': 'snow', 'icon': '13d'}], 'base': 'stations', 'main': {'temp': 1.2, 'feels_like': -3.84, 'temp_min': -0.03, 'temp_max': 2.21, 'pressure': 1017, 'humidity': 65, 'sea_level': 1017, 'grnd_level': 1016}, 'visibility': 10000, 'wind': {'speed': 5.81, 'deg': 339, 'gust': 7.6}, 'snow': {'1h': 0.76}, 'clouds': {'all': 20}, 'dt': 1764773431, 'sys': {'type': 1, 'id': 4610, 'country': 'US', 'sunrise': 1764763388, 'sunset': 1764797348}, 'timezone': -18000, 'id': 5128581, 'name': 'New York', 'cod': 200}, 'pairedItem': {'item': 0}}]
+[{'json': {'coord': {'lon': -74.006, 'lat': 40.7143}, 'weather': [{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01d'}], 'base': 'stations', 'main': {'temp': -5.94, 'feels_like': -12.08, 'temp_min': -7.69, 'temp_max': -4.88, 'pressure': 1027, 'humidity': 48, 'sea_level': 1027, 'grnd_level': 1025}, 'visibility': 10000, 'wind': {'speed': 4.63, 'deg': 30}, 'clouds': {'all': 0}, 'dt': 1764939435, 'sys': {'type': 2, 'id': 2037026, 'country': 'US', 'sunrise': 1764936303, 'sunset': 1764970129}, 'timezone': -18000, 'id': 5128581, 'name': 'New York', 'cod': 200}, 'pairedItem': {'item': 0}}]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Get current weather data from OpenWeatherMap for New York using cityName and metric units.
+  comments: Set parameters to fetch current weather for New York in metric units.
   TODOs: 
-    - Test the weather data retrieval for New York.
-    - Ensure the output contains temperature and wind data for further processing.
+    - Test weather fetching
+    - Verify output contains temperature and wind
   """
   params = {'cityName': 'New York', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
@@ -86,17 +86,17 @@ def action_0(input_data: List[Dict] =  [{...}]):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'text': 'New York temperature: 1.2 \n wind: 5.81'}}]
+[{'json': {'text': 'New York temperature: -5.94 \n wind: 4.63'}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764773978.560469', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'New York temperature: 1.2 \n wind: 5.81', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'ih/', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'New York temperature: 1.2 \n wind: 5.81'}]}]}]}, 'message_timestamp': '1764773978.560469'}, 'pairedItem': {'item': 0}}]
+[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764939760.890659', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'New York temperature: -5.94 \n wind: 4.63', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'MBj', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'New York temperature: -5.94 \n wind: 4.63'}]}]}]}, 'message_timestamp': '1764939760.890659'}, 'pairedItem': {'item': 0}}]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send a text message to Slack channel #weathers with dynamic message text from input data's json field 'text'.
+  comments: Set Slack message parameters to send text message to 'weathers' channel.
   TODOs: 
-    - Test Slack message sending with dynamic text.
-    - Verify message content in Slack channel #weathers.
+    - Test Slack message sending
+    - Verify message format in Slack
   """
   params = { 'channelId': {'mode': 'name', 'value': 'weathers'},
              'messageType': 'text',
@@ -116,88 +116,40 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764773978.560469', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'New York temperature: 1.2 \n wind: 5.81', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'ih/', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'New York temperature: 1.2 \n wind: 5.81'}]}]}]}, 'message_timestamp': '1764773978.560469'}, 'pairedItem': {'item': 0}}]
+[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764939760.890659', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'New York temperature: -5.94 \n wind: 4.63', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'MBj', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'New York temperature: -5.94 \n wind: 4.63'}]}]}]}, 'message_timestamp': '1764939760.890659'}, 'pairedItem': {'item': 0}}]
 """
-def trigger_0(input_data: [{...}] = None):
+def mainWorkflow(trigger_input):
     """
-    comments: Trigger when the user manually triggers the workflow.
-    TODOs:
-      - Test the manual trigger.
-      - Ensure it activates the mainWorkflow correctly.
+    comments: Workflow to get current weather for New York and send it to Slack channel 'weathers'.
+    TODOs: 
+      - Test end-to-end workflow
+      - Verify Slack message format
     """
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
-
-
-def action_0(input_data: [{...}]):
-    """
-    comments: Get current weather data from OpenWeatherMap for New York using cityName and metric units.
-    TODOs:
-      - Test the weather data retrieval for New York.
-      - Ensure the output contains temperature and wind data for further processing.
-    """
-    params = {'cityName': 'New York', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
-    function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data: [{...}]):
-    """
-    comments: Send a simple text message to Slack channel #weathers with placeholder text, to be replaced in workflow.
-    TODOs:
-      - Test Slack message sending with placeholder.
-      - Replace placeholder with dynamic weather info in workflow.
-    """
-    params = {'channelId': {'mode': 'name', 'value': 'weathers'}, 'messageType': 'text', 'select': 'channel', 'text': 'Placeholder'}
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def mainWorkflow(trigger_input: [{...}]):
-    """
-    comments: Main workflow triggered manually, fetches current weather for New York, formats message and sends to Slack #weathers channel.
-    TODOs:
-      - Test the full workflow.
-      - Verify message formatting and Slack delivery.
-    """
-    # Step 1: Start from manual trigger
-    manual_trigger_output = trigger_0(trigger_input)
+    # Step 1: Trigger manual
+    trigger_output = trigger_0(None)
 
     # Step 2: Get current weather for New York
-    weather_output = action_0(manual_trigger_output)
+    weather_output = action_0(trigger_output)
 
-    # Step 3: Extract temperature and wind speed
-    if not weather_output or not weather_output[0].get('json'):
-        raise ValueError('No weather data received')
+    if not weather_output or not weather_output[0]['json']:
+        # If no weather data, return empty
+        return []
+
     weather_json = weather_output[0]['json']
+    main = weather_json.get('main', {})
+    wind = weather_json.get('wind', {})
+    temperature = main.get('temp', 'unknown')
+    wind_speed = wind.get('speed', 'unknown')
 
-    # Extract temperature and wind speed safely
-    temperature = None
-    wind_speed = None
-    # OpenWeatherMap currentWeather output usually includes 'main' and 'wind' keys
-    if 'main' in weather_json and 'temp' in weather_json['main']:
-        temperature = weather_json['main']['temp']
-    if 'wind' in weather_json and 'speed' in weather_json['wind']:
-        wind_speed = weather_json['wind']['speed']
-
-    if temperature is None or wind_speed is None:
-        raise ValueError('Temperature or wind speed data missing in weather output')
-
-    # Step 4: Format message
+    # Step 3: Format Slack message
     message_text = f"New York temperature: {temperature} \n wind: {wind_speed}"
 
-    # Step 5: Prepare Slack input
     slack_input = [{"json": {"text": message_text}}]
 
-    # Step 6: Send message to Slack
+    # Step 4: Send to Slack
     slack_output = action_1(slack_input)
 
     return slack_output
-
 
 
 

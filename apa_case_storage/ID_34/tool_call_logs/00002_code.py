@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Manual trigger to start the workflow on demand.
+  comments: Manual trigger to start the workflow when user clicks the button.
   TODOs: 
-    - Test the trigger works.
-    - Ensure the output format matches expected input for next action.
+    - Test trigger functionality
+    - Use it as the main trigger for the workflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -36,12 +36,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Execute the SQL query to get the top 1 row from bloomberg_articles table.
+  comments: Execute the SQL query to get data from bloomberg_articles table.
   TODOs: 
-    - Test the query execution and output.
-    - Verify the output data format.
+    - Test the query execution and output format
+    - Verify output contains query results
   """
   params = {'options': {}, 'query': 'SELECT * FROM bloomberg_articles LIMIT 1;'}
   function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
@@ -79,13 +79,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send the formatted query result to Slack channel #general.
+  comments: Send the formatted PostgreSQL query result to Slack channel #general.
   TODOs: 
-    - Set the channel to #general.
-    - Format the message text properly.
-    - Test sending message to Slack.
+    - Format the message text
+    - Test sending message to Slack
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
@@ -104,83 +103,36 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 []
 """
-def trigger_0(input_data: [{...}] = None):
-    """
-    comments: Manual trigger to start the workflow on demand.
-    TODOs:
-      - Test the trigger works.
-      - Ensure the output format matches expected input for next action.
-    """
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
-
-
-def action_0(input_data: [{...}]):
-    """
-    comments: Execute the SQL query to get the top 1 row from bloomberg_articles table.
-    TODOs:
-      - Test the query execution and output.
-      - Verify the output data format.
-    """
-    params = {'query': 'SELECT * FROM bloomberg_articles LIMIT 1;', 'options': {}}
-    function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data: [{...}]):
-    """
-    comments: Send the formatted query result to Slack channel #general.
-    TODOs:
-      - Set the channel to #general.
-      - Format the message text properly.
-      - Test sending message to Slack.
-    """
-    params = {
-        "select": "channel",
-        "channelId": {"mode": "name", "value": "general"},
-        "messageType": "text",
-        "text": "={{$json[\"text\"]}}"
-    }
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
 def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Workflow to trigger manual start, query postgres, and send result to Slack #general channel.
-    TODOs:
-      - Test the entire workflow.
+    comments: Workflow triggered manually to query PostgreSQL and send results to Slack #general channel.
+    TODOs: 
+      - Handle empty query results
+      - Format query results properly for Slack
+      - Test end-to-end workflow
     """
-    # Step 1: Start with manual trigger
+    # Step 1: Start from manual trigger
     trigger_output = trigger_0()
 
-    # Step 2: Query postgres database
+    # Step 2: Execute PostgreSQL query
     query_output = action_0(trigger_output)
 
-    # Step 3: Extract the first row result
-    if len(query_output) == 0:
-        message_text = "PostgreSQL Query Result:\nNo results found."
+    # Step 3: Extract query result
+    if not query_output or not query_output[0]['json']:
+        message_text = "PostgreSQL Query Result:\nNo data returned."
     else:
-        # Extract the json dict of the first row
-        first_row = query_output[0]['json']
-        # Format the result as string
-        # Convert the dict to string with key:value pairs
-        result_lines = [f"{k}: {v}" for k, v in first_row.items()]
-        result_str = "\n".join(result_lines)
-        message_text = f"PostgreSQL Query Result:\n{result_str}"
+        # Format the query result as string
+        # We convert the json dict to string for display
+        result_json = query_output[0]['json']
+        message_text = f"PostgreSQL Query Result:\n{result_json}"
 
-    # Step 4: Wrap message for Slack input
+    # Step 4: Wrap message for Slack
     slack_input = [{"json": {"text": message_text}}]
 
-    # Step 5: Send to Slack channel #general
+    # Step 5: Send message to Slack
     slack_output = action_1(slack_input)
 
     return slack_output
-
 
 
 
@@ -197,7 +149,7 @@ the output data of function `action_1` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-        # Step 1: Start with manual trigger
+        # Step 1: Start from manual trigger
 -->     trigger_output = trigger_0()
 ------------------------
 TypeError: n8nNodeRunner.__call__() missing 1 required positional argument: 'input_data'

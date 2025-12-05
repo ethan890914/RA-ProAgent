@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger when the user manually triggers the workflow.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Test the manual trigger.
-    - Ensure it activates the mainWorkflow correctly.
+    - Test trigger
+    - Use as workflow input
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -48,12 +48,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Get current weather data from OpenWeatherMap for New York using cityName and metric units.
+  comments: Set parameters to fetch current weather for New York in metric units.
   TODOs: 
-    - Test the weather data retrieval for New York.
-    - Ensure the output contains temperature and wind data for further processing.
+    - Test weather fetching
+    - Verify output contains temperature and wind
   """
   params = {'cityName': 'New York', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
@@ -91,14 +91,15 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send a simple text message to Slack channel #weathers with placeholder text, to be replaced in workflow.
+  comments: Send a text message to a Slack channel.
   TODOs: 
-    - Test Slack message sending with placeholder.
-    - Replace placeholder with dynamic weather info in workflow.
+    - Select Slack channel
+    - Format message
+    - Test message sending
   """
-  params = {'channelId': {'mode': 'name', 'value': 'weathers'}, 'messageType': 'text', 'select': 'channel', 'text': 'Placeholder'}
+  params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -115,18 +116,38 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 []
 """
+def mainWorkflow(trigger_input):
+    """
+    comments: Workflow to get current weather for New York and send it to Slack channel 'weathers'.
+    TODOs: 
+      - Test end-to-end workflow
+      - Verify Slack message format
+    """
+    # Step 1: Trigger manual
+    trigger_output = trigger_0()
 
-def mainWorkflow(trigger_input: [{...}]):
-  """
-  comments: You need to give comments when implementing mainWorkflow
-  TODOs: 
-    - first define some actions
-    - define a trigger
-    - then implement this
-  """
-  print("Please call Workflow-implement first")
-  raise NotImplementedError
+    # Step 2: Get current weather for New York
+    weather_output = action_0(trigger_output)
 
+    if not weather_output or not weather_output[0]['json']:
+        # If no weather data, return empty
+        return []
+
+    weather_json = weather_output[0]['json']
+    main = weather_json.get('main', {})
+    wind = weather_json.get('wind', {})
+    temperature = main.get('temp', 'unknown')
+    wind_speed = wind.get('speed', 'unknown')
+
+    # Step 3: Format Slack message
+    message_text = f"New York temperature: {temperature} \n wind: {wind_speed}"
+
+    slack_input = [{"json": {"text": message_text}}]
+
+    # Step 4: Send to Slack
+    slack_output = action_1(slack_input)
+
+    return slack_output
 
 
 
@@ -143,10 +164,10 @@ the output data of function `action_1` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-      print("Please call Workflow-implement first")
--->   raise NotImplementedError
+        # Step 1: Trigger manual
+-->     trigger_output = trigger_0()
 ------------------------
-NotImplementedError: 
+TypeError: n8nNodeRunner.__call__() missing 1 required positional argument: 'input_data'
 
 You can also see the runnning result for all functions in there comments.
 """

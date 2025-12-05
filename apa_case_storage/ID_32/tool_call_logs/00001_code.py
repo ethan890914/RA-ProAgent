@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually when user clicks the button.
+  comments: Manual trigger to start the workflow on user click
   TODOs: 
-    - Test the manual trigger works.
-    - Check the output data format.
+    - Test trigger activation
+    - Verify output format
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -48,14 +48,14 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Fetch current weather for Austin using cityName and metric units.
+  comments: Fetch current weather for Austin with metric units
   TODOs: 
-    - Test the action to verify it returns weather data for Austin.
-    - Handle possible errors in fetching data.
+    - Test API call and output
+    - Verify data contains coord, temperature, visibility
   """
-  params = {'cityName': 'Austin', 'format': 'metric', 'locationSelection': 'cityName'}
+  params = {'cityName': 'Austin', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -91,13 +91,13 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send a message to a Slack channel with the weather information.
+  comments: Send formatted weather message to Slack channel 'weathers'
   TODOs: 
-    - Configure channel parameter to the weather channel.
-    - Format the message text with coord, temperature and visibility.
-    - Test the Slack message sending.
+    - Set channel to 'weathers'
+    - Format message text
+    - Test message delivery
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
