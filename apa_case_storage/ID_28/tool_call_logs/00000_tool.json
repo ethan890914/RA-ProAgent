@@ -1,13 +1,13 @@
 {
-  "thought": "To achieve the user's goal, I need to define the necessary actions and trigger from the available integrations: manualTrigger for starting, googleDrive for folder search, file search, and file download, and slack for sending messages.",
+  "thought": "To fulfill the user requirement, we need to define a manual trigger, Google Drive folder search, Google Drive file search within the folder, Google Drive file download, and Slack message send actions.",
   "plan": [
-    "Define a manual trigger function to start the workflow.",
-    "Define a googleDrive folder search action to find the folder 'ProAgentWorkspace/newsapi_data/2025-11-11'.",
-    "Define a googleDrive file search action to find the file 'abc-news_chunked_1day_articles_2025-11-11_1.csv' within the found folder.",
-    "Define a googleDrive file download action to download the file by its ID.",
-    "Define a slack message posting action to send the extracted schema to the Slack channel #news."
+    "Define trigger for manualTrigger default",
+    "Define action to search folder by name in Google Drive",
+    "Define action to search file by name in Google Drive within the folder",
+    "Define action to download the file from Google Drive by fileId",
+    "Define action to send message to Slack channel #news"
   ],
-  "criticism": "I have not yet implemented any function or workflow, so I cannot guarantee the correctness of parameters or the data flow between actions.",
+  "criticism": "At this stage, the plan only defines the necessary functions but does not implement them yet. The actual parameterization and data transformation will be done later.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -15,50 +15,50 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Trigger the workflow manually to start the process.",
+        "comments": "Trigger the workflow manually",
         "TODO": [
-          "Test the manual trigger.",
-          "Verify it activates the main workflow."
+          "Test the manual trigger",
+          "Use it as the main workflow trigger"
         ]
       },
       {
         "integration_name": "googleDrive",
         "resource_name": "fileFolder",
         "operation_name": "search",
-        "comments": "Search the folder named 'ProAgentWorkspace/newsapi_data/2025-11-11' in Google Drive.",
+        "comments": "Search for the folder 'ProAgentWorkspace' by name in Google Drive",
         "TODO": [
-          "Define search query to find folder by name.",
-          "Test folder search action."
+          "Implement search query for folder name",
+          "Test folder search result"
         ]
       },
       {
         "integration_name": "googleDrive",
         "resource_name": "fileFolder",
         "operation_name": "search",
-        "comments": "Search the file 'abc-news_chunked_1day_articles_2025-11-11_1.csv' inside the folder found.",
+        "comments": "Search for the file 'abc-news_chunked_1day_articles_2025-11-11_1.csv' inside the searched folder by folderId",
         "TODO": [
-          "Use folder ID from folder search to find the file.",
-          "Test file search action."
+          "Implement search query for file name with folderId filter",
+          "Test file search result"
         ]
       },
       {
         "integration_name": "googleDrive",
         "resource_name": "file",
         "operation_name": "download",
-        "comments": "Download the file using file ID from file search result.",
+        "comments": "Download the file from Google Drive using fileId",
         "TODO": [
-          "Test the download action and verify the binary content.",
-          "Decode Base64 content in workflow."
+          "Test file download",
+          "Extract binary data"
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Send the extracted schema to Slack channel #news.",
+        "comments": "Send the extracted schema text to Slack channel #news",
         "TODO": [
-          "Format message with filename and schema.",
-          "Test Slack message sending."
+          "Format message text",
+          "Test Slack message sending"
         ]
       }
     ]

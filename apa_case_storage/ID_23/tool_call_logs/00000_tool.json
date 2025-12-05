@@ -1,14 +1,14 @@
 {
-  "thought": "To fulfill the user's request, we need to define the necessary functions first: a manual trigger, reading Google Sheets data, two aiCompletion actions for classification and reminder generation, Slack message sending, and Gmail email sending.",
+  "thought": "To implement the workflow, first define all necessary functions for the actions and trigger: manual trigger, reading Google Sheets, two aiCompletion actions, Slack message sending, and Gmail sending.",
   "plan": [
-    "Define manual trigger function for starting the workflow.",
-    "Define Google Sheets read function to get commercial entries.",
-    "Define first aiCompletion action for classification of Description.",
-    "Define Slack message post action to send classification results.",
-    "Define second aiCompletion action for reminder email content generation.",
-    "Define Gmail send message action to send reminder emails."
+    "Define trigger function for manual trigger.",
+    "Define action function for reading Google Sheets data.",
+    "Define action function for the first aiCompletion for classification.",
+    "Define action function for Slack message posting.",
+    "Define action function for the second aiCompletion for reminder email content generation.",
+    "Define action function for sending email via Gmail."
   ],
-  "criticism": "The main challenge is to correctly handle data flow between steps, especially parsing AI outputs and filtering 'to Customer' entries for email sending.",
+  "criticism": "Without defining these functions first, the workflow cannot be implemented or tested.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -16,50 +16,49 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Trigger the workflow manually by user click.",
+        "comments": "Trigger the workflow manually by user.",
         "TODO": [
-          "Test trigger activation.",
-          "Ensure output format matches workflow input."
+          "Test manual trigger functionality."
         ]
       },
       {
         "integration_name": "googleSheets",
         "resource_name": "sheet",
         "operation_name": "read",
-        "comments": "Read commercial entries from Google Sheets.",
+        "comments": "Read all rows from a specific Google Sheet document and sheet name.",
         "TODO": [
-          "Set documentId and sheetName parameters.",
-          "Test reading and output schema."
+          "Implement reading with documentId and sheetName.",
+          "Test reading data."
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Classify each Description as 'to Business' or 'to Customer'.",
+        "comments": "Perform AI completion for classifying commercial entry descriptions.",
         "TODO": [
-          "Build input messages in workflow.",
-          "Parse classification output."
+          "Build messages input in workflow.",
+          "Test classification."
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Send each commercial entry's classification result to Slack channel #general.",
+        "comments": "Send messages to Slack channel #general.",
         "TODO": [
-          "Format message text correctly.",
-          "Test Slack message sending."
+          "Format message text properly.",
+          "Test sending messages."
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Generate reminder email content for 'to Customer' entries.",
+        "comments": "Perform AI completion for generating reminder emails for 'to Customer' entries.",
         "TODO": [
-          "Build input messages in workflow.",
-          "Parse reminder content output."
+          "Build messages input in workflow.",
+          "Test reminder email generation."
         ]
       },
       {
@@ -68,8 +67,8 @@
         "operation_name": "send",
         "comments": "Send reminder emails to specified email address.",
         "TODO": [
-          "Format email subject and body.",
-          "Test email sending."
+          "Format email content properly.",
+          "Test sending emails."
         ]
       }
     ]

@@ -1,0 +1,24 @@
+{
+  "thought": "现在我将实现mainWorkflow函数。该函数将从手动触发开始，读取Google Sheets中的商业流数据，计算利润，然后为每条商业流调用AI进行分类。根据分类结果，分别发送Slack消息或生成邮件提醒并发送。",
+  "plan": [
+    "调用触发器获取启动信号。",
+    "调用Google Sheets读取商业流数据。",
+    "遍历每条商业流，计算利润并构建AI分类输入。",
+    "调用AI完成分类。",
+    "根据分类结果，构建发送Slack消息的输入数据并调用Slack发送。",
+    "将'to Customer'类型的商业流按经理分组，构建第二次AI完成的邮件内容输入。",
+    "调用AI生成邮件内容。",
+    "调用Gmail发送邮件。"
+  ],
+  "criticism": "当前实现逻辑较复杂，需要注意数据格式转换和字段匹配，避免KeyError和参数错误。需要确保AI输入格式正确，Slack和Gmail的参数设置符合要求。",
+  "tool_name": "workflow_implment",
+  "tool_input": {
+    "workflow_name": "mainWorkflow",
+    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 该workflow从手动触发开始，读取Google Sheets商业流数据，计算利润，调用AI分类，并根据分类结果发送Slack消息或邮件提醒。\n    TODOs:\n      - 测试整体流程的正确性。\n      - 验证AI分类和邮件内容生成的准确性。\n      - 验证Slack消息和邮件发送是否成功。\n    \"\"\"\n    # 1. 手动触发，无需输入数据，直接调用\n    trigger_output = trigger_0(None)\n\n    # 2. 读取Google Sheets商业流数据\n    sheet_data = action_0(trigger_output)\n    if not sheet_data:\n        # 无数据时直接返回\n        return []\n\n    # 3. 计算利润并准备AI分类输入\n    ai_classify_input = []\n    for item in sheet_data:\n        json_data = item.get('json', {})\n        cost = json_data.get('cost')\n        sales = json_data.get('sales')\n        description = json_data.get('Description') or json_data.get('description') or ''\n        manager = json_data.get('Manager') or json_data.get('manager') or ''\n        # 计算利润\n        try:\n            profit = float(sales) - float(cost)\n        except Exception:\n            profit = 0.0\n\n        # 保存利润到json\n        json_data['profit'] = profit\n\n        # 构建AI分类消息\n        messages = [\n            {\"role\": \"system\", \"content\": \"You are a commercial flow classifier. Classify as 'to Business' or 'to Customer'.\"},\n            {\"role\": \"user\", \"content\": description}\n        ]\n\n        ai_classify_input.append({\"json\": {\"messages\": messages, \"profit\": profit, \"description\": description, \"manager\": manager}})\n\n    # 4. 调用AI进行分类\n    ai_classify_output = action_1(ai_classify_input)\n\n    # 5. 根据分类结果处理数据\n    to_business_msgs = []\n    to_customer_groups = {}\n\n    for idx, ai_item in enumerate(ai_classify_output):\n        classification_raw = ai_item['json']['choices'][0]['text'].strip().lower()\n        # 简单判断分类\n        if 'business' in classification_raw:\n            flow_type = 'to Business'\n        elif 'customer' in classification_raw:\n            flow_type = 'to Customer'\n        else:\n            flow_type = 'unknown'\n\n        # 获取对应的商业流数据\n        original_item = sheet_data[idx]\n        json_data = original_item['json']\n        profit = json_data.get('profit', 0.0)\n        description = json_data.get('Description') or json_data.get('description') or ''\n        manager = json_data.get('Manager') or json_data.get('manager') or ''\n\n        if flow_type == 'to Business':\n            # 构建Slack消息\n            text = f\"Commercial Flow: {description}\\nProfit: {profit}\\nType: {flow_type}\"\n            to_business_msgs.append({\"json\": {\"text\": text}})\n        elif flow_type == 'to Customer':\n            # 按经理分组\n            if manager not in to_customer_groups:\n                to_customer_groups[manager] = []\n            to_customer_groups[manager].append(description)\n\n    # 6. 发送Slack消息\n    slack_output = []\n    if to_business_msgs:\n        slack_output = action_2(to_business_msgs)\n\n    # 7. 为每个经理生成邮件提醒内容并发送邮件\n    email_outputs = []\n    for manager, descriptions in to_customer_groups.items():\n        # 构建AI邮件内容生成输入\n        user_prompt = \"\\n\".join(descriptions)\n        messages = [\n            {\"role\": \"system\", \"content\": \"You are an email writer. Generate reminder email content for business managers about commercial entries. In your reminder, first lists all commercial entries description, and then give them a summary.\"},\n            {\"role\": \"user\", \"content\": user_prompt}\n        ]\n        ai_email_input = [{\"json\": {\"messages\": messages, \"manager\": manager}}]\n\n        # 调用AI生成邮件内容\n        ai_email_output = action_3(ai_email_input)\n\n        # 提取邮件内容\n        email_content = ai_email_output[0]['json']['choices'][0]['text'] if ai_email_output else ''\n\n        # 构建邮件发送输入\n        email_input = [{\n            \"json\": {\n                \"sendTo\": manager,\n                \"subject\": \"Commercial Flow Reminder - to Customer\",\n                \"emailType\": \"text\",\n                \"message\": email_content\n            }\n        }]\n\n        # 发送邮件\n        email_output = action_4(email_input)\n        email_outputs.extend(email_output)\n\n    # 返回Slack和邮件发送的结果\n    return slack_output + email_outputs\n"
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
+  }
+}
