@@ -1,25 +1,22 @@
 {
-  "thought": "需要实现aiCompletion的参数传递，构造消息内容以判断新闻类别。",
+  "thought": "主工作流需要实现用户需求：手动触发后，使用aiCompletion判断新闻标题的类别，并将结果以特定格式发送到Slack的#general频道。",
   "plan": [
-    "构造输入消息，告诉AI判断新闻标题属于technology还是sport。",
-    "使用固定新闻标题作为用户输入。",
-    "调用aiCompletion动作获取分类结果。"
+    "从trigger_0获取触发输入。",
+    "构造aiCompletion的输入，消息内容包含新闻标题和分类任务描述。",
+    "调用action_0执行AI分类。",
+    "从AI返回结果中提取文本，清洗多余字符。",
+    "构造Slack消息格式，包含新闻标题和分类结果。",
+    "调用action_1发送消息到Slack的#general频道。"
   ],
-  "criticism": "当前aiCompletion的参数未实现，无法调用AI模型进行分类。",
-  "tool_name": "function_rewrite_params",
+  "criticism": "当前主工作流未实现，且action_0和action_1的参数未配置，导致无法运行。需要完善主工作流和动作参数。",
+  "tool_name": "workflow_implment",
   "tool_input": {
-    "function_name": "action_0",
-    "params": "{\"messages\":[{\"role\":\"system\",\"content\":\"你是一个新闻分类助手，请判断以下新闻标题属于技术类(technology)还是体育类(sport)。\"},{\"role\":\"user\",\"content\":\"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"}]}",
-    "comments": "调用GPT模型，根据新闻标题判断类别是technology还是sport",
-    "TODO": [
-      "实现参数传递和调用",
-      "测试返回结果格式"
-    ]
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0(input_data=None):\n    \"\"\"\n    comments: 手动触发器，用于启动整个工作流\n    TODOs: \n      - 测试触发器是否能正常启动工作流\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: 调用AI接口，判断新闻标题属于技术类还是体育类\n    TODOs: \n      - 根据输入新闻标题构造messages参数\n      - 测试AI接口调用和返回结果\n    \"\"\"\n    params = {}\n    function = transparent_action(integration=\"aiCompletion\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef action_1(input_data):\n    \"\"\"\n    comments: 将AI分类结果发送到Slack的#general频道\n    TODOs: \n      - 配置发送到#general频道\n      - 测试消息发送功能\n    \"\"\"\n    params = {\n        \"select\": \"channel\",\n        \"channelId\": {\"mode\": \"name\", \"value\": \"general\"},\n        \"messageType\": \"text\",\n        \"text\": \"={{$json[\\\"text\\\"]}}\"\n    }\n    function = transparent_action(integration=\"slack\", resource=\"message\", operation=\"post\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 实现手动触发后，调用AI判断新闻标题分类，并发送结果到Slack #general频道\n    TODOs: \n      - 构造aiCompletion输入消息\n      - 调用AI接口\n      - 处理AI返回结果\n      - 发送格式化消息到Slack\n    \"\"\"\n    # 1. 定义新闻标题\n    news_title = \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"\n\n    # 2. 构造aiCompletion输入，messages字段\n    ai_input = [{\n        \"json\": {\n            \"messages\": [\n                {\"role\": \"system\", \"content\": \"你是一个新闻分类助手。请判断以下新闻标题属于技术类还是体育类。只回复类别名称：technology或sport。\"},\n                {\"role\": \"user\", \"content\": news_title}\n            ]\n        }\n    }]\n\n    # 3. 调用AI分类动作\n    ai_output = action_0(ai_input)\n\n    # 4. 提取AI返回文本，清理多余字符\n    raw_text = ai_output[0][\"json\"][\"choices\"][0][\"text\"].strip()\n    # 去除可能的markdown代码块\n    if raw_text.startswith(\"```\"):\n        raw_text = raw_text.strip(\"`\\n \")\n    category = raw_text.lower()\n\n    # 5. 构造Slack消息文本\n    slack_text = f\"News: {news_title}\\nCategory: {category}\"\n\n    # 6. 构造Slack输入格式\n    slack_input = [{\"json\": {\"text\": slack_text}}]\n\n    # 7. 发送消息到Slack\n    slack_output = action_1(slack_input)\n\n    return slack_output\n"
   },
-  "tool_output_status": "ParamTypeError",
+  "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "error": "params[\"messages\"] can only be parsed as ['str', 'str(\"=.*($json\\\\..*)\\\\.*\")'], got [{\"role\": \"system\", \"content\": \"\\u4f60\\u662f\\u4e00\\u4e2a\\u65b0\\u95fb\\u5206\\u7c7b\\u52a9\\u624b\\uff0c\\u8bf7\\u5224\\u65ad\\u4ee5\\u4e0b\\u65b0\\u95fb\\u6807\\u9898\\u5c5e\\u4e8e\\u6280\\u672f\\u7c7b(technology)\\u8fd8\\u662f\\u4f53\\u80b2\\u7c7b(sport)\\u3002\"}, {\"role\": \"user\", \"content\": \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"}]",
-    "result": "Nothing Happened",
-    "status": "ParamTypeError"
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
   }
 }

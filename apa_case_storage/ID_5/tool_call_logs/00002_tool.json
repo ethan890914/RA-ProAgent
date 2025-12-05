@@ -1,20 +1,30 @@
 {
-  "thought": "根据用户需求，实现主工作流。先触发手动触发器，然后读取Google Sheets数据，最后逐条发送新闻标题到Slack的#general频道。",
+  "thought": "需要为action_1（Slack发送消息）设置参数，指定发送到#general频道，并且消息文本从输入数据中提取。",
   "plan": [
-    "使用trigger_0作为触发器输入。",
-    "调用action_0读取Google Sheets数据。",
-    "将读取到的新闻标题逐条构建为Slack消息格式。",
-    "调用action_1发送消息到Slack的#general频道。"
+    "设置select为channel，表示发送到频道",
+    "设置channelId的mode为name，value为general，表示#general频道",
+    "设置messageType为text，发送简单文本消息",
+    "设置text为={{$json[\"text\"]}}，从输入数据中获取消息文本"
   ],
-  "criticism": "当前主工作流未实现，无法完成用户需求。",
-  "tool_name": "workflow_implment",
+  "criticism": "目前action_1的参数为空，无法发送消息。",
+  "tool_name": "function_rewrite_params",
   "tool_input": {
-    "workflow_name": "mainWorkflow",
-    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 手动触发后，读取Google Sheets中news表的数据，并逐条发送新闻标题到Slack的#general频道。\n    TODOs:\n      - 测试手动触发是否正常\n      - 确认读取数据正确\n      - 确认Slack消息发送成功\n    \"\"\"\n    # 第一步：调用读取Google Sheets数据动作\n    sheets_data = action_0(trigger_input)\n\n    # 第二步：构建Slack发送数据，逐条发送新闻标题\n    slack_input = []\n    for item in sheets_data:\n        headline = item[\"json\"].get(\"Headlines\", \"\")\n        slack_input.append({\n            \"json\": {\n                \"select\": \"channel\",\n                \"channelId\": {\"mode\": \"name\", \"value\": \"general\"},\n                \"messageType\": \"text\",\n                \"text\": headline\n            }\n        })\n\n    # 第三步：调用Slack发送消息动作\n    slack_output = action_1(slack_input)\n\n    return slack_output\n"
+    "function_name": "action_1",
+    "params": "{\"select\":\"channel\",\"channelId\":{\"mode\":\"name\",\"value\":\"general\"},\"messageType\":\"text\",\"text\":\"={{$json[\\\"text\\\"]}}\"}",
+    "comments": "设置Slack发送消息参数，发送到#general频道，消息文本从输入数据中获取",
+    "TODO": [
+      "测试发送消息是否成功",
+      "确保消息文本格式正确"
+    ]
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "result": "mainWorkflow has been re-implemented",
+    "result": [
+      "params[\"select\"] parsed as normal-string",
+      "params[\"channelId\"] parsed with \"mode\"=name",
+      "params[\"messageType\"] parsed as normal-string",
+      "params[\"text\"] parsed as expression"
+    ],
     "status": "ToolCallSuccess"
   }
 }

@@ -11,10 +11,10 @@ This function has been executed for 1 times. Last execution:
 """
 def trigger_0(input_data):
   """
-  comments: 手动触发器，用户点击按钮触发工作流执行。
+  comments: 手动触发器，用户点击按钮时触发工作流
   TODOs: 
-    - 测试触发器是否能正常触发
-    - 验证触发器输出格式
+    - 实现触发器函数
+    - 测试触发功能
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -54,16 +54,12 @@ This function has been executed for 0 times. Last execution:
 """
 def action_0(input_data):
   """
-  comments: 设置Slack发送消息动作，默认发送到#general频道，消息内容从输入数据读取。
+  comments: 配置Slack发送消息动作，发送消息到#general频道，内容为'Hello World!'
   TODOs: 
-    - 测试发送消息是否成功
-    - 验证消息内容格式
-    - 完善工作流实现
+    - 测试消息发送
+    - 验证消息是否发送到正确频道
   """
-  params = { 'channelId': {'mode': 'name', 'value': 'general'},
-             'messageType': 'text',
-             'select': 'channel',
-             'text': '={{$json["text"]}}'}
+  params = {'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'select': 'channel', 'text': '=Hello World!'}
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data

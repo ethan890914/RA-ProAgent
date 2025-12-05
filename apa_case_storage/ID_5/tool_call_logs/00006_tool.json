@@ -1,0 +1,14 @@
+{
+  "thought": "",
+  "plan": [],
+  "criticism": "",
+  "tool_name": "task_submit",
+  "tool_input": {
+    "result": "工作流已成功实现：\n1. 手动触发器触发流程。\n2. 从指定Google Sheets文档和sheet读取新闻标题。\n3. 将每条新闻标题逐条发送到Slack的#general频道。\n\n所有步骤均已测试通过，消息成功发送，满足用户需求。工作流稳定且符合预期。"
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "successfully save to markdown",
+    "status": "ToolCallSuccess"
+  }
+}
