@@ -12,6 +12,8 @@ from ProAgent.loggers.logs import logger
 from ProAgent.n8n_parser.intrinsic_functions import get_intrinsic_functions
 from ProAgent.config import CONFIG
 
+import time
+
 class ReACTHandler():
     def __init__(self, cfg, query:userQuery, compiler: Compiler, recorder: RunningRecoder, refine_oneshot_data=None):
         """
@@ -56,6 +58,7 @@ class ReACTHandler():
 
         Note: This function runs indefinitely until interrupted.
         """
+        start = time.perf_counter()
         while True:
             messages = []
             messages.append({"role":"system","content": deepcopy(react_prompt.system_prompt_1)})
@@ -139,6 +142,9 @@ class ReACTHandler():
                 print('ask_user_help exit!!!')
                 # exit()
             elif action.tool_name == 'task_submit':
+                end = time.perf_counter()
+                print(f"Construction time: {end - start:.6f} seconds")
+                self.recorder.save_construction_time_metadata(end - start)
                 print('task_submit finish!!!')
                 break # break while
             # exit()
