@@ -41,12 +41,36 @@
     "refine_prompt": ""
   },
   {
+    "ID": "2-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type ('to Business' or 'to Customer'). If the business flow type is 'to Business' just show it",
+    "additional_information": [
+      "1. All thoughts and comments should be in Chinese for me to understand.\n",
+      "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+      "2.2 The sheetName of Google is: commercial-small\n",
+      "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Descrption\n"
+    ],
+    "refine_prompt": ""
+  },
+  {
     "ID": "3",
     "task": "Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type ('to Business' or 'to Customer'). If the business flow type is 'to Business' just show it",
     "additional_information": [
       "1. All thoughts and comments should be in Chinese for me to understand.\n",
       "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
       "2.2 The sheetName of Google is: commercial\n",
+      "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Description\n",
+      "3.1 For the AI completion, use this prompt: 'Based on the description: {{$json.Description}}, classify this business as either 'to Business' or 'to Customer'.'\n",
+      "3.2 Make sure the AI completion messages parameter is properly formatted as a JSON array\n"
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "3-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type ('to Business' or 'to Customer'). If the business flow type is 'to Business' just show it",
+    "additional_information": [
+      "1. All thoughts and comments should be in Chinese for me to understand.\n",
+      "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+      "2.2 The sheetName of Google is: commercial-long\n",
       "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Description\n",
       "3.1 For the AI completion, use this prompt: 'Based on the description: {{$json.Description}}, classify this business as either 'to Business' or 'to Customer'.'\n",
       "3.2 Make sure the AI completion messages parameter is properly formatted as a JSON array\n"
@@ -68,13 +92,41 @@
     "refine_prompt": ""
   },
   {
+    "ID": "4-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Based on the descriptions of the business flow, let the first aiCompletion determine the business flow type ('to Business' or 'to Customer'). If the business flow type is 'to Business' just show it",
+    "additional_information": [
+      "1. All thoughts and comments should be in Chinese for me to understand.\n",
+      "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
+      "2.2 The sheetName of Google is: commercial-long\n",
+      "2.3 The sheet has a title row contains Business Line, Manager, cost, sales, and Description\n",
+      "3.1 The aiCompletion node should use the existing OpenAI credentials from n8n\n",
+      "3.2 For the AI completion prompt, use: 'Classify this business description as B2B or B2C: {{$json.Description}}.'\n",
+      "3.3 Make sure the messages parameter is formatted as a simple string for OpenAI compatibility\n"
+    ],
+    "refine_prompt": ""
+  },
+  {
     "ID": "5",
     "task": "Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
     "additional_information": [
       "1. All thoughts and comments should be in Chinese for me to understand.",
       "2.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
       "2.2 The sheetName of Google is: news",
-      "2.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.3.1 Choose #general for the Slack Channel.",
+      "2.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+      "3.1 Choose #general for the Slack Channel.",
+      "3.2 Send headlines you got from googlesheet row by row to slack. "
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "5-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and send it to slack.",
+    "additional_information": [
+      "1. All thoughts and comments should be in Chinese for me to understand.",
+      "2.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
+      "2.2 The sheetName of Google is: news-small",
+      "2.3 The sheet has one title row with value \"Headlines\" and has ten news headlines below.",
+      "3.1 Choose #general for the Slack Channel.",
       "3.2 Send headlines you got from googlesheet row by row to slack. "
     ],
     "refine_prompt": ""
@@ -90,10 +142,32 @@
     "refine_prompt": ""
   },
   {
+    "ID": "6-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+    "additional_information": [
+      "1.1 Generate a new joke each time whenever I trigger the workflow. Don't hardcode the joke.",
+      "1.2 Joke topic: horse",
+      "2.1 Send the generate joke to slack",
+      "2.2 Choose #general for the Slack Channel."
+    ],
+    "refine_prompt": ""
+  },
+  {
     "ID": "7",
     "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
     "additional_information": [
       "1 Use n8n-nodes-base.aiCompletion to generate a joke exceed 100 but within 200 words.",
+      "2.1 Send the generate joke to slack",
+      "2.2 Choose #jokes for the Slack Channel."
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "7-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to slack.",
+    "additional_information": [
+      "1 Use n8n-nodes-base.aiCompletion to generate a joke exceed 100 but within 200 words.",
+      "1.2 Joke topic: bird",
       "2.1 Send the generate joke to slack",
       "2.2 Choose #jokes for the Slack Channel."
     ],
@@ -114,6 +188,7 @@
     "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a small conversation between three people and send it to slack.",
     "additional_information": [
       "1 Use n8n-nodes-base.aiCompletion to generate a small conversation between two people. Total word counts less than 500.",
+      "1.2 Conversation topic: stocks",
       "2.1 Send the generate joke to slack",
       "2.2 Choose #general for the Slack Channel."
     ],
@@ -153,6 +228,19 @@
       "4.1 Send the generate category to slack",
       "4.2 Choose #general for the Slack Channel.",
       "4.3 Slack message format: 'News: [title]\nCategory: [category]"
+    ],
+    "refine_prompt": ""
+  },
+  {
+    "ID": "10-1",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to check if this news belongs to category technology or sport",
+    "additional_information": [
+      "1. All thoughts and comments should be in Chinese for me to understand.",
+      "2. news title: \"Google and Accel Launch AI Futures Fund to Back Indian AI Startups.\"",
+      "3. Use aiCompletion to check if this news title belongs to category technology or sport",
+      "4.1 Send the generate category to slack",
+      "4.2 Choose #news for the Slack Channel.",
+      "4.3 Slack message format: 'Category: [category]\n News: [title]"
     ],
     "refine_prompt": ""
   },

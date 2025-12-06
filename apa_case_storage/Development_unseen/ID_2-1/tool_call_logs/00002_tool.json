@@ -1,0 +1,21 @@
+{
+  "thought": "主流程需要实现，连接手动触发器、读取Google Sheets数据、调用AI判断业务流程类型，并根据AI结果决定输出。",
+  "plan": [
+    "调用手动触发器获取触发输入。",
+    "调用Google Sheets读取动作，获取商业流程数据。",
+    "从读取的数据中提取描述字段，构建AI输入消息。",
+    "调用AI完成动作，传入描述信息，判断业务流程类型。",
+    "解析AI返回结果，如果类型是'to Business'，则直接返回该类型作为输出；否则返回空或提示。"
+  ],
+  "criticism": "目前主流程未实现，且Google Sheets读取动作返回为空，可能是参数或权限问题，需要后续测试确认。",
+  "tool_name": "workflow_implment",
+  "tool_input": {
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0(input_data):\n    \"\"\"\n    comments: 手动触发器，作为工作流入口，触发后开始执行流程。\n    TODOs: \n      - 测试触发器是否能正常触发\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: 读取Google Sheets中指定文档和表单的所有数据，获取商业流程数据。\n    TODOs: \n      - 测试读取数据是否正确\n      - 检查是否包含标题行\n      - 确保包含cost和sales字段\n    \"\"\"\n    params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},\n               'filtersUI': {},\n               'options': {},\n               'sheetName': {'mode': 'id', 'value': 'commercial-small'}}\n    function = transparent_action(integration=\"googleSheets\", resource=\"sheet\", operation=\"read\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef action_1(input_data):\n    \"\"\"\n    comments: 调用AI完成，判断业务流程类型（to Business或to Customer）。\n    TODOs: \n      - 构建AI输入消息\n      - 测试AI返回结果\n    \"\"\"\n    params = {}\n    function = transparent_action(integration=\"aiCompletion\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 主流程，触发后读取Google Sheets数据，调用AI判断业务流程类型，若为'to Business'则显示。\n    TODOs: \n      - 调试Google Sheets读取动作\n      - 构建AI输入消息\n      - 解析AI返回结果\n    \"\"\"\n    # Step1: 读取Google Sheets数据\n    sheet_data = action_0(trigger_input)\n    if not sheet_data:\n        # 读取失败或无数据，返回提示\n        return [{\"json\": {\"result\": \"未读取到Google Sheets数据\"}}]\n\n    # Step2: 提取描述字段，构建AI输入\n    descriptions = []\n    for item in sheet_data:\n        desc = item[\"json\"].get(\"Descrption\")\n        if desc:\n            descriptions.append(desc)\n    if not descriptions:\n        return [{\"json\": {\"result\": \"无描述字段数据\"}}]\n\n    # 构建AI消息\n    ai_input = []\n    for desc in descriptions:\n        messages = [\n            {\"role\": \"system\", \"content\": \"你是一个商业流程分析助手。根据描述判断业务流程类型，返回'to Business'或'to Customer'。\"},\n            {\"role\": \"user\", \"content\": f\"业务流程描述: {desc}. 请告诉我这是'to Business'还是'to Customer'. 只返回'to Business'或'to Customer'。\"}\n        ]\n        ai_input.append({\"json\": {\"messages\": messages}})\n\n    # Step3: 调用AI完成判断类型\n    ai_output = action_1(ai_input)\n    if not ai_output:\n        return [{\"json\": {\"result\": \"AI未返回结果\"}}]\n\n    # Step4: 解析AI结果，若包含'to Business'则返回，否则不返回\n    for item in ai_output:\n        ai_text = item[\"json\"].get(\"choices\", [{}])[0].get(\"text\", \"\").strip().lower()\n        if \"to business\" in ai_text:\n            return [{\"json\": {\"business_flow_type\": \"to Business\"}}]\n    return [{\"json\": {\"business_flow_type\": \"不是 to Business 类型\"}}]\n"
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "thought": "根据用户需求，需要读取Google Sheets中的商业流程数据，然后使用AI完成节点判断业务类型，最后根据判断结果展示或处理。首先定义触发器和两个动作：一个读取Google Sheets数据，另一个调用AI完成节点。",
+  "plan": [
+    "定义一个手动触发器trigger_0，作为工作流入口。",
+    "定义action_0，调用googleSheets的sheet读取操作，读取指定文档和工作表。",
+    "定义action_1，调用aiCompletion的默认操作，完成业务类型分类。",
+    "后续实现mainWorkflow连接以上节点。"
+  ],
+  "criticism": "当前只定义了基本节点，未实现参数配置和具体逻辑，后续需要完善参数和数据转换。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "手动触发器，作为工作流的入口，触发后执行后续动作。",
+        "TODO": [
+          "测试触发器是否能正常触发",
+          "确保触发器输出格式符合预期"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "读取Google Sheets中指定文档和工作表的数据，获取商业流程数据。",
+        "TODO": [
+          "配置文档ID和表名",
+          "测试读取数据是否正确"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "调用AI完成节点，根据Description字段判断业务类型。",
+        "TODO": [
+          "构造正确的messages参数",
+          "测试AI返回结果"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "thought": "目前主流程已经能够实现用户需求的基本功能，即读取Google Sheets数据，调用AI判断业务流程类型，并返回所有'to Business'类型的业务流程。下一步优化是将结果格式化为更易读的文本形式，方便用户查看。同时补充中文注释说明。",
+  "plan": [
+    "在mainWorkflow中将'to Business'业务流程结果格式化为字符串列表。",
+    "将格式化后的字符串列表作为返回结果，方便用户直接查看。",
+    "保持原有逻辑不变，增强输出的可读性。"
+  ],
+  "criticism": "当前返回的结果是结构化的JSON，用户可能更希望看到更直观的文本描述。",
+  "tool_name": "workflow_implment",
+  "tool_input": {
+    "workflow_name": "mainWorkflow",
+    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 主流程，触发后读取Google Sheets数据，调用AI判断业务流程类型，返回所有'to Business'类型的业务流程，结果格式化为文本。\n    TODOs: \n      - 调试Google Sheets读取动作\n      - 构建AI输入消息\n      - 解析AI返回结果\n      - 格式化返回结果为文本\n    \"\"\"\n    # Step1: 读取Google Sheets数据\n    sheet_data = action_0(trigger_input)\n    if not sheet_data:\n        # 读取失败或无数据，返回提示\n        return [{\"json\": {\"result\": \"未读取到Google Sheets数据\"}}]\n\n    # Step2: 提取描述字段，构建AI输入\n    descriptions = []\n    for item in sheet_data:\n        desc = item[\"json\"].get(\"Description\")\n        if desc:\n            descriptions.append(desc)\n    if not descriptions:\n        return [{\"json\": {\"result\": \"无描述字段数据\"}}]\n\n    # 构建AI消息\n    ai_input = []\n    for desc in descriptions:\n        messages = [\n            {\"role\": \"system\", \"content\": \"你是一个商业流程分析助手。根据描述判断业务流程类型，返回'to Business'或'to Customer'。\"},\n            {\"role\": \"user\", \"content\": f\"业务流程描述: {desc}. 请告诉我这是'to Business'还是'to Customer'. 只返回'to Business'或'to Customer'。\"}\n        ]\n        ai_input.append({\"json\": {\"messages\": messages}})\n\n    # Step3: 调用AI完成判断类型\n    ai_output = action_1(ai_input)\n    if not ai_output:\n        return [{\"json\": {\"result\": \"AI未返回结果\"}}]\n\n    # Step4: 解析AI结果，收集所有'to Business'业务流程类型\n    results = []\n    for i, item in enumerate(ai_output):\n        ai_text = item[\"json\"].get(\"choices\", [{}])[0].get(\"text\", \"\").strip()\n        if ai_text.lower() == \"to business\":\n            results.append({\"index\": i+1, \"business_flow_type\": \"to Business\", \"description\": descriptions[i]})\n    if not results:\n        return [{\"json\": {\"business_flow_type\": \"无'to Business'类型的业务流程\"}}]\n\n    # Step5: 格式化结果为文本列表\n    text_results = []\n    for r in results:\n        text_results.append(f\"序号: {r['index']}, 类型: {r['business_flow_type']}, 描述: {r['description']}\")\n\n    return [{\"json\": {\"to_business_flows_text\": text_results}}]\n"
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
+  }
+}

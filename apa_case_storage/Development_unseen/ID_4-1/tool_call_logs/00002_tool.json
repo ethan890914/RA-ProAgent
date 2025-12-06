@@ -1,0 +1,21 @@
+{
+  "thought": "根据当前定义的触发器和动作，实现主工作流。工作流步骤包括：1. 触发器触发；2. 读取Google Sheets数据；3. 构建AI输入，调用AI完成判断业务流类型；4. 解析AI结果并根据类型决定是否展示。",
+  "plan": [
+    "使用trigger_0触发工作流",
+    "调用action_0读取Google Sheets数据",
+    "从读取结果中提取Description字段，构建AI消息输入",
+    "调用action_1执行AI完成，判断业务流类型",
+    "根据AI结果判断是否为'to Business'，如果是则返回显示，否则返回空或提示"
+  ],
+  "criticism": "目前主工作流未实现，无法完成用户需求。需要实现数据流转和格式转换。",
+  "tool_name": "workflow_implment",
+  "tool_input": {
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0(input_data=None):\n  \"\"\"\n  comments: 定义手动触发器，用户点击后触发整个工作流\n  TODOs: \n    - 实现触发器逻辑\n    - 测试触发器是否能正常触发\n  \"\"\"\n  params = {}\n  function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n  output_data = function.run(input_data=None, params=params)\n  return output_data\n\n\ndef action_0(input_data):\n  \"\"\"\n  comments: 配置Google Sheets读取动作，指定文档ID和表单名称，读取业务流数据\n  TODOs: \n    - 测试读取数据是否正确\n    - 根据读取结果调整后续处理逻辑\n  \"\"\"\n  params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},\n             'sheetName': {'mode': 'id', 'value': 'commercial-long'}}\n  function = transparent_action(integration=\"googleSheets\", resource=\"sheet\", operation=\"read\")\n  output_data = function.run(input_data=input_data, params=params)\n  return output_data\n\n\ndef action_1(input_data):\n  \"\"\"\n  comments: 调用AI完成接口，根据业务描述判断业务流类型\n  TODOs: \n    - 构建AI消息格式\n    - 测试AI完成结果\n  \"\"\"\n  params = {}\n  function = transparent_action(integration=\"aiCompletion\", resource=\"default\", operation=\"default\")\n  output_data = function.run(input_data=input_data, params=params)\n  return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n  \"\"\"\n  comments: 主工作流，触发后读取Google Sheets数据，调用AI判断业务流类型\n  TODOs: \n    - 测试整体流程\n    - 处理异常情况\n  \"\"\"\n  # 1. 触发读取Google Sheets数据\n  sheet_data = action_0(trigger_input)\n\n  # 2. 构建AI输入，针对每条数据的Description字段构建消息\n  ai_input = []\n  for item in sheet_data:\n    description = item['json'].get('Description', '')\n    message = f'Classify this business description as B2B or B2C: {description}.'\n    ai_input.append({'json': {'messages': [\n      {'role': 'system', 'content': 'You are a helpful assistant.'},\n      {'role': 'user', 'content': message}\n    ]}})\n\n  # 3. 调用AI完成接口\n  ai_output = action_1(ai_input)\n\n  # 4. 解析AI结果，判断业务流类型\n  results = []\n  for i, item in enumerate(ai_output):\n    ai_text = item['json']['choices'][0]['text'].strip().lower()\n    # 简单判断是否包含'b2b'或'to business'\n    if 'b2b' in ai_text or 'to business' in ai_text:\n      results.append({'json': {'businessFlowType': 'to Business', 'Description': sheet_data[i]['json'].get('Description', '')}})\n\n  # 5. 返回结果，只返回'to Business'类型的条目\n  return results\n"
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
+  }
+}

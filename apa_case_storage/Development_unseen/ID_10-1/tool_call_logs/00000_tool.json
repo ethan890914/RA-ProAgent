@@ -1,0 +1,52 @@
+{
+  "thought": "为了实现用户需求，需要定义一个手动触发器(trigger)和两个动作(action)，一个用于调用aiCompletion进行新闻分类，另一个用于发送Slack消息。",
+  "plan": [
+    "定义手动触发器trigger_0，触发工作流。",
+    "定义action_0，调用aiCompletion，输入新闻标题，输出分类结果。",
+    "定义action_1，调用Slack发送消息，将分类结果和新闻标题发送到#news频道。"
+  ],
+  "criticism": "当前计划没有实现具体参数设置，后续需要根据具体参数继续完善。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "手动触发器，用户点击按钮触发工作流",
+        "TODO": [
+          "测试触发器是否能正确触发工作流"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "调用AI完成任务，判断新闻标题属于technology还是sport类别",
+        "TODO": [
+          "构造aiCompletion输入数据，传入新闻标题",
+          "测试AI分类结果"
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "将分类结果和新闻标题发送到Slack的#news频道",
+        "TODO": [
+          "构造Slack消息格式",
+          "测试消息发送"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: aiCompletion->default->default",
+      "function_2 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}
