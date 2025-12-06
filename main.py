@@ -16,40 +16,7 @@ from query_loader import query_loader
 from execute_from_tool_calls import run
 from ProAgent.router.utils import ENVIRONMENT
 from ProAgent.config import CONFIG
-
-from proagent_rag import *
-
-
-def retrieval_samples(query):
-    query_file = "queries_data.json"
-
-    with open(query_file) as f:
-        query_library = json.load(f)
-
-    rag = ProAgentRAG(query_library)
-    rag.build_index()
-    res = rag.retrieve_similar(query)
-
-    # Find the first retrieved query that has NO ancestor workflow
-    # Check apa_case_storage to see if the workflow has an ancestor.json file
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    storage_dir = os.path.join(current_dir, 'apa_case_storage')
-
-    for retrieved_query in res:
-        retrieved_query_id = retrieved_query['ID']
-        # Check if this query's workflow has an ancestor.json
-        workflow_dir = os.path.join(storage_dir, f'ID_{retrieved_query_id}')
-        ancestor_file = os.path.join(workflow_dir, 'ancestor.json')
-
-        # Only return this ID if it has NO ancestor (i.e., it's a base workflow)
-        if not os.path.exists(ancestor_file):
-            print(f"✓ Found base workflow (no ancestor): ID_{retrieved_query_id}")
-            return str(retrieved_query_id)
-
-    # If no workflow without ancestor found, return None or raise error
-    print("⚠️  Warning: All retrieved workflows have ancestors. Returning first result anyway.")
-    return str(res[0]) if res else None
-
+from proagent_rag import include_all_info, ProAgentRAG
 
 def run_refine_oneshot_mode(cfg, new_query, old_id, new_query_id=None):
     """
@@ -178,15 +145,16 @@ def main(cfg: omegaconf.DictConfig):
             "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
         ]
         query = include_all_info(task, additions)
+        rag = ProAgentRAG()
 
-        old_id = retrieval_samples(query)
+        src_ids = rag.retrieve_similar(query, top_k=1, threshold=0.8)
+        old_id = src_ids[0] if len(src_ids) > 0 else None
 
         new_query = userQuery(
             ID='temp',
             task=task,
             additional_information=additions
         )
-
         if old_id is not None:
             CONFIG.environment = ENVIRONMENT.Refine_oneshot
             # run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id='21-2')
