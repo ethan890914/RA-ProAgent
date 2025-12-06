@@ -1,11 +1,11 @@
 {
-  "thought": "为了实现用户需求，需要定义一个手动触发器、一个调用AI完成分类的动作，以及一个发送Slack消息的动作。",
+  "thought": "为了实现用户需求，首先需要定义一个手动触发器(trigger)，一个AI文本完成动作(action)用来分类新闻标题，以及一个Slack消息发送动作(action)用来发送分类结果。",
   "plan": [
-    "定义手动触发器，触发整个流程。",
-    "定义aiCompletion的动作，用于调用GPT判断新闻类别。",
-    "定义Slack发送消息的动作，发送分类结果到#general频道。"
+    "定义一个手动触发器(trigger_0)，用于手动触发整个流程。",
+    "定义一个aiCompletion动作(action_0)，用于调用AI接口判断新闻标题的类别。",
+    "定义一个Slack发送消息动作(action_1)，将AI分类结果发送到Slack的#general频道。"
   ],
-  "criticism": "目前还没有定义任何函数，无法实现流程，需要先定义这些基础函数。",
+  "criticism": "目前没有定义任何动作和触发器，无法实现功能。",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -13,30 +13,29 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "手动触发器，用户点击按钮时触发流程",
+        "comments": "手动触发器，用于启动整个工作流",
         "TODO": [
-          "测试触发器是否能正常触发",
-          "确认触发器输出格式"
+          "测试触发器是否能正常启动工作流"
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "调用GPT模型，根据新闻标题判断类别是technology还是sport",
+        "comments": "调用AI接口，判断新闻标题属于技术类还是体育类",
         "TODO": [
-          "实现参数传递和调用",
-          "测试返回结果格式"
+          "根据输入新闻标题构造messages参数",
+          "测试AI接口调用和返回结果"
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "发送消息到Slack的#general频道，消息格式包含新闻标题和分类",
+        "comments": "将AI分类结果发送到Slack的#general频道",
         "TODO": [
-          "实现消息发送",
-          "测试消息格式和频道"
+          "配置发送到#general频道",
+          "测试消息发送功能"
         ]
       }
     ]

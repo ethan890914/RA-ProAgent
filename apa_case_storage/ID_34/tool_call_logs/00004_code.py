@@ -9,12 +9,12 @@ None
 3.Output:
 [{'json': {}, 'pairedItem': {'item': 0}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Manual trigger to start the workflow on demand.
+  comments: Manual trigger to start the workflow when user clicks the button.
   TODOs: 
-    - Test the trigger works.
-    - Ensure the output format matches expected input for next action.
+    - Test trigger functionality
+    - Use it as the main trigger for the workflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -36,12 +36,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {'id': '1', 'title': 'Canada loses measles elimination status after ongoing outbreaks', 'description': 'International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America', 'content': 'Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]', 'url': 'https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798', 'published_at': '2025-11-11T07:45:36.000Z', 'source_name': 'ABC News', 'source_id': 'abc-news', 'author': 'DEVI SHASTRI AP health writer', 'url_to_image': 'https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600', 'content_length': 214, 'export_date': '2025-11-28T18:28:32.556Z'}, 'pairedItem': {'item': 0}}]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Execute the SQL query to get the top 1 row from bloomberg_articles table.
+  comments: Execute the SQL query to get data from bloomberg_articles table.
   TODOs: 
-    - Test the query execution and output.
-    - Verify the output data format.
+    - Test the query execution and output format
+    - Verify output contains query results
   """
   params = {'options': {}, 'query': 'SELECT * FROM bloomberg_articles LIMIT 1;'}
   function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
@@ -74,17 +74,17 @@ def action_0(input_data: List[Dict] =  [{...}]):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'text': 'PostgreSQL Query Result:\nid: 1\ntitle: Canada loses measles elimination status after ongoing outbreaks\ndescription: International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America\ncontent: Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]\nurl: https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798\npublished_at: 2025-11-11T07:45:36.000Z\nsource_name: ABC News\nsource_id: abc-news\nauthor: DEVI SHASTRI AP health writer\nurl_to_image: https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600\ncontent_length: 214\nexport_date: 2025-11-28T18:28:32.556Z'}}]
+[{'json': {'text': "PostgreSQL Query Result:\n{'id': '1', 'title': 'Canada loses measles elimination status after ongoing outbreaks', 'description': 'International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America', 'content': 'Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]', 'url': 'https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798', 'published_at': '2025-11-11T07:45:36.000Z', 'source_name': 'ABC News', 'source_id': 'abc-news', 'author': 'DEVI SHASTRI AP health writer', 'url_to_image': 'https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600', 'content_length': 214, 'export_date': '2025-11-28T18:28:32.556Z'}"}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764801014.031689', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'PostgreSQL Query Result:\nid: 1\ntitle: Canada loses measles elimination status after ongoing outbreaks\ndescription: International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America\ncontent: Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]\nurl: <https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798>\npublished_at: 2025-11-11T07:45:36.000Z\nsource_name: ABC News\nsource_id: abc-news\nauthor: DEVI SHASTRI AP health writer\nurl_to_image: <https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600>\ncontent_length: 214\nexport_date: 2025-11-28T18:28:32.556Z', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'XNP', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'PostgreSQL Query Result:\nid: 1\ntitle: Canada loses measles elimination status after ongoing outbreaks\ndescription: International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America\ncontent: Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]\nurl: '}, {'type': 'link', 'url': 'https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798'}, {'type': 'text', 'text': '\npublished_at: 2025-11-11T07:45:36.000Z\nsource_name: ABC News\nsource_id: abc-news\nauthor: DEVI SHASTRI AP health writer\nurl_to_image: '}, {'type': 'link', 'url': 'https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600'}, {'type': 'text', 'text': '\ncontent_length: 214\nexport_date: 2025-11-28T18:28:32.556Z'}]}]}]}, 'message_timestamp': '1764801014.031689'}, 'pairedItem': {'item': 0}}]
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764950742.303969', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': "PostgreSQL Query Result:\n{'id': '1', 'title': 'Canada loses measles elimination status after ongoing outbreaks', 'description': 'International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America', 'content': 'Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]', 'url': '<https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798>', 'published_at': '2025-11-11T07:45:36.000Z', 'source_name': 'ABC News', 'source_id': 'abc-news', 'author': 'DEVI SHASTRI AP health writer', 'url_to_image': '<https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600>', 'content_length': 214, 'export_date': '2025-11-28T18:28:32.556Z'}", 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'F53', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': "PostgreSQL Query Result:\n{'id': '1', 'title': 'Canada loses measles elimination status after ongoing outbreaks', 'description': 'International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America', 'content': 'Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]', 'url': '"}, {'type': 'link', 'url': 'https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798'}, {'type': 'text', 'text': "', 'published_at': '2025-11-11T07:45:36.000Z', 'source_name': 'ABC News', 'source_id': 'abc-news', 'author': 'DEVI SHASTRI AP health writer', 'url_to_image': '"}, {'type': 'link', 'url': 'https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600'}, {'type': 'text', 'text': "', 'content_length': 214, 'export_date': '2025-11-28T18:28:32.556Z'}"}]}]}]}, 'message_timestamp': '1764950742.303969'}, 'pairedItem': {'item': 0}}]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send the formatted query result to Slack channel #general with correct parameters.
+  comments: Send the formatted PostgreSQL query result to Slack channel #general with proper parameters.
   TODOs: 
-    - Test sending message to Slack.
-    - Verify message format and delivery.
+    - Test sending message to Slack
+    - Verify message format in Slack channel
   """
   params = { 'channelId': {'mode': 'name', 'value': 'general'},
              'messageType': 'text',
@@ -104,85 +104,38 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764801014.031689', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'PostgreSQL Query Result:\nid: 1\ntitle: Canada loses measles elimination status after ongoing outbreaks\ndescription: International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America\ncontent: Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]\nurl: <https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798>\npublished_at: 2025-11-11T07:45:36.000Z\nsource_name: ABC News\nsource_id: abc-news\nauthor: DEVI SHASTRI AP health writer\nurl_to_image: <https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600>\ncontent_length: 214\nexport_date: 2025-11-28T18:28:32.556Z', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'XNP', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'PostgreSQL Query Result:\nid: 1\ntitle: Canada loses measles elimination status after ongoing outbreaks\ndescription: International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America\ncontent: Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]\nurl: '}, {'type': 'link', 'url': 'https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798'}, {'type': 'text', 'text': '\npublished_at: 2025-11-11T07:45:36.000Z\nsource_name: ABC News\nsource_id: abc-news\nauthor: DEVI SHASTRI AP health writer\nurl_to_image: '}, {'type': 'link', 'url': 'https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600'}, {'type': 'text', 'text': '\ncontent_length: 214\nexport_date: 2025-11-28T18:28:32.556Z'}]}]}]}, 'message_timestamp': '1764801014.031689'}, 'pairedItem': {'item': 0}}]
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764950742.303969', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': "PostgreSQL Query Result:\n{'id': '1', 'title': 'Canada loses measles elimination status after ongoing outbreaks', 'description': 'International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America', 'content': 'Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]', 'url': '<https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798>', 'published_at': '2025-11-11T07:45:36.000Z', 'source_name': 'ABC News', 'source_id': 'abc-news', 'author': 'DEVI SHASTRI AP health writer', 'url_to_image': '<https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600>', 'content_length': 214, 'export_date': '2025-11-28T18:28:32.556Z'}", 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'F53', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': "PostgreSQL Query Result:\n{'id': '1', 'title': 'Canada loses measles elimination status after ongoing outbreaks', 'description': 'International health experts say Canada is no longer measles-free because of ongoing outbreaks, as childhood vaccination rates fall and the highly contagious virus spreads across North and South America', 'content': 'Canada is no longer measles-free because of ongoing outbreaks, international health experts said Monday, as childhood vaccination rates fall and the highly contagious virus spreads across North and S… [+5742 chars]', 'url': '"}, {'type': 'link', 'url': 'https://abcnews.go.com/Health/wireStory/canada-loses-measles-elimination-status-after-ongoing-outbreaks-127379798'}, {'type': 'text', 'text': "', 'published_at': '2025-11-11T07:45:36.000Z', 'source_name': 'ABC News', 'source_id': 'abc-news', 'author': 'DEVI SHASTRI AP health writer', 'url_to_image': '"}, {'type': 'link', 'url': 'https://i.abcnewsfe.com/a/6b1aa275-9536-4ffa-8780-5721db4aaa4c/wirestory_1ac3a4bdc7546fac5d8e111bf5196e1e_16x9.jpg?w=1600'}, {'type': 'text', 'text': "', 'content_length': 214, 'export_date': '2025-11-28T18:28:32.556Z'}"}]}]}]}, 'message_timestamp': '1764950742.303969'}, 'pairedItem': {'item': 0}}]
 """
-def trigger_0(input_data: [{...}] = None):
-    """
-    comments: Manual trigger to start the workflow on demand.
-    TODOs:
-      - Test the trigger works.
-      - Ensure the output format matches expected input for next action.
-    """
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
-
-
-def action_0(input_data: [{...}]):
-    """
-    comments: Execute the SQL query to get the top 1 row from bloomberg_articles table.
-    TODOs:
-      - Test the query execution and output.
-      - Verify the output data format.
-    """
-    params = {'query': 'SELECT * FROM bloomberg_articles LIMIT 1;', 'options': {}}
-    function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data: [{...}]):
-    """
-    comments: Send the formatted query result to Slack channel #general.
-    TODOs:
-      - Set the channel to #general.
-      - Format the message text properly.
-      - Test sending message to Slack.
-    """
-    params = {
-        "select": "channel",
-        "channelId": {"mode": "name", "value": "general"},
-        "messageType": "text",
-        "text": "={{$json[\"text\"]}}"
-    }
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
 def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Workflow to trigger manual start, query postgres, and send result to Slack #general channel.
-    TODOs:
-      - Test the entire workflow.
+    comments: Workflow triggered manually to query PostgreSQL and send results to Slack #general channel.
+    TODOs: 
+      - Handle empty query results
+      - Format query results properly for Slack
+      - Test end-to-end workflow
     """
-    # Step 1: Start with manual trigger
+    # Step 1: Start from manual trigger
     trigger_output = trigger_0(None)
 
-    # Step 2: Query postgres database
+    # Step 2: Execute PostgreSQL query
     query_output = action_0(trigger_output)
 
-    # Step 3: Extract the first row result
-    if len(query_output) == 0:
-        message_text = "PostgreSQL Query Result:\nNo results found."
+    # Step 3: Extract query result
+    if not query_output or not query_output[0]['json']:
+        message_text = "PostgreSQL Query Result:\nNo data returned."
     else:
-        # Extract the json dict of the first row
-        first_row = query_output[0]['json']
-        # Format the result as string
-        # Convert the dict to string with key:value pairs
-        result_lines = [f"{k}: {v}" for k, v in first_row.items()]
-        result_str = "\n".join(result_lines)
-        message_text = f"PostgreSQL Query Result:\n{result_str}"
+        # Format the query result as string
+        # We convert the json dict to string for display
+        result_json = query_output[0]['json']
+        message_text = f"PostgreSQL Query Result:\n{result_json}"
 
-    # Step 4: Wrap message for Slack input
+    # Step 4: Wrap message for Slack
     slack_input = [{"json": {"text": message_text}}]
 
-    # Step 5: Send to Slack channel #general
+    # Step 5: Send message to Slack
     slack_output = action_1(slack_input)
 
     return slack_output
-
 
 
 

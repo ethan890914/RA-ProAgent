@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user click.
+  comments: Manual trigger to start the workflow when user clicks the button.
   TODOs: 
-    - Test the manual trigger works correctly.
-    - Ensure the output format is compatible with the workflow.
+    - Test the trigger
+    - Verify it activates mainWorkflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -24,7 +24,7 @@ def trigger_0():
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 0 times. Last execution:
 1.Status: DidNotBeenCalled
@@ -34,14 +34,14 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Generate a joke within 30 words using AI completion.
+  comments: Generate a joke within 30 words using AI completion with a prompt.
   TODOs: 
-    - Set prompt to generate joke within 30 words.
-    - Test the AI completion returns expected joke text.
+    - Test joke generation output
+    - Refine prompt if joke is too long or irrelevant
   """
-  params = {}  # to be Implemented
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -66,12 +66,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send the generated joke to the specified email address.
+  comments: Send the generated joke to the specified email with title and content.
   TODOs: 
-    - Set email recipient, subject, and content dynamically.
-    - Test email sending with joke content.
+    - Implement email params
+    - Test sending email with joke content
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="gmail", resource="message", operation="send")

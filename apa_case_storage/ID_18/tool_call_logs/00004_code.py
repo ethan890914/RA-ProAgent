@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually on user click.
+  comments: Trigger the workflow manually by user clicking the button.
   TODOs: 
-    - Test trigger functionality
-    - Ensure output data format matches expected input for workflow
+    - Test manual trigger activation.
+    - Verify trigger output format.
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -43,25 +43,17 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {'row_number': 2, 'Business Line': 1, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 10000, 'sales': 50000, 'Description': 'E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 3, 'Business Line': 2, 'Manager': 'cc9008@nyu.edu', 'cost': 5000, 'sales': 30000, 'Description': 'Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 4, 'Business Line': 3, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 20000, 'sales': 10000, 'Description': 'Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 5, 'Business Line': 4, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 8000, 'sales': 7600, 'Description': 'Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 6, 'Business Line': 5, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 6000, 'sales': 8000, 'Description': 'Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 7, 'Business Line': 6, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 20000, 'sales': 60000, 'Description': 'Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 8, 'Business Line': 7, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 80000, 'sales': 100000, 'Description': 'Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 9, 'Business Line': 8, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 4000, 'sales': 25000, 'Description': 'Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 10, 'Business Line': 9, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 7500, 'sales': 4000, 'Description': 'Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 11, 'Business Line': 10, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 5000, 'sales': 3000, 'Description': 'Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.'}, 'pairedItem': {'item': 0}}]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Read commercial entries from the specified Google Sheet using documentId and sheetName.
+  comments: Read all rows from the specified Google Sheet document and sheetName 'commercial'.
   TODOs: 
-    - Test reading data from Google Sheets
-    - Add error handling if needed
+    - Test reading sheet data.
+    - Verify output schema for later use.
   """
-  params = {
-             "documentId": {
-               "mode": "id",
-               "value": "1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c"
-             },
-             "sheetName": {
-               "mode": "id",
-               "value": "commercial"
-             },
-             "filtersUI": {},
-             "options": {}
-           }
+  params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},
+             'filtersUI': {},
+             'options': {},
+             'sheetName': {'mode': 'id', 'value': 'commercial'}}
   function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -69,24 +61,24 @@ def action_0(input_data: List[Dict] =  [{...}]):
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a news classifier. Classify as to Business or to Customer.'}, {'role': 'user', 'content': 'Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.'}]}}]
+[{'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.'}]}}, {'json': {'messages': [{'role': 'system', 'content': "You are a news classifier. Classify as 'to Business' or 'to Customer'."}, {'role': 'user', 'content': 'Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.'}]}}]
 
 3.Output:
-[{'json': {'choices': [{'text': 'Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Business'}]}, 'pairedItem': {'item': 0}}]
+[{'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Classify each Description as 'to Business' or 'to Customer' using AI.
+  comments: Use AI to classify each Description as 'to Business' or 'to Customer'.
   TODOs: 
-    - Build messages array for each Description
-    - Test AI classification output
+    - Build messages array in workflow.
+    - Test AI completion with sample inputs.
   """
-  params = {}  # to be Implemented
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -106,25 +98,23 @@ def action_1(input_data: List[Dict] =  [{...}]):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '1. Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.', 'emailType': 'text', 'message': '1. Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nCategory: Customer', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '2. Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.', 'emailType': 'text', 'message': '2. Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nCategory: Customer', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '3. Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.', 'emailType': 'text', 'message': '3. Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nCategory: Customer', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '4. Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.', 'emailType': 'text', 'message': '4. Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nCategory: Customer', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '5. Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.', 'emailType': 'text', 'message': '5. Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nCategory: Customer', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '6. Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.', 'emailType': 'text', 'message': '6. Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nCategory: Business', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '7. Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.', 'emailType': 'text', 'message': '7. Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nCategory: Business', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '8. Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.', 'emailType': 'text', 'message': '8. Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nCategory: Business', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '9. Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.', 'emailType': 'text', 'message': '9. Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nCategory: Business', 'options': {}}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': '10. Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.', 'emailType': 'text', 'message': '10. Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nCategory: Business', 'options': {}}}]
+[{'json': {'subject': '1. Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.', 'message': '1. Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nCategory: to Customer'}}, {'json': {'subject': '2. Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.', 'message': '2. Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nCategory: to Customer'}}, {'json': {'subject': '3. Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.', 'message': '3. Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nCategory: to Customer'}}, {'json': {'subject': '4. Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.', 'message': '4. Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nCategory: to Customer'}}, {'json': {'subject': '5. Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.', 'message': '5. Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nCategory: to Customer'}}, {'json': {'subject': '6. Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.', 'message': '6. Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nCategory: to Business'}}, {'json': {'subject': '7. Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.', 'message': '7. Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nCategory: to Business'}}, {'json': {'subject': '8. Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.', 'message': '8. Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nCategory: to Business'}}, {'json': {'subject': '9. Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.', 'message': '9. Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nCategory: to Business'}}, {'json': {'subject': '10. Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.', 'message': '10. Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nCategory: to Business'}}]
 
 3.Output:
-[{'json': {'id': '19ad55c775bf4019', 'threadId': '19ad55c775bf4019', 'labelIds': ['SENT']}, 'pairedItem': {'item': 0}}, {'json': {'id': '19ad55c7864bd880', 'threadId': '19ad55c7864bd880', 'labelIds': ['SENT']}, 'pairedItem': {'item': 1}}, {'json': {'id': '19ad55c7ac8e0bc7', 'threadId': '19ad55c7ac8e0bc7', 'labelIds': ['SENT']}, 'pairedItem': {'item': 2}}, {'json': {'id': '19ad55c7ebd2eead', 'threadId': '19ad55c7ebd2eead', 'labelIds': ['SENT']}, 'pairedItem': {'item': 3}}, {'json': {'id': '19ad55c8254ff1b4', 'threadId': '19ad55c8254ff1b4', 'labelIds': ['SENT']}, 'pairedItem': {'item': 4}}, {'json': {'id': '19ad55c87228c995', 'threadId': '19ad55c87228c995', 'labelIds': ['SENT']}, 'pairedItem': {'item': 5}}, {'json': {'id': '19ad55c8da1254a1', 'threadId': '19ad55c8da1254a1', 'labelIds': ['SENT']}, 'pairedItem': {'item': 6}}, {'json': {'id': '19ad55c9331b86ec', 'threadId': '19ad55c9331b86ec', 'labelIds': ['SENT']}, 'pairedItem': {'item': 7}}, {'json': {'id': '19ad55c9743a5a0d', 'threadId': '19ad55c9743a5a0d', 'labelIds': ['SENT']}, 'pairedItem': {'item': 8}}, {'json': {'id': '19ad55c9a0fe37d1', 'threadId': '19ad55c9a0fe37d1', 'labelIds': ['SENT']}, 'pairedItem': {'item': 9}}]
+[{'json': {'id': '19aee113ee2a186c', 'threadId': '19aee113ee2a186c', 'labelIds': ['SENT']}, 'pairedItem': {'item': 0}}, {'json': {'id': '19aee1143eb08d0b', 'threadId': '19aee1143eb08d0b', 'labelIds': ['SENT']}, 'pairedItem': {'item': 1}}, {'json': {'id': '19aee11460706341', 'threadId': '19aee11460706341', 'labelIds': ['SENT']}, 'pairedItem': {'item': 2}}, {'json': {'id': '19aee114ce70ce54', 'threadId': '19aee114ce70ce54', 'labelIds': ['SENT']}, 'pairedItem': {'item': 3}}, {'json': {'id': '19aee1150b60fafd', 'threadId': '19aee1150b60fafd', 'labelIds': ['SENT']}, 'pairedItem': {'item': 4}}, {'json': {'id': '19aee11555e6da7c', 'threadId': '19aee11555e6da7c', 'labelIds': ['SENT']}, 'pairedItem': {'item': 5}}, {'json': {'id': '19aee115bc9caf44', 'threadId': '19aee115bc9caf44', 'labelIds': ['SENT']}, 'pairedItem': {'item': 6}}, {'json': {'id': '19aee115fb32dd4d', 'threadId': '19aee115fb32dd4d', 'labelIds': ['SENT']}, 'pairedItem': {'item': 7}}, {'json': {'id': '19aee11624ec232e', 'threadId': '19aee11624ec232e', 'labelIds': ['SENT']}, 'pairedItem': {'item': 8}}, {'json': {'id': '19aee1168174ca71', 'threadId': '19aee1168174ca71', 'labelIds': ['SENT']}, 'pairedItem': {'item': 9}}]
 """
-def action_2(input_data: List[Dict] =  [{...}]):
+def action_2(input_data):
   """
-  comments: Send classification results via Gmail with all required parameters set.
+  comments: Send classification results via Gmail to the specified email address with subject and message extracted from input_data.
   TODOs: 
-    - Test sending emails
-    - Handle errors if sending fails
+    - Test sending email.
+    - Verify email content and recipient.
   """
-  params = {
-             "sendTo": "qwuqwuqwu@gmail.com",
-             "subject": "Test Subject",
-             "emailType": "text",
-             "message": "Test message",
-             "options": {}
-           }
+  params = { 'emailType': 'text',
+             'message': '={{$json["message"]}}',
+             'options': {},
+             'sendTo': 'qwuqwuqwu@gmail.com',
+             'subject': '={{$json["subject"]}}'}
   function = transparent_action(integration="gmail", resource="message", operation="send")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -139,54 +129,48 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}}]
 
 3.Output:
-[{'json': {'id': '19ad55c775bf4019', 'threadId': '19ad55c775bf4019', 'labelIds': ['SENT']}, 'pairedItem': {'item': 0}}, {'json': {'id': '19ad55c7864bd880', 'threadId': '19ad55c7864bd880', 'labelIds': ['SENT']}, 'pairedItem': {'item': 1}}, {'json': {'id': '19ad55c7ac8e0bc7', 'threadId': '19ad55c7ac8e0bc7', 'labelIds': ['SENT']}, 'pairedItem': {'item': 2}}, {'json': {'id': '19ad55c7ebd2eead', 'threadId': '19ad55c7ebd2eead', 'labelIds': ['SENT']}, 'pairedItem': {'item': 3}}, {'json': {'id': '19ad55c8254ff1b4', 'threadId': '19ad55c8254ff1b4', 'labelIds': ['SENT']}, 'pairedItem': {'item': 4}}, {'json': {'id': '19ad55c87228c995', 'threadId': '19ad55c87228c995', 'labelIds': ['SENT']}, 'pairedItem': {'item': 5}}, {'json': {'id': '19ad55c8da1254a1', 'threadId': '19ad55c8da1254a1', 'labelIds': ['SENT']}, 'pairedItem': {'item': 6}}, {'json': {'id': '19ad55c9331b86ec', 'threadId': '19ad55c9331b86ec', 'labelIds': ['SENT']}, 'pairedItem': {'item': 7}}, {'json': {'id': '19ad55c9743a5a0d', 'threadId': '19ad55c9743a5a0d', 'labelIds': ['SENT']}, 'pairedItem': {'item': 8}}, {'json': {'id': '19ad55c9a0fe37d1', 'threadId': '19ad55c9a0fe37d1', 'labelIds': ['SENT']}, 'pairedItem': {'item': 9}}]
+[{'json': {'id': '19aee113ee2a186c', 'threadId': '19aee113ee2a186c', 'labelIds': ['SENT']}, 'pairedItem': {'item': 0}}, {'json': {'id': '19aee1143eb08d0b', 'threadId': '19aee1143eb08d0b', 'labelIds': ['SENT']}, 'pairedItem': {'item': 1}}, {'json': {'id': '19aee11460706341', 'threadId': '19aee11460706341', 'labelIds': ['SENT']}, 'pairedItem': {'item': 2}}, {'json': {'id': '19aee114ce70ce54', 'threadId': '19aee114ce70ce54', 'labelIds': ['SENT']}, 'pairedItem': {'item': 3}}, {'json': {'id': '19aee1150b60fafd', 'threadId': '19aee1150b60fafd', 'labelIds': ['SENT']}, 'pairedItem': {'item': 4}}, {'json': {'id': '19aee11555e6da7c', 'threadId': '19aee11555e6da7c', 'labelIds': ['SENT']}, 'pairedItem': {'item': 5}}, {'json': {'id': '19aee115bc9caf44', 'threadId': '19aee115bc9caf44', 'labelIds': ['SENT']}, 'pairedItem': {'item': 6}}, {'json': {'id': '19aee115fb32dd4d', 'threadId': '19aee115fb32dd4d', 'labelIds': ['SENT']}, 'pairedItem': {'item': 7}}, {'json': {'id': '19aee11624ec232e', 'threadId': '19aee11624ec232e', 'labelIds': ['SENT']}, 'pairedItem': {'item': 8}}, {'json': {'id': '19aee1168174ca71', 'threadId': '19aee1168174ca71', 'labelIds': ['SENT']}, 'pairedItem': {'item': 9}}]
 """
 def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Workflow to classify commercial entries from Google Sheets and email results using Gmail.
-    TODOs:
-      - Test end-to-end workflow
-      - Add error handling
-      - Optimize concurrency if needed
+    comments: Workflow triggered manually, reads commercial entries from Google Sheets, classifies each Description with AI, and sends each result by Gmail.
+    TODOs: 
+        - Build aiCompletion input messages with system and user prompts.
+        - Parse AI output to extract classification.
+        - Format and send emails with classification results.
     """
-    # Step 1: Read commercial entries from Google Sheets
+    # Step 1: Trigger input is not used for data, just start
+    # Step 2: Read data from Google Sheets
     sheet_data = action_0(trigger_input)
     
-    # Step 2: Build aiCompletion input for each Description
+    # Step 3: Prepare aiCompletion input
     ai_input = []
     for item in sheet_data:
         description = item['json'].get('Description', '')
         messages = [
-            {"role": "system", "content": "You are a news classifier. Classify as to Business or to Customer."},
+            {"role": "system", "content": "You are a news classifier. Classify as 'to Business' or 'to Customer'."},
             {"role": "user", "content": description}
         ]
         ai_input.append({"json": {"messages": messages}})
     
-    # Step 3: Call aiCompletion
+    # Step 4: Call aiCompletion action
     ai_output = action_1(ai_input)
     
-    # Step 4: Parse AI output and prepare Gmail input
-    gmail_input = []
-    for i, item in enumerate(ai_output):
-        ai_text = item['json']['choices'][0]['text'].strip() if 'choices' in item['json'] and item['json']['choices'] else ''
-        description = sheet_data[i]['json'].get('Description', '')
-        subject = f"{i+1}. Commercial Entry: {description}"
-        message = f"{i+1}. Commercial Entry: {description}\nCategory: {ai_text}"
-        gmail_input.append({
-            "json": {
-                "sendTo": "qwuqwuqwu@gmail.com",
-                "subject": subject,
-                "emailType": "text",
-                "message": message,
-                "options": {}
-            }
-        })
+    # Step 5: Parse aiCompletion output and prepare emails
+    email_inputs = []
+    for i, (sheet_item, ai_item) in enumerate(zip(sheet_data, ai_output), start=1):
+        description = sheet_item['json'].get('Description', '')
+        ai_text = ai_item['json'].get('choices', [{}])[0].get('text', '').strip()
+        # Extract category from AI text, simplified to look for keywords
+        category = 'to Business' if 'business' in ai_text.lower() else 'to Customer'
+        subject = f"{i}. Commercial Entry: {description}"
+        message = f"{i}. Commercial Entry: {description}\nCategory: {category}"
+        email_inputs.append({"json": {"subject": subject, "message": message}})
     
-    # Step 5: Send emails
-    gmail_output = action_2(gmail_input)
+    # Step 6: Send emails via Gmail
+    gmail_output = action_2(email_inputs)
     
     return gmail_output
-
 
 
 

@@ -1,20 +1,20 @@
 """Function param descriptions: 
 This function doesn't need params
 
-This function has been executed for 2 times. Last execution:
-1.Status: FunctionExecuteSuccess
+This function has been executed for 1 times. Last execution:
+1.Status: TriggerAcivatedSuccess
 2.Input: 
-None
+[]
 
 3.Output:
-[{'json': {}, 'pairedItem': {'item': 0}}]
+[{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user pressing a button.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Implement the trigger function to start the workflow
-    - Test the trigger activation
+    - Test the manual trigger
+    - Ensure it activates the workflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -28,20 +28,20 @@ def trigger_0(input_data: List[Dict] =  [{...}]):
 1 params["options"]: dict = {}: Options(Add Option) . properties description:
   ...hidden...
 
-This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
 2.Input: 
-[{'json': {}, 'pairedItem': {'item': 0}}]
+[]
 
 3.Output:
-[{'json': {'title': 'Canada loses measles elimination status after ongoing outbreaks', 'author': 'DEVI SHASTRI AP health writer'}, 'pairedItem': {'item': 0}}, {'json': {'title': 'New Zealand will remove police from gun licensing but near-total semiautomatics ban to remain', 'author': 'CHARLOTTE GRAHAM-MCLAY Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'title': '18 people sent to the hospital after mobile lounge crashes at Washington D.C.-area airport', 'author': 'The Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'title': "Idaho attorney general's office says no charges warranted against sheriff after turbulent town hall", 'author': 'The Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'title': 'A lawsuit challenges an Alaska program that allows killing bears as a way to rebuild a caribou herd', 'author': 'BECKY BOHRER Associated Press'}, 'pairedItem': {'item': 0}}]
+[]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Execute the SQL query to select title and author from bloomberg_articles with a limit of 5.
+  comments: Execute SQL query to get title and author from bloomberg_articles.
   TODOs: 
-    - Test the query execution and output format
-    - Refine query if needed based on output
+    - Test query execution
+    - Verify output contains title and author fields
   """
   params = {'options': {}, 'query': 'SELECT title, author FROM bloomberg_articles LIMIT 5;'}
   function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
@@ -71,20 +71,20 @@ def action_0(input_data: List[Dict] =  [{...}]):
 7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
   ...hidden...
 
-This function has been executed for 1 times. Last execution:
-1.Status: ErrorRaisedHere
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
 2.Input: 
-[{'json': {'text': '1. Title: Canada loses measles elimination status after ongoing outbreaks\nAuthor: DEVI SHASTRI AP health writer'}}, {'json': {'text': '2. Title: New Zealand will remove police from gun licensing but near-total semiautomatics ban to remain\nAuthor: CHARLOTTE GRAHAM-MCLAY Associated Press'}}, {'json': {'text': '3. Title: 18 people sent to the hospital after mobile lounge crashes at Washington D.C.-area airport\nAuthor: The Associated Press'}}, {'json': {'text': "4. Title: Idaho attorney general's office says no charges warranted against sheriff after turbulent town hall\nAuthor: The Associated Press"}}, {'json': {'text': '5. Title: A lawsuit challenges an Alaska program that allows killing bears as a way to rebuild a caribou herd\nAuthor: BECKY BOHRER Associated Press'}}]
+[]
 
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
   comments: Send formatted messages to Slack channel 'general'.
   TODOs: 
-    - Implement the Slack message sending action
-    - Test message formatting and delivery
+    - Implement message formatting and Slack channel config
+    - Test message sending
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
@@ -96,83 +96,38 @@ def action_1(input_data: List[Dict] =  [{...}]):
 """
 
 This function has been executed for 1 times. Last execution:
-1.Status: ErrorRaisedInner
+1.Status: ErrorRaisedHere
 2.Input: 
 [{'json': {}}]
 
 3.Output:
 []
 """
-def trigger_0(input_data=None):
+def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Trigger the workflow manually by user pressing a button.
-    TODOs:
-      - Implement the trigger function to start the workflow
-      - Test the trigger activation
-    """
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_0(input_data):
-    """
-    comments: Execute the SQL query to select title and author from bloomberg_articles with a limit of 5.
-    TODOs:
-      - Test the query execution and output format
-      - Refine query if needed based on output
-    """
-    params = {'options': {}, 'query': 'SELECT title, author FROM bloomberg_articles LIMIT 5;'}
-    function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data):
-    """
-    comments: Send formatted messages to Slack channel 'general'.
-    TODOs:
-      - Implement the Slack message sending action
-      - Test message formatting and delivery
-    """
-    params = {
-        "select": "channel",
-        "channelId": {"mode": "name", "value": "general"},
-        "messageType": "text",
-        "text": "={{$json[\"text\"]}}"
-    }
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def mainWorkflow(trigger_input):
-    """
-    comments: Main workflow to query PostgreSQL database and send formatted results to Slack channel 'general'.
-    TODOs:
+    comments: Workflow to query PostgreSQL and send formatted results to Slack channel 'general'.
+    TODOs: 
       - Test end-to-end workflow
-      - Verify message format and Slack delivery
+      - Verify message formatting
     """
-    # Step 1: Trigger manual trigger
-    trigger_output = trigger_0(input_data=None)
+    # Step 1: Trigger manually
+    trigger_output = trigger_0()
 
     # Step 2: Execute SQL query
     query_output = action_0(trigger_output)
 
-    # Step 3: Extract title and author from query_output
-    slack_input = []
+    # Step 3: Extract title and author, format messages
+    slack_messages = []
     for i, item in enumerate(query_output, start=1):
         title = item['json'].get('title', '')
         author = item['json'].get('author', '')
         message_text = f"{i}. Title: {title}\nAuthor: {author}"
-        slack_input.append({"json": {"text": message_text}})
+        slack_messages.append({"json": {"text": message_text}})
 
     # Step 4: Send messages to Slack
-    slack_output = action_1(slack_input)
+    slack_output = action_1(slack_messages)
 
     return slack_output
-
 
 
 
@@ -183,41 +138,16 @@ The directly running result for now codes with print results are as following:
 
 Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
 [Output Data Info]
-the output data of function `trigger_0` is: `[{'json': {}, 'pairedItem': {'item': 0}}]`
-the output data of function `action_0` is: `[{'json': {'title': 'Canada loses measles elimination status after ongoing outbreaks', 'author': 'DEVI SHASTRI AP health writer'}, 'pairedItem': {'item': 0}}, {'json': {'title': 'New Zealand will remove police from gun licensing but near-total semiautomatics ban to remain', 'author': 'CHARLOTTE GRAHAM-MCLAY Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'title': '18 people sent to the hospital after mobile lounge crashes at Washington D.C.-area airport', 'author': 'The Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'title': "Idaho attorney general's office says no charges warranted against sheriff after turbulent town hall", 'author': 'The Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'title': 'A lawsuit challenges an Alaska program that allows killing bears as a way to rebuild a caribou herd', 'author': 'BECKY BOHRER Associated Press'}, 'pairedItem': {'item': 0}}]`
+the output data of function `trigger_0` is: `[{'json': {}}]`
+the output data of function `action_0` is: `[]`
 the output data of function `action_1` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-        # Step 4: Send messages to Slack
--->     slack_output = action_1(slack_input)
+        # Step 1: Trigger manually
+-->     trigger_output = trigger_0()
 ------------------------
-In Function: transparent_action
-      function = transparent_action(integration="slack", resource="message", operation="post")
--->   output_data = function.run(input_data=input_data, params=params)
-      return output_data
-------------------------
-n8nRunningException: Execution Failed: 
-Output: Problem with execution 1603: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
-The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 1603)
-Error executing workflow. See log messages for details.
-
-Execution error:
-====================================
-The workflow has issues and cannot be executed for that reason. Please fix them first.
-undefined
-WorkflowHasIssuesError: The workflow has issues and cannot be executed for that reason. Please fix them first.
-    at WorkflowExecute.checkForWorkflowIssues (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1382:10)
-    at WorkflowExecute.processRunExecutionData (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1461:8)
-    at WorkflowExecute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:176:15)
-    at ManualExecutionService.runManually (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/manual-execution.service.ts:157:27)
-    at WorkflowRunner.runMainProcess (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:298:53)
-    at WorkflowRunner.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:175:4)
-    at Execute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/commands/execute.ts:95:23)
-    at CommandRegistry.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/command-registry.ts:67:4)
-    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/bin/n8n:63:2
-The workflow has issues and cannot be executed for that reason. Please fix them first.
-
+TypeError: n8nNodeRunner.__call__() missing 1 required positional argument: 'input_data'
 
 You can also see the runnning result for all functions in there comments.
 """

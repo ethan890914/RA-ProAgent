@@ -1,24 +1,22 @@
 {
-  "thought": "I need to set the specific parameters for the aiCompletion action to generate a joke with length between 100 and 200 words.",
+  "thought": "Implement mainWorkflow to connect manual trigger, AI joke generation, and Slack message sending as per user request.",
   "plan": [
-    "Set the prompt messages to instruct the AI to generate a joke with the specified length.",
-    "Ensure the messages are passed as a Python list/dict structure in input_data, not in params.",
-    "Test the joke generation output with the new prompt."
+    "Use manual trigger to start workflow.",
+    "Build AI input with system and user messages to generate a joke between 100 and 200 words.",
+    "Call aiCompletion action with constructed input.",
+    "Extract joke text from AI output.",
+    "Wrap joke text into Slack message format targeting #jokes channel.",
+    "Call Slack action to send the message."
   ],
-  "criticism": "Currently, the aiCompletion action has empty params and no prompt, so it cannot generate the desired joke.",
-  "tool_name": "function_rewrite_params",
+  "criticism": "Current mainWorkflow is not implemented, so the workflow cannot execute. Implementation needs to handle AI input construction and Slack message formatting properly.",
+  "tool_name": "workflow_implment",
   "tool_input": {
-    "function_name": "action_0",
-    "params": "{}",
-    "comments": "Generate a joke with length between 100 and 200 words using AI completion. The prompt is provided in the workflow input_data, so params is empty.",
-    "TODO": [
-      "Set the prompt to generate a joke with specified length in workflow mainWorkflow.",
-      "Test the joke generation output."
-    ]
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0():\n    \"\"\"\n    comments: Manual trigger to start the workflow when user clicks the button.\n    TODOs: \n      - Test manual trigger activation.\n      - Verify output format.\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: Generate a joke with more than 100 words but less than 200 words using AI completion.\n    TODOs: \n      - Implement specific prompt and parameters.\n      - Test joke generation length and quality.\n    \"\"\"\n    params = {}\n    function = transparent_action(integration=\"aiCompletion\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef action_1(input_data):\n    \"\"\"\n    comments: Send the generated joke to Slack channel #jokes.\n    TODOs: \n      - Set channel to #jokes.\n      - Test message delivery.\n    \"\"\"\n    params = {\n        \"select\": \"channel\",\n        \"channelId\": {\"mode\": \"name\", \"value\": \"jokes\"},\n        \"messageType\": \"text\",\n        \"text\": \"={{$json[\\\"text\\\"]}}\"\n    }\n    function = transparent_action(integration=\"slack\", resource=\"message\", operation=\"post\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: Workflow to generate a joke with AI on manual trigger and send it to Slack #jokes channel.\n    TODOs: \n      - Test end-to-end joke generation and sending.\n    \"\"\"\n    # Step 1: Build AI input with prompt for joke generation\n    ai_input = [{\n        \"json\": {\n            \"messages\": [\n                {\"role\": \"system\", \"content\": \"You are a helpful assistant that generates jokes.\"},\n                {\"role\": \"user\", \"content\": \"Please generate a joke with more than 100 words but less than 200 words.\"}\n            ]\n        }\n    }]\n\n    # Step 2: Call aiCompletion action\n    ai_output = action_0(ai_input)\n\n    # Step 3: Extract joke text from AI output\n    joke_text = ai_output[0][\"json\"][\"choices\"][0][\"text\"]\n\n    # Step 4: Wrap joke text for Slack message\n    slack_input = [{\"json\": {\"text\": joke_text}}]\n\n    # Step 5: Send joke to Slack #jokes channel\n    slack_output = action_1(slack_input)\n\n    return slack_output\n"
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "result": [],
+    "result": "mainWorkflow has been re-implemented",
     "status": "ToolCallSuccess"
   }
 }

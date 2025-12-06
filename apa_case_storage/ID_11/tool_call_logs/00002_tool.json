@@ -1,18 +1,20 @@
 {
-  "thought": "Now that the trigger and actions are defined, implement the main workflow to connect them as per user request.",
+  "thought": "Implement the mainWorkflow to connect the trigger and actions. The workflow will trigger manually, read the Google Sheets data, prepare the AI completion input, call AI to classify each headline, then format and send messages to Slack channel #general.",
   "plan": [
-    "Use manual trigger as input to start workflow.",
-    "Call googleSheets read action to get news headlines.",
-    "Build aiCompletion input messages for each headline.",
-    "Call aiCompletion action to classify each headline.",
-    "Parse AI output to extract category.",
-    "Format and send Slack messages for each news-category pair."
+    "Call trigger_0 to start workflow",
+    "Call action_0 to read all rows from Google Sheets",
+    "Extract headlines from the sheet data",
+    "Build AI input data with system and user prompts for each headline",
+    "Call action_1 for AI classification",
+    "Parse AI output to extract category",
+    "Format Slack messages for each headline-category pair",
+    "Call action_2 to send messages to Slack"
   ],
-  "criticism": "The main workflow is not implemented yet, so no data flow or processing occurs.",
+  "criticism": "Currently the mainWorkflow is not implemented, so the workflow cannot run. Implementing it will enable the end-to-end process to work.",
   "tool_name": "workflow_implment",
   "tool_input": {
     "workflow_name": "mainWorkflow",
-    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: Workflow to read news headlines from Google Sheets, classify with AI, and send results to Slack.\n    TODOs:\n      - Test end-to-end workflow\n      - Verify Slack message delivery\n      - Handle empty or malformed data\n    \"\"\"\n    # Step 1: Read news headlines from Google Sheets\n    news_data = action_0(trigger_input)\n\n    # Step 2: Build aiCompletion input messages\n    ai_input = []\n    for item in news_data:\n        headline = item['json'].get('Headlines', '')\n        messages_data = [\n            {\"role\": \"system\", \"content\": \"You are a news classifier. Classify as technology or sport.\"},\n            {\"role\": \"user\", \"content\": headline}\n        ]\n        ai_input.append({\"json\": {\"messages\": messages_data}})\n\n    # Step 3: Call aiCompletion action\n    ai_output = action_1(ai_input)\n\n    # Step 4: Parse AI output and prepare Slack messages\n    slack_input = []\n    for i, item in enumerate(ai_output):\n        headline = news_data[i]['json'].get('Headlines', '')\n        ai_text = item['json']['choices'][0]['text'].lower()\n        category = \"technology\" if \"technology\" in ai_text else \"sport\"\n        slack_text = f\"News: {headline}\\nCategory: {category}\"\n        slack_input.append({\"json\": {\"text\": slack_text}})\n\n    # Step 5: Send messages to Slack channel #general\n    slack_output = action_2(slack_input)\n\n    return slack_output\n"
+    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: Workflow to classify news headlines from Google Sheets using AI and send results to Slack.\n    TODOs:\n      - Test end-to-end workflow\n      - Handle empty or missing data gracefully\n    \"\"\"\n    # Step 1: Trigger is manual, just start\n    # Step 2: Read rows from Google Sheets\n    sheet_data = action_0(trigger_input)\n    \n    # Step 3: Extract headlines\n    headlines = []\n    for item in sheet_data:\n        headline = item['json'].get('Headlines')\n        if headline:\n            headlines.append(headline)\n    \n    # Step 4: Build AI input for each headline\n    ai_input = []\n    for headline in headlines:\n        messages = [\n            {\"role\": \"system\", \"content\": \"You are a news classifier. Classify as technology or sport.\"},\n            {\"role\": \"user\", \"content\": headline}\n        ]\n        ai_input.append({\"json\": {\"messages\": messages}})\n    \n    # Step 5: Call AI completion\n    ai_output = action_1(ai_input)\n    \n    # Step 6: Parse AI output and prepare Slack messages\n    slack_input = []\n    for i, item in enumerate(ai_output):\n        ai_text = item['json']['choices'][0]['text'].strip().lower()\n        # Simple classification extraction\n        if 'technology' in ai_text:\n            category = 'technology'\n        elif 'sport' in ai_text:\n            category = 'sport'\n        else:\n            category = 'unknown'\n        headline = headlines[i]\n        message_text = f\"News: {headline}\\nCategory: {category}\"\n        slack_input.append({\"json\": {\"text\": message_text}})\n    \n    # Step 7: Send messages to Slack channel #general\n    slack_params = {\n        \"select\": \"channel\",\n        \"channelId\": {\"mode\": \"name\", \"value\": \"general\"},\n        \"messageType\": \"text\",\n        \"text\": \"={{$json[\\\"text\\\"]}}\"\n    }\n    slack_output = action_2(slack_input)\n    return slack_output\n"
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {

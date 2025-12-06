@@ -1,12 +1,11 @@
 {
-  "thought": "根据用户需求，定义一个手动触发器，一个Google Sheets读取操作和一个Slack消息发送操作。",
+  "thought": "根据用户需求，先定义触发器和两个动作：一个用于从Google Sheets读取数据，另一个用于发送消息到Slack。",
   "plan": [
-    "定义manualTrigger的触发器以启动工作流。",
-    "定义googleSheets读取sheet数据的动作，参数包括documentId和sheetName。",
-    "定义slack发送消息的动作，消息内容为从Google Sheets读取的整个json结构字符串。",
-    "后续实现参数配置和主工作流逻辑。"
+    "定义手动触发器trigger_0",
+    "定义action_0用于读取Google Sheets数据，指定documentId和sheetName",
+    "定义action_1用于发送消息到Slack，指定频道为#general"
   ],
-  "criticism": "目前仅定义函数，未实现参数和工作流，需后续完善。",
+  "criticism": "目前还未定义任何函数，无法实现完整流程，先定义基础函数。",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -14,17 +13,17 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "手动触发器，用户点击按钮启动工作流",
+        "comments": "手动触发器，用户点击按钮触发流程",
         "TODO": [
-          "实现触发器参数（无参数）",
-          "测试触发器能否正常触发"
+          "测试触发器是否正常工作",
+          "确保触发器输出格式符合后续动作输入"
         ]
       },
       {
         "integration_name": "googleSheets",
         "resource_name": "sheet",
         "operation_name": "read",
-        "comments": "读取指定Google Sheet文档和工作表的数据",
+        "comments": "从Google Sheets读取commercial表的数据",
         "TODO": [
           "配置documentId和sheetName参数",
           "测试读取数据是否正确"
@@ -34,11 +33,11 @@
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "将读取的Google Sheets数据作为字符串发送到Slack指定频道",
+        "comments": "将读取到的Google Sheets数据作为json字符串发送到Slack #general频道",
         "TODO": [
           "配置频道为#general",
-          "将Google Sheets数据转换为字符串发送",
-          "测试消息发送是否成功"
+          "确保消息文本格式正确",
+          "测试消息发送"
         ]
       }
     ]

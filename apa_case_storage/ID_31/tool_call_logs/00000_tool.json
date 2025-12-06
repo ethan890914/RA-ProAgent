@@ -1,11 +1,11 @@
 {
-  "thought": "To fulfill the user request, I need to define three functions: a trigger for manual trigger, an action to get current weather from OpenWeatherMap for New York, and an action to send a message to Slack channel #weathers.",
+  "thought": "To fulfill the user request, we need a manual trigger, an action to get current weather from OpenWeatherMap for New York, and an action to send a message to Slack.",
   "plan": [
-    "Define trigger_0 for manual trigger.",
-    "Define action_0 for OpenWeatherMap current weather action.",
-    "Define action_1 for Slack message post action."
+    "Define the manual trigger function.",
+    "Define the OpenWeatherMap current weather action.",
+    "Define the Slack message post action."
   ],
-  "criticism": "Currently, no functions are defined, so the workflow can't proceed. Defining these functions is the first step.",
+  "criticism": "Currently, no functions are defined, so we cannot implement the workflow yet.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -13,31 +13,31 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Trigger when the user manually triggers the workflow.",
+        "comments": "Trigger the workflow manually.",
         "TODO": [
-          "Test the manual trigger.",
-          "Ensure it activates the mainWorkflow correctly."
+          "Test trigger",
+          "Use as workflow input"
         ]
       },
       {
         "integration_name": "openWeatherMap",
         "resource_name": "default",
         "operation_name": "currentWeather",
-        "comments": "Get current weather data from OpenWeatherMap for New York.",
+        "comments": "Get current weather for a specified location.",
         "TODO": [
-          "Configure to query New York weather.",
-          "Test the weather data retrieval."
+          "Set city name to New York",
+          "Test weather fetching"
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Send formatted weather message to Slack channel #weathers.",
+        "comments": "Send a text message to a Slack channel.",
         "TODO": [
-          "Set channel to #weathers.",
-          "Format message with temperature and wind.",
-          "Test message sending."
+          "Select Slack channel",
+          "Format message",
+          "Test message sending"
         ]
       }
     ]

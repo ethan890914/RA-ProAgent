@@ -1,29 +1,21 @@
 {
-  "thought": "为确保Google Sheets读取动作能正确读取指定文档和工作表的数据，需要设置documentId和sheetName参数。",
+  "thought": "现在我们已经定义了触发器和两个动作函数，下一步是实现主流程：当手动触发时，读取指定Google Sheets的数据，并将数据转为JSON字符串发送邮件。",
   "plan": [
-    "设置Google Sheets读取动作的documentId为用户提供的ID",
-    "设置sheetName为用户提供的表名",
-    "测试读取动作是否能正确返回数据"
+    "从trigger_0获取触发输入。",
+    "调用action_0读取Google Sheets，传入文档ID和sheetName。",
+    "将读取到的表格数据转换成JSON字符串。",
+    "调用action_1发送邮件，收件人是指定邮箱，主题和内容按照要求设置。",
+    "返回发送邮件的结果。"
   ],
-  "criticism": "目前读取动作的参数未设置，无法读取数据。",
-  "tool_name": "function_rewrite_params",
+  "criticism": "目前action_0的参数未设置，读取Google Sheets时需要正确传入文档ID和sheetName；action_1发送邮件时需要正确传入收件人、主题和内容。",
+  "tool_name": "workflow_implment",
   "tool_input": {
-    "function_name": "action_0",
-    "params": "{\"documentId\":{\"mode\":\"id\",\"value\":\"1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\"},\"sheetName\":{\"mode\":\"id\",\"value\":\"commercial\"},\"filtersUI\":{},\"options\":{}}",
-    "comments": "设置Google Sheets读取动作的文档ID和工作表名称，确保能读取正确数据",
-    "TODO": [
-      "测试读取数据是否正确",
-      "调试数据格式"
-    ]
+    "workflow_name": "mainWorkflow",
+    "code": "def trigger_0(input_data):\n    \"\"\"\n    comments: 手动触发器，用户点击按钮触发流程\n    TODOs:\n      - 测试触发器是否正常工作\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: 读取指定Google Sheet文档和表单的数据\n    TODOs:\n      - 根据文档ID和sheetName配置参数\n      - 测试读取数据是否正确\n    \"\"\"\n    params = {\n        \"documentId\": {\"mode\": \"id\", \"value\": \"1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\"},\n        \"sheetName\": {\"mode\": \"id\", \"value\": \"commercial\"},\n        \"filtersUI\": {},\n        \"options\": {}\n    }\n    function = transparent_action(integration=\"googleSheets\", resource=\"sheet\", operation=\"read\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef action_1(input_data):\n    \"\"\"\n    comments: 发送邮件，将读取的Google Sheets数据作为邮件内容发送\n    TODOs:\n      - 配置收件人邮箱、邮件主题和邮件内容\n      - 测试邮件发送\n    \"\"\"\n    # 从输入数据中提取Google Sheets的数据，并转换为JSON字符串\n    import json\n    if not input_data or not input_data[0].get('json'):\n        content = \"无数据\"\n    else:\n        content = json.dumps([item['json'] for item in input_data], ensure_ascii=False, indent=2)\n\n    params = {\n        \"sendTo\": \"qwuqwuqwu@gmail.com\",\n        \"subject\": \"commercial flows\",\n        \"emailType\": \"text\",\n        \"message\": content,\n        \"options\": {}\n    }\n    function = transparent_action(integration=\"gmail\", resource=\"message\", operation=\"send\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 当手动触发时，读取指定Google Sheets的数据，并将其作为JSON字符串通过Gmail发送到指定邮箱\n    TODOs:\n      - 测试整体流程\n    \"\"\"\n    # 1. 读取Google Sheets数据\n    sheet_data = action_0(trigger_input)\n\n    # 2. 发送邮件，邮件内容是读取到的Google Sheets数据的JSON字符串\n    email_output = action_1(sheet_data)\n\n    return email_output\n"
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {
-    "result": [
-      "params[\"documentId\"] parsed with \"mode\"=id",
-      "params[\"sheetName\"] parsed with \"mode\"=id",
-      "params[\"filtersUI\"] parsed with keys: []",
-      "params[\"options\"] parsed as dict, got {}"
-    ],
+    "result": "mainWorkflow has been re-implemented",
     "status": "ToolCallSuccess"
   }
 }

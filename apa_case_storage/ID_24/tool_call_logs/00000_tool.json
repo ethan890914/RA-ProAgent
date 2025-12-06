@@ -1,14 +1,14 @@
 {
-  "thought": "The workflow requires reading data from Google Sheets, classifying descriptions using AI, sending messages to Slack, generating reminder emails using AI, and sending emails via Gmail. We need to define the actions and trigger for these steps.",
+  "thought": "To implement the main workflow, I need to define all the necessary actions and the manual trigger first. The workflow requires reading data from Google Sheets, classifying entries with AI, sending messages to Slack, generating reminder emails with AI, and sending emails via Gmail.",
   "plan": [
-    "Define manual trigger to start the workflow.",
-    "Define Google Sheets read action to get commercial entries.",
-    "Define AI completion action for classification.",
-    "Define Slack message post action to send messages.",
-    "Define AI completion action for reminder email generation.",
-    "Define Gmail send message action to send emails."
+    "Define a manual trigger for starting the workflow.",
+    "Define action to read data from Google Sheets with the given documentId and sheetName.",
+    "Define action for the first aiCompletion to classify commercial entry descriptions.",
+    "Define action for Slack message posting to send classification results.",
+    "Define action for the second aiCompletion to generate reminder emails for 'to Customer' entries.",
+    "Define action to send emails via Gmail."
   ],
-  "criticism": "The plan assumes separate AI completion actions for classification and reminder generation but currently we only have one aiCompletion action defined; we need to reuse it with different prompts.",
+  "criticism": "Currently, no actions or triggers are defined, so the workflow cannot run and raises NotImplementedError.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -16,60 +16,59 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Trigger the workflow manually by the user.",
+        "comments": "Manual trigger to start the workflow when clicked.",
         "TODO": [
-          "Test manual trigger",
-          "Ensure it starts the workflow correctly"
+          "Test manual trigger activation."
         ]
       },
       {
         "integration_name": "googleSheets",
         "resource_name": "sheet",
         "operation_name": "read",
-        "comments": "Read all rows from the commercial sheet in Google Sheets.",
+        "comments": "Read all rows from the specified Google Sheet document and sheetName.",
         "TODO": [
-          "Set documentId and sheetName parameters",
-          "Test reading data"
+          "Configure documentId and sheetName in params.",
+          "Test reading Google Sheets data."
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Use AI to classify each commercial entry description.",
+        "comments": "First aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer'.",
         "TODO": [
-          "Construct messages with system and user prompts",
-          "Test classification AI call"
+          "Build messages array in workflow.",
+          "Test AI classification."
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Send messages to Slack channel #general with classification results.",
+        "comments": "Send each classification result to Slack channel #general as a message.",
         "TODO": [
-          "Format message text properly",
-          "Test Slack message sending"
+          "Format Slack message text.",
+          "Test Slack message sending."
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Use AI to generate reminder emails for 'to Customer' entries.",
+        "comments": "Second aiCompletion to generate reminder emails for 'to Customer' commercial flows.",
         "TODO": [
-          "Construct messages with system and user prompts",
-          "Test reminder email AI call"
+          "Build messages array in workflow.",
+          "Test AI summarization and reminder generation."
         ]
       },
       {
         "integration_name": "gmail",
         "resource_name": "message",
         "operation_name": "send",
-        "comments": "Send reminder emails to corresponding managers via Gmail.",
+        "comments": "Send reminder emails to corresponding managers with Gmail.",
         "TODO": [
-          "Set email subject and body",
-          "Test email sending"
+          "Format email subject and content.",
+          "Test sending emails."
         ]
       }
     ]

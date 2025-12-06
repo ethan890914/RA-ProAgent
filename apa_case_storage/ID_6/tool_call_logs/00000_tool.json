@@ -1,0 +1,54 @@
+{
+  "thought": "To fulfill the user request, I need to define a manual trigger, an AI completion action to generate a joke, and a Slack action to send the joke to the #general channel.",
+  "plan": [
+    "Define a manual trigger function for the workflow start.",
+    "Define an aiCompletion action function to generate a new joke each time.",
+    "Define a Slack action function to send the generated joke to the #general channel."
+  ],
+  "criticism": "Currently, no functions are defined, so the workflow cannot run. I will define the necessary functions first.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Manual trigger to start the workflow when clicked.",
+        "TODO": [
+          "Test the trigger",
+          "Ensure it activates the workflow correctly"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Generate a new joke using AI completion each time the workflow is triggered.",
+        "TODO": [
+          "Implement prompt for joke generation",
+          "Test joke generation"
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send the generated joke to Slack channel #general.",
+        "TODO": [
+          "Set channel to #general",
+          "Send the joke text",
+          "Test Slack message sending"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: aiCompletion->default->default",
+      "function_2 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

@@ -1,12 +1,11 @@
 {
-  "thought": "To fulfill the user query, I need to define a manual trigger, a postgres action to execute the SQL query, and a slack action to send the message to the #general channel.",
+  "thought": "To fulfill the user requirement, I need to define the trigger for manual start and two actions: one for executing the PostgreSQL query and another for sending messages to Slack.",
   "plan": [
-    "Define a manual trigger function to start the workflow.",
-    "Define a postgres action to execute the SQL query: SELECT * FROM bloomberg_articles LIMIT 1;",
-    "Define a slack action to send a text message to channel #general.",
-    "Implement the mainWorkflow to connect these functions."
+    "Define trigger_0 for manual trigger",
+    "Define action_0 for PostgreSQL executeQuery",
+    "Define action_1 for Slack message post"
   ],
-  "criticism": "The plan is straightforward but the main challenge is to properly format the postgres query result and send it as a Slack message in the required format.",
+  "criticism": "Currently, no functions are defined and the mainWorkflow is not implemented, so the workflow cannot run.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -14,31 +13,30 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Manual trigger to start the workflow on demand.",
+        "comments": "Manual trigger to start the workflow when user clicks the button.",
         "TODO": [
-          "Test the trigger works.",
-          "Ensure the output format matches expected input for next action."
+          "Test trigger functionality",
+          "Use it as the main trigger for the workflow"
         ]
       },
       {
         "integration_name": "postgres",
         "resource_name": "database",
         "operation_name": "executeQuery",
-        "comments": "Execute the SQL query to get the top 1 row from bloomberg_articles table.",
+        "comments": "Execute the SQL query to get data from bloomberg_articles table.",
         "TODO": [
-          "Configure the query parameter properly.",
-          "Test the query execution and output."
+          "Implement the SQL query parameter",
+          "Test the query execution and output format"
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Send the formatted query result to Slack channel #general.",
+        "comments": "Send the formatted PostgreSQL query result to Slack channel #general.",
         "TODO": [
-          "Set the channel to #general.",
-          "Format the message text properly.",
-          "Test sending message to Slack."
+          "Format the message text",
+          "Test sending message to Slack"
         ]
       }
     ]

@@ -1,27 +1,28 @@
 {
-  "thought": "I need to implement the download action parameters properly to download the file using the file ID obtained from the file search action. The fileId parameter should be set to use the 'id' mode and its value should be extracted from the input data's json field 'id'.",
+  "thought": "I will implement the params for the file search action to find the file 'abc-news_chunked_1day_articles_2025-11-11_1.csv' inside the folder by folderId. This requires using the searchMethod 'query' with a query string that filters by file name, folderId, and trashed status.",
   "plan": [
-    "Set fileId mode to 'id' to indicate we are using file ID for download.",
-    "Set fileId value to '={{$json[\"id\"]}}' to extract the file ID from input data.",
-    "Leave options empty as no specific options are needed for download.",
-    "Test the download action to ensure it returns the binary data of the file."
+    "Use searchMethod 'query' for advanced search",
+    "Set queryString to \"name = 'abc-news_chunked_1day_articles_2025-11-11_1.csv' and '{{$json[\\\"folderId\\\"]}}' in parents and trashed = false\"",
+    "Set returnAll to false and limit to 1 to get only one file"
   ],
-  "criticism": "The download action depends on the correct file ID passed from the previous file search action. If the file search failed, this will fail too.",
+  "criticism": "The query string must start with '=' to enable expression interpolation. If folderId is missing or incorrect, the file search will fail.",
   "tool_name": "function_rewrite_params",
   "tool_input": {
-    "function_name": "action_2",
-    "params": "{\"fileId\":{\"mode\":\"id\",\"value\":\"={{$json[\\\"id\\\"]}}\"},\"options\":{}}",
-    "comments": "Download the file using file ID from file search result, extracting fileId from input data's json id field.",
+    "function_name": "action_1",
+    "params": "{\"searchMethod\":\"query\",\"queryString\":\"=name = 'abc-news_chunked_1day_articles_2025-11-11_1.csv' and '{{$json[\\\"folderId\\\"]}}' in parents and trashed = false\",\"returnAll\":false,\"limit\":1}",
+    "comments": "Search for the file 'abc-news_chunked_1day_articles_2025-11-11_1.csv' inside the folder 'ProAgentWorkspace' by folderId using query string in Google Drive",
     "TODO": [
-      "Test the download action and verify the binary content.",
-      "Decode Base64 content in workflow to get the file text."
+      "Test file search result",
+      "Verify folderId is correctly passed"
     ]
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {
     "result": [
-      "params[\"fileId\"] parsed with \"mode\"=id",
-      "params[\"options\"] parsed as dict, got {}"
+      "params[\"searchMethod\"] parsed as normal-string",
+      "params[\"queryString\"] parsed as expression",
+      "params[\"returnAll\"] parsed as fixed_value",
+      "params[\"limit\"] parsed as fixed_value"
     ],
     "status": "ToolCallSuccess"
   }

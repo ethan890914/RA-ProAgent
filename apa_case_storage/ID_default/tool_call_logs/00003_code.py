@@ -1,20 +1,20 @@
 """Function param descriptions: 
 This function doesn't need params
 
-This function has been executed for 1 times. Last execution:
-1.Status: TriggerAcivatedSuccess
+This function has been executed for 2 times. Last execution:
+1.Status: FunctionExecuteSuccess
 2.Input: 
-[]
+None
 
 3.Output:
-[{'json': {}}]
+[{'json': {}, 'pairedItem': {'item': 0}}]
 """
 def trigger_0(input_data):
   """
-  comments: 手动触发器，用户点击按钮触发工作流执行。
+  comments: 手动触发器，用户点击按钮时触发工作流
   TODOs: 
-    - 测试触发器是否能正常触发
-    - 验证触发器输出格式
+    - 实现触发器函数
+    - 测试触发功能
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -47,23 +47,19 @@ def trigger_0(input_data):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'text': 'Hello World!'}}]
+[{'json': {}, 'pairedItem': {'item': 0}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764886125.170509', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Hello World!', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'bAZcl', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Hello World!'}]}]}]}, 'message_timestamp': '1764886125.170509'}, 'pairedItem': {'item': 0}}]
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764905666.939559', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Hello World!', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '+W6P3', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Hello World!'}]}]}]}, 'message_timestamp': '1764905666.939559'}, 'pairedItem': {'item': 0}}]
 """
 def action_0(input_data):
   """
-  comments: 设置Slack发送消息动作，默认发送到#general频道，消息内容从输入数据读取。
+  comments: 配置Slack发送消息动作，发送消息到#general频道，内容为'Hello World!'
   TODOs: 
-    - 测试发送消息是否成功
-    - 验证消息内容格式
-    - 完善工作流实现
+    - 测试消息发送
+    - 验证消息是否发送到正确频道
   """
-  params = { 'channelId': {'mode': 'name', 'value': 'general'},
-             'messageType': 'text',
-             'select': 'channel',
-             'text': '={{$json["text"]}}'}
+  params = {'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'select': 'channel', 'text': '=Hello World!'}
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -78,19 +74,22 @@ This function has been executed for 1 times. Last execution:
 [{'json': {}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764886125.170509', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Hello World!', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'bAZcl', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Hello World!'}]}]}]}, 'message_timestamp': '1764886125.170509'}, 'pairedItem': {'item': 0}}]
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764905666.939559', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Hello World!', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '+W6P3', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Hello World!'}]}]}]}, 'message_timestamp': '1764905666.939559'}, 'pairedItem': {'item': 0}}]
 """
 def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: 手动触发后，发送固定消息到Slack频道#general。
-    TODOs: 
-      - 测试工作流执行
-      - 验证消息发送成功
+    comments: 主工作流，手动触发后发送消息到Slack的#general频道
+    TODOs:
+      - 调用手动触发器
+      - 调用Slack发送消息动作
+      - 返回Slack动作输出
     """
-    # 构造Slack消息输入，消息内容固定
-    slack_input = [{"json": {"text": "Hello World!"}}]
-    # 调用发送消息动作
-    slack_output = action_0(slack_input)
+    # 调用手动触发器，触发工作流
+    trigger_output = trigger_0(None)
+
+    # 调用Slack发送消息动作
+    slack_output = action_0(trigger_output)
+
     return slack_output
 
 

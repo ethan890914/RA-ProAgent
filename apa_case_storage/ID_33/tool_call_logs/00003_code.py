@@ -9,12 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by user
+  comments: Manual trigger to start the workflow on demand
   TODOs: 
-    - Test the manual trigger
-    - Verify output format
+    - Test the trigger to ensure it fires correctly
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -40,22 +39,21 @@ def trigger_0(input_data: List[Dict] =  [{...}]):
 6 params["zipCode"]: string = "", Required when (locationSelection in ['zipCode']), otherwise do not provide: Zip Code. The ID of city to return the weather of. List can be downloaded here: http://bulk.openweathermap.org/sample/.(10115,de)
 7 params["language"]: string = "": Language. The two letter language code to get your output in (eg. en, de, ...).(en)
 
-This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
 2.Input: 
-[{'json': {}}]
+[]
 
 3.Output:
-[{'json': {'coord': {'lon': 55.3047, 'lat': 25.2582}, 'weather': [{'id': 800, 'main': 'Clear', 'description': 'clear sky', 'icon': '01n'}], 'base': 'stations', 'main': {'temp': 25.96, 'feels_like': 25.96, 'temp_min': 23.14, 'temp_max': 25.96, 'pressure': 1016, 'humidity': 65, 'sea_level': 1016, 'grnd_level': 1016}, 'visibility': 8000, 'wind': {'speed': 2.57, 'deg': 320}, 'clouds': {'all': 1}, 'dt': 1764777966, 'sys': {'type': 1, 'id': 7537, 'country': 'AE', 'sunrise': 1764730134, 'sunset': 1764768516}, 'timezone': 14400, 'id': 292223, 'name': 'Dubai', 'cod': 200}, 'pairedItem': {'item': 0}}]
+[]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Fetch the current weather data for Dubai with metric units
+  comments: Get current weather data for Dubai with metric units
   TODOs: 
-    - Test fetching weather data for Dubai
-    - Verify output contains temperature and wind
+    - Test the action to ensure correct weather data is fetched
   """
-  params = {'cityName': 'Dubai', 'format': 'metric', 'locationSelection': 'cityName'}
+  params = {'cityName': 'Dubai', 'format': 'metric', 'language': 'en', 'locationSelection': 'cityName'}
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -83,25 +81,22 @@ def action_0(input_data: List[Dict] =  [{...}]):
 7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
   ...hidden...
 
-This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
 2.Input: 
-[{'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'weathers'}, 'messageType': 'text', 'text': 'Dubai temperature: 25.96 \n wind: 2.57'}}]
+[]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764778243.392679', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Dubai temperature: 25.96 \n wind: 2.57', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'IFn', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Dubai temperature: 25.96 \n wind: 2.57'}]}]}]}, 'message_timestamp': '1764778243.392679'}, 'pairedItem': {'item': 0}}]
+[]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Set Slack message parameters to send text to channel 'weathers'
+  comments: Send a formatted weather message to Slack channel
   TODOs: 
-    - Test Slack message sending
-    - Verify message appears in 'weathers' channel
+    - Set specific_params for channel and message text
+    - Test sending message to Slack
   """
-  params = { 'channelId': {'mode': 'name', 'value': 'weathers'},
-             'messageType': 'text',
-             'select': 'channel',
-             'text': '={{$json["text"]}}'}
+  params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -111,70 +106,41 @@ def action_1(input_data: List[Dict] =  [{...}]):
 """
 
 This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+1.Status: ErrorRaisedHere
 2.Input: 
 [{'json': {}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C0A1PGSJLBB', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764778243.392679', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Dubai temperature: 25.96 \n wind: 2.57', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'IFn', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Dubai temperature: 25.96 \n wind: 2.57'}]}]}]}, 'message_timestamp': '1764778243.392679'}, 'pairedItem': {'item': 0}}]
+[]
 """
-def trigger_0(input_data=None):
-    params = {}
-    function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
-    output_data = function.run(input_data=None, params=params)
-    return output_data
-
-
-def action_0(input_data):
-    params = {'cityName': 'Dubai', 'format': 'metric', 'locationSelection': 'cityName'}
-    function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def action_1(input_data):
-    # We will implement params in mainWorkflow
-    params = {}
-    function = transparent_action(integration="slack", resource="message", operation="post")
-    output_data = function.run(input_data=input_data, params=params)
-    return output_data
-
-
-def mainWorkflow(trigger_input):
+def mainWorkflow(trigger_input: [{...}]):
     """
-    comments: Fetch current weather for Dubai and send formatted message to Slack channel 'weathers'
-    TODOs:
-      - Test full workflow
-      - Verify weather data extraction
-      - Verify Slack message format and sending
+    comments: Workflow triggered manually, gets Dubai weather and sends formatted message to Slack channel 'weathers'
+    TODOs: 
+      - Test complete workflow
+      - Handle missing weather data gracefully
     """
-    # Step 1: Call manual trigger (trigger_input is already from trigger)
-    manual_trigger_output = trigger_input
+    # Step 1: Get manual trigger output
+    manual_trigger_output = trigger_0()
 
-    # Step 2: Call action_0 to get current weather for Dubai
+    # Step 2: Get current weather for Dubai
     weather_output = action_0(manual_trigger_output)
 
-    if not weather_output or not weather_output[0]['json']:
-        # No weather data returned
-        return []
-
-    weather_json = weather_output[0]['json']
-
-    # Extract temperature and wind speed
-    temperature = weather_json.get('main', {}).get('temp', 'unknown')
+    # Step 3: Extract temperature and wind speed
+    weather_json = weather_output[0]['json'] if weather_output else {}
+    temp = weather_json.get('main', {}).get('temp', 'unknown')
     wind_speed = weather_json.get('wind', {}).get('speed', 'unknown')
 
-    # Format message
-    message_text = f"Dubai temperature: {temperature} \n wind: {wind_speed}"
+    # Step 4: Format message
+    message_text = f"Dubai temperature: {temp} \n wind: {wind_speed}"
 
-    # Prepare Slack input
-    slack_input = [{"json": {"select": "channel", "channelId": {"mode": "name", "value": "weathers"}, "messageType": "text", "text": message_text}}]
+    # Step 5: Prepare Slack input data
+    slack_input = [{"json": {"text": message_text}}]
 
-    # Call action_1 to send message
+    # Step 6: Send message to Slack
     slack_output = action_1(slack_input)
 
     return slack_output
-
 
 
 
@@ -183,7 +149,18 @@ def mainWorkflow(trigger_input):
 The directly running result for now codes with print results are as following:
 
 
+Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
+[Output Data Info]
+the output data of function `trigger_0` is: `[{'json': {}}]`
+the output data of function `action_0` is: `[]`
+the output data of function `action_1` is: `[]`
 
+------------------------
+In Function: mainWorkflow
+        # Step 1: Get manual trigger output
+-->     manual_trigger_output = trigger_0()
+------------------------
+TypeError: n8nNodeRunner.__call__() missing 1 required positional argument: 'input_data'
 
 You can also see the runnning result for all functions in there comments.
 """

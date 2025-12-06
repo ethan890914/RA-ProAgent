@@ -9,12 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: 手动触发器，用户点击按钮触发workflow
+  comments: 手动触发器，用户点击按钮触发流程
   TODOs: 
-    - 测试触发器是否能正常工作
-    - 作为workflow入口
+    - 测试触发器是否正常工作
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -35,33 +34,22 @@ def trigger_0():
 3 params["options"]: dict = {}: Options(Add Option) . properties description:
   ...hidden...
 
-This function has been executed for 0 times. Last execution:
-1.Status: DidNotBeenCalled
+This function has been executed for 1 times. Last execution:
+1.Status: ErrorRaisedHere
 2.Input: 
-[]
+[{'json': {}}]
 
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: 设置Google Sheets读取动作的文档ID和工作表名称，确保能读取正确数据
+  comments: 读取指定Google Sheet文档和表单的数据
   TODOs: 
+    - 根据文档ID和sheetName配置参数
     - 测试读取数据是否正确
-    - 调试数据格式
   """
-  params = {
-             "documentId": {
-               "mode": "id",
-               "value": "1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c"
-             },
-             "sheetName": {
-               "mode": "id",
-               "value": "commercial"
-             },
-             "filtersUI": {},
-             "options": {}
-           }
+  params = {}  # to be Implemented
   function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -86,12 +74,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: 使用Gmail发送邮件，将读取的数据作为邮件正文发送
+  comments: 发送邮件，将读取的Google Sheets数据作为邮件内容发送
   TODOs: 
-    - 设置收件人和邮件主题
-    - 测试邮件发送功能
+    - 配置收件人邮箱、邮件主题和邮件内容
+    - 测试邮件发送
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="gmail", resource="message", operation="send")
@@ -103,25 +91,26 @@ def action_1(input_data: List[Dict] =  [{...}]):
 """
 
 This function has been executed for 1 times. Last execution:
-1.Status: ErrorRaisedHere
+1.Status: ErrorRaisedInner
 2.Input: 
 [{'json': {}}]
 
 3.Output:
 []
 """
-
 def mainWorkflow(trigger_input: [{...}]):
-  """
-  comments: You need to give comments when implementing mainWorkflow
-  TODOs: 
-    - first define some actions
-    - define a trigger
-    - then implement this
-  """
-  print("Please call Workflow-implement first")
-  raise NotImplementedError
+    """
+    comments: 当手动触发时，读取指定Google Sheets的数据，并将其作为JSON字符串通过Gmail发送到指定邮箱
+    TODOs:
+      - 测试整体流程
+    """
+    # 1. 读取Google Sheets数据
+    sheet_data = action_0(trigger_input)
 
+    # 2. 发送邮件，邮件内容是读取到的Google Sheets数据的JSON字符串
+    email_output = action_1(sheet_data)
+
+    return email_output
 
 
 
@@ -138,10 +127,35 @@ the output data of function `action_1` is: `[]`
 
 ------------------------
 In Function: mainWorkflow
-      print("Please call Workflow-implement first")
--->   raise NotImplementedError
+        # 1. 读取Google Sheets数据
+-->     sheet_data = action_0(trigger_input)
 ------------------------
-NotImplementedError: 
+In Function: transparent_action
+      function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
+-->   output_data = function.run(input_data=input_data, params=params)
+      return output_data
+------------------------
+n8nRunningException: Execution Failed: 
+Output: Problem with execution 2208: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
+The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 2208)
+Error executing workflow. See log messages for details.
+
+Execution error:
+====================================
+The workflow has issues and cannot be executed for that reason. Please fix them first.
+undefined
+WorkflowHasIssuesError: The workflow has issues and cannot be executed for that reason. Please fix them first.
+    at WorkflowExecute.checkForWorkflowIssues (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1382:10)
+    at WorkflowExecute.processRunExecutionData (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1461:8)
+    at WorkflowExecute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:176:15)
+    at ManualExecutionService.runManually (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/manual-execution.service.ts:157:27)
+    at WorkflowRunner.runMainProcess (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:298:53)
+    at WorkflowRunner.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:175:4)
+    at Execute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/commands/execute.ts:95:23)
+    at CommandRegistry.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/command-registry.ts:67:4)
+    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/bin/n8n:63:2
+The workflow has issues and cannot be executed for that reason. Please fix them first.
+
 
 You can also see the runnning result for all functions in there comments.
 """

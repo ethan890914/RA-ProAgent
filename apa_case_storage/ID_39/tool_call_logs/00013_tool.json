@@ -1,0 +1,14 @@
+{
+  "thought": "",
+  "plan": [],
+  "criticism": "",
+  "tool_name": "task_submit",
+  "tool_input": {
+    "result": "I have defined and implemented the workflow according to the user's requirements: it triggers manually, uses AI to generate a SQL query, executes the query on PostgreSQL, and sends the result to the Slack channel 'general'. All actions and triggers have been properly configured and tested with successful execution results. The workflow extracts and cleans the AI-generated SQL query, executes it, formats the output, and sends the message to Slack. No errors were found in the last execution. The task is complete."
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "successfully save to markdown",
+    "status": "ToolCallSuccess"
+  }
+}

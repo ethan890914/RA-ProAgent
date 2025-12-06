@@ -9,12 +9,11 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0():
+def trigger_0(input_data):
   """
-  comments: Trigger the workflow manually by the user.
+  comments: Manual trigger to start the workflow when clicked.
   TODOs: 
-    - Test manual trigger
-    - Ensure it starts the workflow correctly
+    - Test manual trigger activation.
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -43,26 +42,17 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {'row_number': 2, 'Business Line': 1, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 10000, 'sales': 50000, 'Description': 'E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 3, 'Business Line': 2, 'Manager': 'cc9008@nyu.edu', 'cost': 5000, 'sales': 30000, 'Description': 'Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 4, 'Business Line': 3, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 20000, 'sales': 10000, 'Description': 'Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 5, 'Business Line': 4, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 8000, 'sales': 7600, 'Description': 'Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 6, 'Business Line': 5, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 6000, 'sales': 8000, 'Description': 'Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 7, 'Business Line': 6, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 20000, 'sales': 60000, 'Description': 'Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 8, 'Business Line': 7, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 80000, 'sales': 100000, 'Description': 'Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 9, 'Business Line': 8, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 4000, 'sales': 25000, 'Description': 'Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 10, 'Business Line': 9, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 7500, 'sales': 4000, 'Description': 'Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 11, 'Business Line': 10, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 5000, 'sales': 3000, 'Description': 'Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.'}, 'pairedItem': {'item': 0}}]
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Read all rows from the commercial sheet in Google Sheets using the provided document ID and sheet name.
+  comments: Read all rows from the specified Google Sheet document and sheetName.
   TODOs: 
-    - Test reading data
-    - Verify output data format
-    - Ensure data contains expected columns
+    - Test reading Google Sheets data.
+    - Verify data format for further processing.
   """
-  params = {
-             "documentId": {
-               "mode": "id",
-               "value": "1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c"
-             },
-             "sheetName": {
-               "mode": "id",
-               "value": "commercial"
-             },
-             "filtersUI": {},
-             "options": {}
-           }
+  params = { 'documentId': {'mode': 'id', 'value': '1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c'},
+             'filtersUI': {},
+             'options': {},
+             'sheetName': {'mode': 'id', 'value': 'commercial'}}
   function = transparent_action(integration="googleSheets", resource="sheet", operation="read")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -70,7 +60,7 @@ def action_0(input_data: List[Dict] =  [{...}]):
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
@@ -80,16 +70,14 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}]
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Use AI to classify each commercial entry description by passing messages from input data.
+  comments: First aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer'.
   TODOs: 
-    - Test classification AI call
-    - Verify classification output
+    - Build messages array in workflow.
+    - Test AI classification.
   """
-  params = {
-             "messages": "={{$json[\"messages\"]}}"
-           }
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -100,19 +88,19 @@ def action_1(input_data: List[Dict] =  [{...}]):
 0 params["select"]: enum[string] = "", Required: Send Message To(Select...) . Available values:
   0.0 value=="channel": Channel
   0.1 value=="user": User
-1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
+1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required when (select in ['channel']), otherwise do not provide: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
   1.0 params["channelId"]["value"](when "mode"="id"): string: By ID(C0122KQ70S7E)
   1.1 params["channelId"]["value"](when "mode"="name"): string: By Name(#general)
   1.2 params["channelId"]["value"](when "mode"="url"): string: By URL(https://app.slack.com/client/TS9594PZK/B0556F47Z3A)
-2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}: User(Select a user...) . "mode" should be one of ['id', 'username']: 
+2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Activate(Not Required) when (select in ['user']), otherwise do not provide: User(Select a user...) . "mode" should be one of ['id', 'username']: 
   ...hidden...
 3 params["messageType"]: enum[string] = "text": Message Type. Whether to send a simple text message, or use Slack’s Blocks UI builder for more sophisticated messages that include form fields, sections and more . Available values:
   3.0 value=="text": Simple Text Message. Supports basic Markdown
   3.1 value=="block": Blocks. Combine text, buttons, form elements, dividers and more in Slack 's visual builder
   3.2 value=="attachment": Attachments
-4 params["text"]: string = "": Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
-5 params["blocksUi"]: string = "", Required: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
-6 params["attachments"]: list[dict] = [{}]: Attachments(Add attachment item) . properties description:
+4 params["text"]: string = "", Activate(Not Required) when (messageType in ['block']), otherwise do not provide: Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
+5 params["blocksUi"]: string = "", Required when (messageType in ['block']), otherwise do not provide: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
+6 params["attachments"]: list[dict] = [{}], Activate(Not Required) when (messageType in ['attachment']), otherwise do not provide: Attachments(Add attachment item) . properties description:
   ...hidden...
 7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
   ...hidden...
@@ -120,27 +108,22 @@ def action_1(input_data: List[Dict] =  [{...}]):
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
 2.Input: 
-[{'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business'}}, {'json': {'select': 'channel', 'channelId': {'mode': 'name', 'value': 'general'}, 'messageType': 'text', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business'}}]
+[{'json': {'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer'}}, {'json': {'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer'}}, {'json': {'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer'}}, {'json': {'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer'}}, {'json': {'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer'}}, {'json': {'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business'}}, {'json': {'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business'}}, {'json': {'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business'}}, {'json': {'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business'}}, {'json': {'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business'}}]
 
 3.Output:
-[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646990.107249', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'OuR', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764646990.107249'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646990.316449', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'ergvZ', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764646990.316449'}, 'pairedItem': {'item': 1}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646990.437049', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'nvEY', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764646990.437049'}, 'pairedItem': {'item': 2}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646990.555679', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'EM+OJ', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764646990.555679'}, 'pairedItem': {'item': 3}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646990.678379', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '9uL', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764646990.678379'}, 'pairedItem': {'item': 4}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646990.825459', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Ye1', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764646990.825459'}, 'pairedItem': {'item': 5}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646991.067199', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '6bB', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764646991.067199'}, 'pairedItem': {'item': 6}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646991.202189', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'J1q', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764646991.202189'}, 'pairedItem': {'item': 7}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646991.499509', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '+Rnz', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764646991.499509'}, 'pairedItem': {'item': 8}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764646991.632039', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '6hUq6', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764646991.632039'}, 'pairedItem': {'item': 9}}]
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933122.648359', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'FKZ', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933122.648359'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933123.596829', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'sq1', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933123.596829'}, 'pairedItem': {'item': 1}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933124.589699', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'cLMB', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933124.589699'}, 'pairedItem': {'item': 2}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933125.513759', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'xd=', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933125.513759'}, 'pairedItem': {'item': 3}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933126.504879', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'kbMDR', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933126.504879'}, 'pairedItem': {'item': 4}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933127.618039', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'vnz', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933127.618039'}, 'pairedItem': {'item': 5}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933129.254549', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'c/RI9', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933129.254549'}, 'pairedItem': {'item': 6}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933130.217979', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '7SKBo', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933130.217979'}, 'pairedItem': {'item': 7}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933131.146739', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'vtJ', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933131.146739'}, 'pairedItem': {'item': 8}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933132.218379', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'l4U+7', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933132.218379'}, 'pairedItem': {'item': 9}}]
 """
-def action_2(input_data: List[Dict] =  [{...}]):
+def action_2(input_data):
   """
-  comments: Send messages to Slack channel #general with classification results, using the text field from input data.
+  comments: Send each classification result to Slack channel #general as a message with the text extracted from input_data.
   TODOs: 
-    - Test Slack message sending
-    - Verify message format in Slack
+    - Test Slack message sending.
+    - Verify messages appear in #general channel.
   """
-  params = {
-             "select": "channel",
-             "channelId": {
-               "mode": "name",
-               "value": "general"
-             },
-             "messageType": "text",
-             "text": "={{$json[\"text\"]}}"
-           }
+  params = { 'channelId': {'mode': 'name', 'value': 'general'},
+             'messageType': 'text',
+             'select': 'channel',
+             'text': '={{$json["text"]}}'}
   function = transparent_action(integration="slack", resource="message", operation="post")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -148,7 +131,7 @@ def action_2(input_data: List[Dict] =  [{...}]):
 
 
 """Function param descriptions: 
-0 params["messages"]: string = "", Required: messages. Set system and user prompts here. An Example:{"messages": [{"role": "system","content": "Please say hello to user."}, {"role": "user","content": "Hello!"}]}
+This function doesn't need params
 
 This function has been executed for 1 times. Last execution:
 1.Status: FunctionExecuteSuccess
@@ -156,16 +139,16 @@ This function has been executed for 1 times. Last execution:
 [{'json': {'messages': [{'role': 'system', 'content': 'You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows.'}, {'role': 'user', 'content': 'E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows.'}, {'role': 'user', 'content': 'Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows.'}, {'role': 'user', 'content': 'Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows.'}, {'role': 'user', 'content': 'Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.'}]}}, {'json': {'messages': [{'role': 'system', 'content': 'You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows.'}, {'role': 'user', 'content': 'Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.'}]}}]
 
 3.Output:
-[{'json': {'choices': [{'text': 'Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a wide variety of products from multiple brands and sellers, providing a diverse shopping experience.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform continues to offer a seamless shopping experience, featuring a wide range of products from various brands and sellers. Keep monitoring product listings, seller performance, and customer feedback to maintain high standards.\n\nBest regards,\n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Summary:\nThe Online Food Delivery Service provides a convenient platform that allows consumers to order food from local restaurants and have it delivered directly to their doorstep.\n\nReminder Email:\nSubject: Reminder: Online Food Delivery Service Platform\n\nDear Team,\n\nThis is a friendly reminder about our Online Food Delivery Service platform, which offers consumers a convenient way to order food from local restaurants and receive it at their doorstep. Please ensure that all aspects of the service, including restaurant partnerships, order processing, and delivery logistics, are running smoothly to maintain customer satisfaction.\n\nBest regards,\n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Summary:\nThe Online Travel Booking Portal is a comprehensive platform that allows consumers to conveniently book flights, hotels, and other travel-related services all in one place.\n\nReminder Email:\nSubject: Reminder: Update and Optimize the Online Travel Booking Portal\n\nDear Team,\n\nThis is a reminder to review and update our Online Travel Booking Portal to ensure it continues to offer a seamless and comprehensive experience for our customers. Please focus on optimizing the booking processes for flights, hotels, and other travel-related services, and consider any new features or partnerships that could enhance user convenience.\n\nLet’s aim to complete this review by [insert deadline].\n\nBest regards,  \n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Summary:\nOffering users easy-to-use online tools and resources designed to help them manage personal finances, monitor expenses, and develop budgets effectively.\n\nReminder Email:\nSubject: Reminder: Enhance Your Financial Management with Our Online Tools\n\nDear [User],\n\nWe wanted to remind you about the intuitive personal finance management tools available to help you take control of your finances. With our resources, you can easily track your expenses, create budgets, and manage your money more effectively.\n\nStart using these tools today to achieve your financial goals with confidence!\n\nBest regards,  \n[Your Company Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Education and E-learning Platform provides a wide range of online courses and educational resources designed to help users improve their skills and knowledge across multiple subjects.\n\nReminder Email:\nSubject: Reminder: Enhance Your Skills with Our Online Courses\n\nDear [Recipient's Name],\n\nWe wanted to remind you about our diverse selection of online courses and educational resources available on our platform. Whether you're looking to develop new skills or deepen your knowledge in various subjects, our courses are designed to support your learning journey.\n\nDon't miss out on the opportunity to grow and succeed. Visit our platform today to explore the courses that best suit your interests and goals.\n\nBest regards,  \n[Your Name]  \n[Your Position]  \n[Company Name]"}]}, 'pairedItem': {'item': 0}}]
+[{'json': {'choices': [{'text': 'Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a diverse selection of products from multiple brands and sellers.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform remains user-friendly, product listings are up-to-date, and sellers are supported to provide a seamless shopping experience for our consumers.\n\nThank you for your continued efforts.\n\nBest regards,\n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Food Delivery Service provides a user-friendly platform that allows consumers to browse menus from local restaurants, place orders, and have their food delivered directly to their doorstep, ensuring convenience and a wide range of dining options.\n\nReminder Email:\nSubject: Reminder: Enhance Your Online Food Delivery Experience\n\nDear [Recipient's Name],\n\nWe hope this message finds you well. This is a friendly reminder about our Online Food Delivery Service, designed to offer you a convenient way to enjoy meals from your favorite local restaurants without leaving your home.\n\nSimply browse our platform, choose from a variety of menus, place your order, and have your food delivered straight to your doorstep.\n\nIf you have any questions or need assistance, feel free to reach out.\n\nBest regards,  \n[Your Name]  \n[Your Company]"}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Travel Booking Portal provides a comprehensive platform where consumers can conveniently book flights, hotels, and other travel-related services all in one place.\n\nReminder Email:\nSubject: Reminder: Enhance Your Travel Experience with Our Booking Portal\n\nDear [Customer Name],\n\nWe wanted to remind you about our comprehensive Online Travel Booking Portal, designed to make your travel planning seamless and convenient. Whether you're looking to book flights, hotels, or other travel-related services, our platform offers everything you need in one place.\n\nStart planning your next trip with ease today!\n\nBest regards,\n[Your Company Name] Team"}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Summary:\nThe commercial flow involves offering users intuitive online personal finance management tools and resources. These tools help users manage their personal finances effectively by tracking expenses and creating budgets.\n\nReminder Email:\nSubject: Reminder: Launch and Promotion of Personal Finance Management Tools\n\nDear Team,\n\nThis is a reminder to focus on the upcoming launch and promotion of our online personal finance management tools. Please ensure that all features for tracking expenses and budget creation are fully tested and user-friendly. Marketing materials highlighting the benefits of these tools should be ready to engage our target audience effectively.\n\nLet’s work together to provide our users with the best experience in managing their personal finances.\n\nBest regards,\n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Education and E-learning Platform provides a wide range of online courses and educational resources designed to help users improve their skills and knowledge across multiple subjects.\n\nReminder Email:\nSubject: Reminder: Enhance Your Skills with Our Online Courses\n\nDear [Recipient's Name],\n\nWe hope this message finds you well. This is a friendly reminder about our Online Education and E-learning Platform, where you can access a variety of courses and educational resources tailored to help you enhance your skills and knowledge in numerous subjects.\n\nDon't miss the opportunity to advance your learning at your own pace and convenience. Visit our platform today to explore the courses available.\n\nIf you have any questions or need assistance, feel free to reach out.\n\nBest regards,  \n[Your Name]  \n[Your Position]  \n[Company Name]"}]}, 'pairedItem': {'item': 0}}]
 """
-def action_3(input_data: List[Dict] =  [{...}]):
+def action_3(input_data):
   """
-  comments: Use AI to generate reminder emails for 'to Customer' entries.
+  comments: Second aiCompletion to generate reminder emails for 'to Customer' commercial flows.
   TODOs: 
-    - Construct messages with system and user prompts
-    - Test reminder email AI call
+    - Build messages array in workflow.
+    - Test AI summarization and reminder generation.
   """
-  params = {}  # to be Implemented
+  params = {}
   function = transparent_action(integration="aiCompletion", resource="default", operation="default")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -183,26 +166,24 @@ def action_3(input_data: List[Dict] =  [{...}]):
   ...hidden...
 
 This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+1.Status: ErrorRaisedHere
 2.Input: 
-[{'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': "'To Customer' commercial flows reminder", 'emailType': 'text', 'message': 'Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a wide variety of products from multiple brands and sellers, providing a diverse shopping experience.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform continues to offer a seamless shopping experience, featuring a wide range of products from various brands and sellers. Keep monitoring product listings, seller performance, and customer feedback to maintain high standards.\n\nBest regards,\n[Your Name]'}}, {'json': {'sendTo': 'cc9008@nyu.edu', 'subject': "'To Customer' commercial flows reminder", 'emailType': 'text', 'message': 'Summary:\nThe Online Food Delivery Service provides a convenient platform that allows consumers to order food from local restaurants and have it delivered directly to their doorstep.\n\nReminder Email:\nSubject: Reminder: Online Food Delivery Service Platform\n\nDear Team,\n\nThis is a friendly reminder about our Online Food Delivery Service platform, which offers consumers a convenient way to order food from local restaurants and receive it at their doorstep. Please ensure that all aspects of the service, including restaurant partnerships, order processing, and delivery logistics, are running smoothly to maintain customer satisfaction.\n\nBest regards,\n[Your Name]'}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': "'To Customer' commercial flows reminder", 'emailType': 'text', 'message': 'Summary:\nThe Online Travel Booking Portal is a comprehensive platform that allows consumers to conveniently book flights, hotels, and other travel-related services all in one place.\n\nReminder Email:\nSubject: Reminder: Update and Optimize the Online Travel Booking Portal\n\nDear Team,\n\nThis is a reminder to review and update our Online Travel Booking Portal to ensure it continues to offer a seamless and comprehensive experience for our customers. Please focus on optimizing the booking processes for flights, hotels, and other travel-related services, and consider any new features or partnerships that could enhance user convenience.\n\nLet’s aim to complete this review by [insert deadline].\n\nBest regards,  \n[Your Name]'}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': "'To Customer' commercial flows reminder", 'emailType': 'text', 'message': 'Summary:\nOffering users easy-to-use online tools and resources designed to help them manage personal finances, monitor expenses, and develop budgets effectively.\n\nReminder Email:\nSubject: Reminder: Enhance Your Financial Management with Our Online Tools\n\nDear [User],\n\nWe wanted to remind you about the intuitive personal finance management tools available to help you take control of your finances. With our resources, you can easily track your expenses, create budgets, and manage your money more effectively.\n\nStart using these tools today to achieve your financial goals with confidence!\n\nBest regards,  \n[Your Company Name]'}}, {'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': "'To Customer' commercial flows reminder", 'emailType': 'text', 'message': "Summary:\nThe Online Education and E-learning Platform provides a wide range of online courses and educational resources designed to help users improve their skills and knowledge across multiple subjects.\n\nReminder Email:\nSubject: Reminder: Enhance Your Skills with Our Online Courses\n\nDear [Recipient's Name],\n\nWe wanted to remind you about our diverse selection of online courses and educational resources available on our platform. Whether you're looking to develop new skills or deepen your knowledge in various subjects, our courses are designed to support your learning journey.\n\nDon't miss out on the opportunity to grow and succeed. Visit our platform today to explore the courses that best suit your interests and goals.\n\nBest regards,  \n[Your Name]  \n[Your Position]  \n[Company Name]"}}]
+[{'json': {'sendTo': 'qwuqwuqwu@gmail.com', 'subject': "'To Customer' commercial flows reminder", 'emailType': 'text', 'message': 'Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a diverse selection of products from multiple brands and sellers.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform remains user-friendly, product listings are up-to-date, and sellers are supported to provide a seamless shopping experience for our consumers.\n\nThank you for your continued efforts.\n\nBest regards,\n[Your Name]'}}]
 
 3.Output:
-[{'json': {'id': '19add2890b356a8c', 'threadId': '19add2890b356a8c', 'labelIds': ['SENT']}, 'pairedItem': {'item': 0}}, {'json': {'id': '19add28929b32607', 'threadId': '19add28929b32607', 'labelIds': ['UNREAD', 'SENT', 'INBOX']}, 'pairedItem': {'item': 1}}, {'json': {'id': '19add2896300c668', 'threadId': '19add2896300c668', 'labelIds': ['SENT']}, 'pairedItem': {'item': 2}}, {'json': {'id': '19add28986617ec9', 'threadId': '19add28986617ec9', 'labelIds': ['SENT']}, 'pairedItem': {'item': 3}}, {'json': {'id': '19add289f4811471', 'threadId': '19add289f4811471', 'labelIds': ['SENT']}, 'pairedItem': {'item': 4}}]
+[]
 """
-def action_4(input_data: List[Dict] =  [{...}]):
+def action_4(input_data):
   """
-  comments: Send reminder emails to corresponding managers via Gmail with subject and message from input data.
+  comments: Send reminder emails to corresponding managers with Gmail using extracted fields from input_data.
   TODOs: 
-    - Test email sending
-    - Verify email content and recipients
+    - Test sending reminder emails.
+    - Verify emails received by managers.
   """
-  params = {
-             "sendTo": "={{$json['sendTo']}}",
-             "subject": "={{$json['subject']}}",
-             "emailType": "text",
-             "message": "={{$json['message']}}"
-           }
+  params = { 'emailType': 'text',
+             'message': '={{$json["message"]}',
+             'sendTo': '={{$json["sendTo"]}',
+             'subject': '={{$json["subject"]}'}
   function = transparent_action(integration="gmail", resource="message", operation="send")
   output_data = function.run(input_data=input_data, params=params)
   return output_data
@@ -212,109 +193,109 @@ def action_4(input_data: List[Dict] =  [{...}]):
 """
 
 This function has been executed for 1 times. Last execution:
-1.Status: FunctionExecuteSuccess
+1.Status: ErrorRaisedInner
 2.Input: 
 [{'json': {}}]
 
 3.Output:
-[{'json': {'id': '19add2890b356a8c', 'threadId': '19add2890b356a8c', 'labelIds': ['SENT']}, 'pairedItem': {'item': 0}}, {'json': {'id': '19add28929b32607', 'threadId': '19add28929b32607', 'labelIds': ['UNREAD', 'SENT', 'INBOX']}, 'pairedItem': {'item': 1}}, {'json': {'id': '19add2896300c668', 'threadId': '19add2896300c668', 'labelIds': ['SENT']}, 'pairedItem': {'item': 2}}, {'json': {'id': '19add28986617ec9', 'threadId': '19add28986617ec9', 'labelIds': ['SENT']}, 'pairedItem': {'item': 3}}, {'json': {'id': '19add289f4811471', 'threadId': '19add289f4811471', 'labelIds': ['SENT']}, 'pairedItem': {'item': 4}}]
+[]
 """
 def mainWorkflow(trigger_input: [{...}]):
-    """
-    comments: Main workflow to process commercial entries from Google Sheets, classify descriptions, send Slack messages, generate reminder emails for 'to Customer' entries, and send emails via Gmail.
-    TODOs:
-      - Test end-to-end workflow
-      - Handle possible empty or missing fields
-      - Validate AI outputs
-    """
-    # Step 1: Read data from Google Sheets
-    commercial_data = action_0(trigger_input)  # read commercial sheet
-    if not commercial_data or len(commercial_data) == 0:
-        return []  # no data to process
+  """
+  comments: Workflow triggered manually to process commercial entries, classify them, send Slack messages, generate reminders, and send emails.
+  TODOs: 
+    - Implement full data flow and transformations.
+    - Test AI classification and email generation.
+    - Verify Slack and Gmail message sending.
+  """
+  # Step 1: Read commercial entries from Google Sheets
+  sheet_data = action_0(trigger_input)
+  if not sheet_data or len(sheet_data) == 0:
+    return []  # No data to process
 
-    # Step 2: Calculate profit for each entry
-    for item in commercial_data:
-        json_data = item.get('json', {})
-        try:
-            cost = float(json_data.get('cost', 0))
-        except Exception:
-            cost = 0
-        try:
-            sales = float(json_data.get('sales', 0))
-        except Exception:
-            sales = 0
-        profit = sales - cost
-        json_data['profit'] = profit
+  # Extract rows (skip header if present)
+  # Assuming first row is header
+  rows = sheet_data
+  # Calculate profit and prepare data with profit
+  processed_entries = []
+  for row in rows:
+    json_data = row.get('json', {})
+    try:
+      cost = float(json_data.get('cost', 0))
+      sales = float(json_data.get('sales', 0))
+    except Exception:
+      cost = 0.0
+      sales = 0.0
+    profit = sales - cost
+    processed_entries.append({
+      'Business Line': json_data.get('Business Line', ''),
+      'Manager': json_data.get('Manager', ''),
+      'cost': cost,
+      'sales': sales,
+      'Description': json_data.get('Description', ''),
+      'profit': profit
+    })
 
-    # Step 3: Prepare input for first AI classification
-    ai_classify_input = []
-    for item in commercial_data:
-        description = item['json'].get('Description', '')
-        messages = [
-            {"role": "system", "content": "You are a news classifier. Classify as 'to Business' or 'to Customer'."},
-            {"role": "user", "content": description}
-        ]
-        ai_classify_input.append({"json": {"messages": messages}})
+  # Step 2: Build input for first aiCompletion to classify each Description
+  ai_classify_input = []
+  for entry in processed_entries:
+    messages = [
+      {"role": "system", "content": "You are a news classifier. Classify as 'to Business' or 'to Customer'."},
+      {"role": "user", "content": entry['Description']}
+    ]
+    ai_classify_input.append({"json": {"messages": messages}})
 
-    # Step 4: Call AI classification
-    ai_classify_output = action_1(ai_classify_input)
+  ai_classify_output = action_1(ai_classify_input)
 
-    # Step 5: Parse classification output and send Slack messages
-    slack_messages = []
-    for i, item in enumerate(ai_classify_output):
-        classify_text = item['json'].get('choices', [{}])[0].get('text', '') if 'choices' in item['json'] else ''
-        # simple parse category
-        category = 'to Business' if 'to Business' in classify_text else ('to Customer' if 'to Customer' in classify_text else 'Unknown')
-        commercial_entry = commercial_data[i]['json']
-        commercial_entry['category'] = category
-        description = commercial_entry.get('Description', '')
-        profit = commercial_entry.get('profit', 0)
-        slack_text = f"Commercial Entry: {description}\nProfit: {profit}\nCategory: {category}"
-        slack_messages.append({"json": {"select": "channel", "channelId": {"mode": "name", "value": "general"}, "messageType": "text", "text": slack_text}})
+  # Step 3: Parse classification results and prepare Slack messages
+  slack_messages = []
+  classification_results = []
+  for i, ai_item in enumerate(ai_classify_output):
+    classification_text = ai_item['json']['choices'][0]['text'].strip() if 'choices' in ai_item['json'] else ''
+    # Normalize classification text
+    classification = 'to Business' if 'business' in classification_text.lower() else 'to Customer'
+    classification_results.append(classification)
 
-    # Step 6: Send messages to Slack
-    slack_output = action_2(slack_messages)
+    entry = processed_entries[i]
+    slack_text = f"Commercial Entry: {entry['Description']}\nProfit: {entry['profit']}\nCategory: {classification}"
+    slack_messages.append({"json": {"text": slack_text}})
 
-    # Step 7: Prepare input for second AI reminder generation for 'to Customer' entries
-    ai_reminder_input = []
-    customer_entries = []  # keep track of entries for sending email
-    for item in commercial_data:
-        if item['json'].get('category') == 'to Customer':
-            description = item['json'].get('Description', '')
-            manager = item['json'].get('Manager', '')
-            messages = [
-                {"role": "system", "content": "You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows."},
-                {"role": "user", "content": description}
-            ]
-            ai_reminder_input.append({"json": {"messages": messages}})
-            customer_entries.append({'manager': manager, 'description': description})
+  # Step 4: Send Slack messages
+  if slack_messages:
+    action_2(slack_messages)
 
-    # Step 8: Call AI reminder generation
-    if ai_reminder_input:
-        ai_reminder_output = action_3(ai_reminder_input)
-    else:
-        ai_reminder_output = []
+  # Step 5: Filter entries for 'to Customer' category for reminder emails
+  to_customer_entries = [processed_entries[i] for i, cat in enumerate(classification_results) if cat == 'to Customer']
 
-    # Step 9: Send reminder emails via Gmail
-    email_inputs = []
-    for i, item in enumerate(ai_reminder_output):
-        reminder_text = item['json'].get('choices', [{}])[0].get('text', '') if 'choices' in item['json'] else ''
-        manager_email = customer_entries[i]['manager']
-        if manager_email:
-            email_inputs.append({"json": {
-                "sendTo": manager_email,
-                "subject": "'To Customer' commercial flows reminder",
-                "emailType": "text",
-                "message": reminder_text
-            }})
+  # Step 6: Build input for second aiCompletion to generate reminders
+  ai_reminder_input = []
+  for entry in to_customer_entries:
+    messages = [
+      {"role": "system", "content": "You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows."},
+      {"role": "user", "content": entry['Description']}
+    ]
+    ai_reminder_input.append({"json": {"messages": messages}})
 
-    if email_inputs:
-        email_output = action_4(email_inputs)
-    else:
-        email_output = []
+  ai_reminder_output = action_3(ai_reminder_input)
 
-    return email_output
+  # Step 7: Parse reminder content and send emails
+  email_inputs = []
+  for i, ai_item in enumerate(ai_reminder_output):
+    reminder_content = ai_item['json']['choices'][0]['text'].strip() if 'choices' in ai_item['json'] else ''
+    entry = to_customer_entries[i]
+    email_inputs.append({"json": {
+      "sendTo": entry['Manager'],
+      "subject": "'To Customer' commercial flows reminder",
+      "emailType": "text",
+      "message": reminder_content
+    }})
 
+  # Send emails
+  if email_inputs:
+    for email_input in email_inputs:
+      action_4([email_input])
+
+  return []
 
 
 
@@ -323,6 +304,265 @@ def mainWorkflow(trigger_input: [{...}]):
 The directly running result for now codes with print results are as following:
 
 
+Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
+[Output Data Info]
+the output data of function `trigger_0` is: `[{'json': {}}]`
+the output data of function `action_0` is: `[{'json': {'row_number': 2, 'Business Line': 1, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 10000, 'sales': 50000, 'Description': 'E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 3, 'Business Line': 2, 'Manager': 'cc9008@nyu.edu', 'cost': 5000, 'sales': 30000, 'Description': 'Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 4, 'Business Line': 3, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 20000, 'sales': 10000, 'Description': 'Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 5, 'Business Line': 4, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 8000, 'sales': 7600, 'Description': 'Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 6, 'Business Line': 5, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 6000, 'sales': 8000, 'Description': 'Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 7, 'Business Line': 6, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 20000, 'sales': 60000, 'Description': 'Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 8, 'Business Line': 7, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 80000, 'sales': 100000, 'Description': 'Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 9, 'Business Line': 8, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 4000, 'sales': 25000, 'Description': 'Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 10, 'Business Line': 9, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 7500, 'sales': 4000, 'Description': 'Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.'}, 'pairedItem': {'item': 0}}, {'json': {'row_number': 11, 'Business Line': 10, 'Manager': 'qwuqwuqwu@gmail.com', 'cost': 5000, 'sales': 3000, 'Description': 'Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.'}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_1` is: `[{'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Customer'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'to Business'}]}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_2` is: `[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933122.648359', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'FKZ', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: E-commerce Marketplace: Operating an online platform for consumers to purchase a wide range of products from various brands and sellers.\nProfit: 40000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933122.648359'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933123.596829', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'sq1', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Food Delivery Service: Offering a convenient platform for consumers to order food from local restaurants and get it delivered to their doorstep.\nProfit: 25000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933123.596829'}, 'pairedItem': {'item': 1}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933124.589699', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'cLMB', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Travel Booking Portal: Offering a comprehensive platform for consumers to book flights, hotels, and other travel-related services conveniently.\nProfit: -10000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933124.589699'}, 'pairedItem': {'item': 2}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933125.513759', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'xd=', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Personal Finance Management Tools: Providing users with intuitive tools and resources to manage their personal finances, track expenses, and create budgets.\nProfit: -400.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933125.513759'}, 'pairedItem': {'item': 3}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933126.504879', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'kbMDR', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Online Education and E-learning Platform: Offering a variety of online courses and educational resources for users to enhance their skills and knowledge in various subjects.\nProfit: 2000.0\nCategory: to Customer'}]}]}]}, 'message_timestamp': '1764933126.504879'}, 'pairedItem': {'item': 4}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933127.618039', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'vnz', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Enterprise SaaS Solutions: Providing tailored software solutions for businesses to streamline operations and enhance productivity.\nProfit: 40000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933127.618039'}, 'pairedItem': {'item': 5}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933129.254549', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'c/RI9', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Cloud Infrastructure Services: Offering scalable and secure cloud computing solutions for enterprises to manage their data and applications efficiently.\nProfit: 20000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933129.254549'}, 'pairedItem': {'item': 6}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933130.217979', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': '7SKBo', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Data Analytics and Business Intelligence Solutions: Offering advanced data analytics tools and services to help businesses make informed decisions and improve their overall performance.\nProfit: 21000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933130.217979'}, 'pairedItem': {'item': 7}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933131.146739', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'vtJ', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Business Process Automation Services: Helping businesses automate repetitive tasks and streamline their workflow to improve overall efficiency and reduce operational costs.\nProfit: -3500.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933131.146739'}, 'pairedItem': {'item': 8}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1764933132.218379', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'l4U+7', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Commercial Entry: Customized Enterprise Integration Solutions: Offering tailored integration solutions to help businesses connect various systems and applications seamlessly for improved data flow and communication.\nProfit: -2000.0\nCategory: to Business'}]}]}]}, 'message_timestamp': '1764933132.218379'}, 'pairedItem': {'item': 9}}]`
+the output data of function `action_3` is: `[{'json': {'choices': [{'text': 'Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a diverse selection of products from multiple brands and sellers.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform remains user-friendly, product listings are up-to-date, and sellers are supported to provide a seamless shopping experience for our consumers.\n\nThank you for your continued efforts.\n\nBest regards,\n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Food Delivery Service provides a user-friendly platform that allows consumers to browse menus from local restaurants, place orders, and have their food delivered directly to their doorstep, ensuring convenience and a wide range of dining options.\n\nReminder Email:\nSubject: Reminder: Enhance Your Online Food Delivery Experience\n\nDear [Recipient's Name],\n\nWe hope this message finds you well. This is a friendly reminder about our Online Food Delivery Service, designed to offer you a convenient way to enjoy meals from your favorite local restaurants without leaving your home.\n\nSimply browse our platform, choose from a variety of menus, place your order, and have your food delivered straight to your doorstep.\n\nIf you have any questions or need assistance, feel free to reach out.\n\nBest regards,  \n[Your Name]  \n[Your Company]"}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Travel Booking Portal provides a comprehensive platform where consumers can conveniently book flights, hotels, and other travel-related services all in one place.\n\nReminder Email:\nSubject: Reminder: Enhance Your Travel Experience with Our Booking Portal\n\nDear [Customer Name],\n\nWe wanted to remind you about our comprehensive Online Travel Booking Portal, designed to make your travel planning seamless and convenient. Whether you're looking to book flights, hotels, or other travel-related services, our platform offers everything you need in one place.\n\nStart planning your next trip with ease today!\n\nBest regards,\n[Your Company Name] Team"}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': 'Summary:\nThe commercial flow involves offering users intuitive online personal finance management tools and resources. These tools help users manage their personal finances effectively by tracking expenses and creating budgets.\n\nReminder Email:\nSubject: Reminder: Launch and Promotion of Personal Finance Management Tools\n\nDear Team,\n\nThis is a reminder to focus on the upcoming launch and promotion of our online personal finance management tools. Please ensure that all features for tracking expenses and budget creation are fully tested and user-friendly. Marketing materials highlighting the benefits of these tools should be ready to engage our target audience effectively.\n\nLet’s work together to provide our users with the best experience in managing their personal finances.\n\nBest regards,\n[Your Name]'}]}, 'pairedItem': {'item': 0}}, {'json': {'choices': [{'text': "Summary:\nThe Online Education and E-learning Platform provides a wide range of online courses and educational resources designed to help users improve their skills and knowledge across multiple subjects.\n\nReminder Email:\nSubject: Reminder: Enhance Your Skills with Our Online Courses\n\nDear [Recipient's Name],\n\nWe hope this message finds you well. This is a friendly reminder about our Online Education and E-learning Platform, where you can access a variety of courses and educational resources tailored to help you enhance your skills and knowledge in numerous subjects.\n\nDon't miss the opportunity to advance your learning at your own pace and convenience. Visit our platform today to explore the courses available.\n\nIf you have any questions or need assistance, feel free to reach out.\n\nBest regards,  \n[Your Name]  \n[Your Position]  \n[Company Name]"}]}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_4` is: `[]`
+
+------------------------
+In Function: mainWorkflow
+        for email_input in email_inputs:
+-->       action_4([email_input])
+------------------------
+In Function: transparent_action
+      function = transparent_action(integration="gmail", resource="message", operation="send")
+-->   output_data = function.run(input_data=input_data, params=params)
+      return output_data
+------------------------
+n8nRunningException: Execution Failed: 
+Output: Execution was NOT successful. See log message for details.
+Execution error:
+====================================
+{
+  "data": {
+    "startData": {},
+    "resultData": {
+      "runData": {
+        "Start": [
+          {
+            "startTime": 1764933156124,
+            "executionIndex": 0,
+            "source": [],
+            "hints": [],
+            "executionTime": 2,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {},
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Code_Inject_Data": [
+          {
+            "startTime": 1764933156127,
+            "executionIndex": 1,
+            "source": [
+              {
+                "previousNode": "Start"
+              }
+            ],
+            "hints": [
+              {
+                "message": "To make sure expressions after this node work, return the input items that produced each output item. <a target=\"_blank\" href=\"https://docs.n8n.io/data/data-mapping/data-item-linking/item-linking-code-node/\">More info</a>",
+                "location": "outputPane"
+              }
+            ],
+            "executionTime": 42,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "sendTo": "qwuqwuqwu@gmail.com",
+                      "subject": "'To Customer' commercial flows reminder",
+                      "emailType": "text",
+                      "message": "Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a diverse selection of products from multiple brands and sellers.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform remains user-friendly, product listings are up-to-date, and sellers are supported to provide a seamless shopping experience for our consumers.\n\nThank you for your continued efforts.\n\nBest regards,\n[Your Name]"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Target_Node": [
+          {
+            "startTime": 1764933156169,
+            "executionIndex": 2,
+            "source": [
+              {
+                "previousNode": "Code_Inject_Data"
+              }
+            ],
+            "hints": [],
+            "executionTime": 46,
+            "executionStatus": "error",
+            "error": {
+              "level": "warning",
+              "tags": {},
+              "timestamp": 1764933156176,
+              "context": {
+                "itemIndex": 0
+              },
+              "functionality": "regular",
+              "name": "NodeOperationError",
+              "node": {
+                "id": "b90d6cbd-55b5-408e-95c8-0cba967e2aea",
+                "name": "Target_Node",
+                "position": [
+                  400,
+                  0
+                ],
+                "type": "n8n-nodes-base.gmail",
+                "credentials": {
+                  "gmailOAuth2": {
+                    "id": "bHtMB5PbHhaIUNyl",
+                    "name": "Gmail account"
+                  }
+                },
+                "parameters": {
+                  "preBuiltAgentsCalloutGmail": "",
+                  "authentication": "oAuth2",
+                  "resource": "message",
+                  "operation": "send",
+                  "sendTo": "={{$json[\"sendTo\"]}",
+                  "subject": "={{$json[\"subject\"]}",
+                  "emailType": "text",
+                  "message": "={{$json[\"message\"]}",
+                  "options": {}
+                }
+              },
+              "messages": [],
+              "message": "invalid syntax (item 0)",
+              "stack": "NodeOperationError: invalid syntax (item 0)\n    at ExecuteContext.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-nodes-base/nodes/Google/Gmail/v2/GmailV2.node.ts:836:11)\n    at WorkflowExecute.executeNode (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1093:31)\n    at WorkflowExecute.runNode (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1274:22)\n    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1708:38\n    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2324:11"
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Target_Node",
+      "error": {
+        "level": "warning",
+        "tags": {},
+        "timestamp": 1764933156176,
+        "context": {
+          "itemIndex": 0
+        },
+        "functionality": "regular",
+        "name": "NodeOperationError",
+        "node": {
+          "id": "b90d6cbd-55b5-408e-95c8-0cba967e2aea",
+          "name": "Target_Node",
+          "position": [
+            400,
+            0
+          ],
+          "type": "n8n-nodes-base.gmail",
+          "credentials": {
+            "gmailOAuth2": {
+              "id": "bHtMB5PbHhaIUNyl",
+              "name": "Gmail account"
+            }
+          },
+          "parameters": {
+            "preBuiltAgentsCalloutGmail": "",
+            "authentication": "oAuth2",
+            "resource": "message",
+            "operation": "send",
+            "sendTo": "={{$json[\"sendTo\"]}",
+            "subject": "={{$json[\"subject\"]}",
+            "emailType": "text",
+            "message": "={{$json[\"message\"]}",
+            "options": {}
+          }
+        },
+        "messages": [],
+        "message": "invalid syntax (item 0)",
+        "stack": "NodeOperationError: invalid syntax (item 0)\n    at ExecuteContext.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-nodes-base/nodes/Google/Gmail/v2/GmailV2.node.ts:836:11)\n    at WorkflowExecute.executeNode (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1093:31)\n    at WorkflowExecute.runNode (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1274:22)\n    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1708:38\n    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2324:11"
+      }
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [
+        {
+          "node": {
+            "id": "b90d6cbd-55b5-408e-95c8-0cba967e2aea",
+            "name": "Target_Node",
+            "position": [
+              400,
+              0
+            ],
+            "type": "n8n-nodes-base.gmail",
+            "credentials": {
+              "gmailOAuth2": {
+                "id": "bHtMB5PbHhaIUNyl",
+                "name": "Gmail account"
+              }
+            },
+            "parameters": {
+              "preBuiltAgentsCalloutGmail": "",
+              "authentication": "oAuth2",
+              "resource": "message",
+              "operation": "send",
+              "sendTo": "={{$json[\"sendTo\"]}",
+              "subject": "={{$json[\"subject\"]}",
+              "emailType": "text",
+              "message": "={{$json[\"message\"]}",
+              "options": {}
+            }
+          },
+          "data": {
+            "main": [
+              [
+                {
+                  "json": {
+                    "sendTo": "qwuqwuqwu@gmail.com",
+                    "subject": "'To Customer' commercial flows reminder",
+                    "emailType": "text",
+                    "message": "Summary:\nThe e-commerce marketplace operates an online platform where consumers can browse and purchase a diverse selection of products from multiple brands and sellers.\n\nReminder Email:\nSubject: Reminder: E-commerce Marketplace Operations\n\nDear Team,\n\nThis is a reminder about our ongoing operations of the e-commerce marketplace platform. Please ensure that the platform remains user-friendly, product listings are up-to-date, and sellers are supported to provide a seamless shopping experience for our consumers.\n\nThank you for your continued efforts.\n\nBest regards,\n[Your Name]"
+                  },
+                  "pairedItem": {
+                    "item": 0
+                  }
+                }
+              ]
+            ]
+          },
+          "source": {
+            "main": [
+              {
+                "previousNode": "Code_Inject_Data"
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {}
+    }
+  },
+  "mode": "cli",
+  "startedAt": "2025-12-05T11:12:36.121Z",
+  "stoppedAt": "2025-12-05T11:12:36.215Z",
+  "status": "running"
+}
+Error executing workflow. See log messages for details.
+
+Execution error:
+====================================
+invalid syntax (item 0)
+NodeOperationError: invalid syntax (item 0)
+    at ExecuteContext.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-nodes-base/nodes/Google/Gmail/v2/GmailV2.node.ts:836:11)
+    at WorkflowExecute.executeNode (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1093:31)
+    at WorkflowExecute.runNode (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1274:22)
+    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1708:38
+    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2324:11
+invalid syntax (item 0)
 
 
 You can also see the runnning result for all functions in there comments.

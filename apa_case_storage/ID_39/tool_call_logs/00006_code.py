@@ -1,0 +1,238 @@
+"""Function param descriptions: 
+This function doesn't need params
+
+This function has been executed for 2 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+None
+
+3.Output:
+[{'json': {}, 'pairedItem': {'item': 0}}]
+"""
+def trigger_0(input_data):
+  """
+  comments: Trigger the workflow manually when user clicks the button.
+  TODOs: 
+    - Test the manual trigger function.
+    - Ensure it works as expected.
+  """
+  params = {}
+  function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
+  output_data = function.run(input_data=None, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+This function doesn't need params
+
+This function has been executed for 1 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+[{'json': {'messages': [{'role': 'system', 'content': 'You are a professional PostgreSQL SQL programmer, please only output a SQL string'}, {'role': 'user', 'content': "Please write a SQL query, which find how many rows are there in the table 'bloomberg_articles'"}]}}]
+
+3.Output:
+[{'json': {'choices': [{'text': '```sql\nSELECT COUNT(*) FROM bloomberg_articles;\n```'}]}, 'pairedItem': {'item': 0}}]
+"""
+def action_0(input_data):
+  """
+  comments: Generate SQL query using AI completion based on system and user prompts.
+  TODOs: 
+    - Construct the messages input properly in the workflow.
+    - Test the AI completion output.
+  """
+  params = {}
+  function = transparent_action(integration="aiCompletion", resource="default", operation="default")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+0 params["query"]: string = "", Required: Query. The SQL query to execute. You can use n8n expressions and $1, $2, $3, etc to refer to the 'Query Parameters' set in options below.(e.g. SELECT id, name FROM product WHERE quantity > $1 AND price <= $2). You can't use expression.
+1 params["options"]: dict = {}: Options(Add Option) . properties description:
+  ...hidden...
+
+This function has been executed for 1 times. Last execution:
+1.Status: ErrorRaisedHere
+2.Input: 
+[{'json': {'query': 'SELECT COUNT(*) FROM bloomberg_articles;'}}]
+
+3.Output:
+[]
+"""
+def action_1(input_data):
+  """
+  comments: Fix action_1 to extract SQL query from input_data and set params with 'query' string and empty 'options'.
+  TODOs: 
+    - Test execution and output.
+    - Handle errors gracefully if query fails.
+  """
+  params = {}  # to be Implemented
+  function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+0 params["select"]: enum[string] = "", Required: Send Message To(Select...) . Available values:
+  0.0 value=="channel": Channel
+  0.1 value=="user": User
+1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required when (select in ['channel']), otherwise do not provide: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
+  1.0 params["channelId"]["value"](when "mode"="id"): string: By ID(C0122KQ70S7E)
+  1.1 params["channelId"]["value"](when "mode"="name"): string: By Name(#general)
+  1.2 params["channelId"]["value"](when "mode"="url"): string: By URL(https://app.slack.com/client/TS9594PZK/B0556F47Z3A)
+2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Activate(Not Required) when (select in ['user']), otherwise do not provide: User(Select a user...) . "mode" should be one of ['id', 'username']: 
+  ...hidden...
+3 params["messageType"]: enum[string] = "text": Message Type. Whether to send a simple text message, or use Slack’s Blocks UI builder for more sophisticated messages that include form fields, sections and more . Available values:
+  3.0 value=="text": Simple Text Message. Supports basic Markdown
+  3.1 value=="block": Blocks. Combine text, buttons, form elements, dividers and more in Slack 's visual builder
+  3.2 value=="attachment": Attachments
+4 params["text"]: string = "", Activate(Not Required) when (messageType in ['block']), otherwise do not provide: Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
+5 params["blocksUi"]: string = "", Required when (messageType in ['block']), otherwise do not provide: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
+6 params["attachments"]: list[dict] = [{}], Activate(Not Required) when (messageType in ['attachment']), otherwise do not provide: Attachments(Add attachment item) . properties description:
+  ...hidden...
+7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
+  ...hidden...
+
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
+2.Input: 
+[]
+
+3.Output:
+[]
+"""
+def action_2(input_data):
+  """
+  comments: Send the query results to Slack channel 'general'.
+  TODOs: 
+    - Format the Slack message properly.
+    - Test sending messages to Slack.
+  """
+  params = {}  # to be Implemented
+  function = transparent_action(integration="slack", resource="message", operation="post")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""
+
+This function has been executed for 1 times. Last execution:
+1.Status: ErrorRaisedInner
+2.Input: 
+[{'json': {}}]
+
+3.Output:
+[]
+"""
+def mainWorkflow(trigger_input: [{...}]):
+    """
+    comments: Workflow to generate SQL query by AI, execute it on PostgreSQL, and send results to Slack.
+    TODOs: 
+      - Test the full workflow.
+      - Handle errors or empty results gracefully.
+    """
+    # Step 1: Start with manual trigger
+    trigger_output = trigger_0(None)
+
+    # Step 2: Build aiCompletion input with messages
+    ai_input = [{
+        "json": {
+            "messages": [
+                {"role": "system", "content": "You are a professional PostgreSQL SQL programmer, please only output a SQL string"},
+                {"role": "user", "content": "Please write a SQL query, which find how many rows are there in the table 'bloomberg_articles'"}
+            ]
+        }
+    }]
+
+    # Step 3: Call aiCompletion to generate SQL
+    ai_output = action_0(ai_input)
+
+    # Step 4: Extract and clean SQL query from AI output
+    ai_text = ai_output[0]['json']['choices'][0]['text'].strip()
+    if ai_text.startswith('```'):
+        # Remove markdown code block
+        ai_text = ai_text.split('\n', 1)[1] if '\n' in ai_text else ai_text[3:]
+        if ai_text.endswith('```'):
+            ai_text = ai_text[:-3]
+        ai_text = ai_text.strip()
+
+    # Step 5: Prepare input for PostgreSQL action
+    pg_input = [{"json": {"query": ai_text}}]
+
+    # Step 6: Execute the SQL query
+    pg_output = action_1(pg_input)
+
+    # Step 7: Format the PostgreSQL output for Slack
+    # Extract rows and format them
+    rows = pg_output
+    # We expect the count to be in the first row, first column
+    count = None
+    if rows and 'json' in rows[0]:
+        first_row = rows[0]['json']
+        # Extract first value in the row
+        if len(first_row) > 0:
+            count = list(first_row.values())[0]
+    if count is None:
+        count = 'No data'
+
+    message = f"Number of rows in 'bloomberg_articles': {count}"
+
+    slack_input = [{"json": {"text": message}}]
+
+    # Step 8: Send message to Slack
+    slack_output = action_2(slack_input)
+
+    return slack_output
+
+
+
+"""
+
+The directly running result for now codes with print results are as following:
+
+
+Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
+[Output Data Info]
+the output data of function `trigger_0` is: `[{'json': {}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_0` is: `[{'json': {'choices': [{'text': '```sql\nSELECT COUNT(*) FROM bloomberg_articles;\n```'}]}, 'pairedItem': {'item': 0}}]`
+the output data of function `action_1` is: `[]`
+the output data of function `action_2` is: `[]`
+
+------------------------
+In Function: mainWorkflow
+        # Step 6: Execute the SQL query
+-->     pg_output = action_1(pg_input)
+------------------------
+In Function: transparent_action
+      function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
+-->   output_data = function.run(input_data=input_data, params=params)
+      return output_data
+------------------------
+n8nRunningException: Execution Failed: 
+Output: Problem with execution 2618: The workflow has issues and cannot be executed for that reason. Please fix them first.. Aborting.
+The workflow has issues and cannot be executed for that reason. Please fix them first. (execution 2618)
+Error executing workflow. See log messages for details.
+
+Execution error:
+====================================
+The workflow has issues and cannot be executed for that reason. Please fix them first.
+undefined
+WorkflowHasIssuesError: The workflow has issues and cannot be executed for that reason. Please fix them first.
+    at WorkflowExecute.checkForWorkflowIssues (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1382:10)
+    at WorkflowExecute.processRunExecutionData (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1461:8)
+    at WorkflowExecute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:176:15)
+    at ManualExecutionService.runManually (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/manual-execution.service.ts:157:27)
+    at WorkflowRunner.runMainProcess (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:298:53)
+    at WorkflowRunner.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/workflow-runner.ts:175:4)
+    at Execute.run (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/commands/execute.ts:95:23)
+    at CommandRegistry.execute (/Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/src/command-registry.ts:67:4)
+    at /Users/qwuqwuqwu/.nvm/versions/node/v22.21.0/lib/node_modules/n8n/bin/n8n:63:2
+The workflow has issues and cannot be executed for that reason. Please fix them first.
+
+
+You can also see the runnning result for all functions in there comments.
+"""

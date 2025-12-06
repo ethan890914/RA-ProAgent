@@ -1,16 +1,15 @@
 {
-  "thought": "用户需要手动触发后发送消息到Slack的#general频道，消息内容是固定的\"Hello World!\"。现在需要实现mainWorkflow，将触发器输出作为输入，构造Slack消息的输入格式，调用发送消息动作。",
+  "thought": "根据用户需求，实现主工作流。主工作流由手动触发器触发，触发后调用Slack发送消息动作，发送固定消息'Hello World!'到#general频道。",
   "plan": [
-    "接收trigger_0的输出作为输入。",
-    "构造Slack消息输入数据，消息内容固定为\"Hello World!\"。",
-    "调用action_0发送消息。",
-    "返回发送消息的结果。"
+    "调用手动触发器触发工作流。",
+    "调用Slack发送消息动作，将消息发送到#general频道。",
+    "返回Slack发送消息动作的输出结果。"
   ],
-  "criticism": "当前mainWorkflow未实现，导致运行时报错。需要实现该工作流连接触发器和动作。",
+  "criticism": "当前主工作流未实现，导致无法完成用户需求。实现主工作流后需要测试整体流程是否正常。",
   "tool_name": "workflow_implment",
   "tool_input": {
     "workflow_name": "mainWorkflow",
-    "code": "def trigger_0(input_data=None):\n    \"\"\"\n    comments: 手动触发器，用户点击按钮触发工作流执行。\n    TODOs: \n      - 测试触发器是否能正常触发\n      - 验证触发器输出格式\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: 设置Slack发送消息动作，默认发送到#general频道，消息内容从输入数据读取。\n    TODOs: \n      - 测试发送消息是否成功\n      - 验证消息内容格式\n      - 完善工作流实现\n    \"\"\"\n    params = { 'channelId': {'mode': 'name', 'value': 'general'},\n               'messageType': 'text',\n               'select': 'channel',\n               'text': '={{$json[\"text\"]}}'}\n    function = transparent_action(integration=\"slack\", resource=\"message\", operation=\"post\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 手动触发后，发送固定消息到Slack频道#general。\n    TODOs: \n      - 测试工作流执行\n      - 验证消息发送成功\n    \"\"\"\n    # 构造Slack消息输入，消息内容固定\n    slack_input = [{\"json\": {\"text\": \"Hello World!\"}}]\n    # 调用发送消息动作\n    slack_output = action_0(slack_input)\n    return slack_output\n"
+    "code": "def trigger_0(input_data=None):\n    \"\"\"\n    comments: 手动触发器，用户点击按钮时触发工作流\n    TODOs:\n      - 实现触发器函数\n      - 测试触发功能\n    \"\"\"\n    params = {}\n    function = transparent_trigger(integration=\"manualTrigger\", resource=\"default\", operation=\"default\")\n    output_data = function.run(input_data=None, params=params)\n    return output_data\n\n\ndef action_0(input_data):\n    \"\"\"\n    comments: 配置Slack发送消息动作，发送消息到#general频道，内容为'Hello World!'\n    TODOs:\n      - 测试消息发送\n      - 验证消息是否发送到正确频道\n    \"\"\"\n    params = {\"select\": \"channel\", \"channelId\": {\"mode\": \"name\", \"value\": \"general\"}, \"messageType\": \"text\", \"text\": \"=Hello World!\"}\n    function = transparent_action(integration=\"slack\", resource=\"message\", operation=\"post\")\n    output_data = function.run(input_data=input_data, params=params)\n    return output_data\n\n\ndef mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 主工作流，手动触发后发送消息到Slack的#general频道\n    TODOs:\n      - 调用手动触发器\n      - 调用Slack发送消息动作\n      - 返回Slack动作输出\n    \"\"\"\n    # 调用手动触发器，触发工作流\n    trigger_output = trigger_0()\n\n    # 调用Slack发送消息动作\n    slack_output = action_0(trigger_output)\n\n    return slack_output\n"
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {

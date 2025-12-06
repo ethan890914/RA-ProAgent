@@ -1,11 +1,12 @@
 {
-  "thought": "To fulfill the user request, I need to define a manual trigger to start the workflow, an AI completion action to classify the news title, and a Slack action to send the message to the #general channel.",
+  "thought": "To implement the workflow, first define the necessary functions: a manual trigger, an AI completion action to categorize the news title, and a Slack message send action.",
   "plan": [
     "Define a manual trigger function to start the workflow.",
-    "Define an AI completion action function to determine the category of the news title.",
-    "Define a Slack message post action function to send the output message to the #general channel."
+    "Define an AI completion action to classify the news title category.",
+    "Define a Slack message post action to send the news title and category to #general channel.",
+    "Implement mainWorkflow to connect these functions."
   ],
-  "criticism": "Currently, no functions are defined, so the workflow cannot be implemented or tested.",
+  "criticism": "The current code has no defined functions or workflow implementation, so it cannot run or be tested.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -13,30 +14,31 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Manual trigger to start the workflow on demand.",
+        "comments": "This manual trigger is used to start the workflow on demand.",
         "TODO": [
-          "Test the trigger activation.",
-          "Ensure the output format is correct."
+          "Test manual trigger activation.",
+          "Ensure output data format is correct."
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "AI completion to classify the news title into a category.",
+        "comments": "Use AI completion to determine the category of the news title.",
         "TODO": [
-          "Build the input messages properly in the workflow.",
-          "Test the AI response format."
+          "Build AI input messages in mainWorkflow.",
+          "Test AI completion output format."
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Post the classified news category message to the #general Slack channel.",
+        "comments": "Send the categorized news title and category to Slack #general channel.",
         "TODO": [
-          "Set the Slack channel to #general.",
-          "Test message formatting."
+          "Set channel to #general.",
+          "Format Slack message properly.",
+          "Test Slack message sending."
         ]
       }
     ]

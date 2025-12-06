@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Manual trigger to start the workflow on demand.
+  comments: Manual trigger to start the workflow when user clicks the button.
   TODOs: 
-    - Test the trigger works.
-    - Ensure the output format matches expected input for next action.
+    - Test trigger functionality
+    - Use it as the main trigger for the workflow
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -36,12 +36,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Execute the SQL query to get the top 1 row from bloomberg_articles table.
+  comments: Execute the SQL query to get data from bloomberg_articles table.
   TODOs: 
-    - Test the query execution and output.
-    - Verify the output data format.
+    - Test the query execution and output format
+    - Verify output contains query results
   """
   params = {'options': {}, 'query': 'SELECT * FROM bloomberg_articles LIMIT 1;'}
   function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
@@ -79,13 +79,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send the formatted query result to Slack channel #general.
+  comments: Send the formatted PostgreSQL query result to Slack channel #general.
   TODOs: 
-    - Set the channel to #general.
-    - Format the message text properly.
-    - Test sending message to Slack.
+    - Format the message text
+    - Test sending message to Slack
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")

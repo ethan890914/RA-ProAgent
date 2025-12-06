@@ -11,10 +11,10 @@ This function has been executed for 1 times. Last execution:
 """
 def trigger_0(input_data):
   """
-  comments: 手动触发器，用户点击按钮触发工作流执行。
+  comments: 手动触发器，用户点击按钮时触发工作流
   TODOs: 
-    - 测试触发器是否能正常触发
-    - 验证触发器输出格式
+    - 实现触发器函数
+    - 测试触发功能
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -54,11 +54,11 @@ This function has been executed for 0 times. Last execution:
 """
 def action_0(input_data):
   """
-  comments: 发送消息到Slack频道#general，消息内容将在工作流中动态构造。
+  comments: 发送消息到Slack的指定频道
   TODOs: 
-    - 设置频道为#general
-    - 测试发送消息功能
-    - 验证消息内容格式
+    - 实现发送消息动作
+    - 配置发送到#general频道
+    - 测试消息发送
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")

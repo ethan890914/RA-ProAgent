@@ -9,12 +9,12 @@ This function has been executed for 1 times. Last execution:
 3.Output:
 [{'json': {}}]
 """
-def trigger_0(input_data: List[Dict] =  [{...}]):
+def trigger_0(input_data):
   """
-  comments: Trigger when the user manually triggers the workflow.
+  comments: Trigger the workflow manually.
   TODOs: 
-    - Test the manual trigger.
-    - Ensure it activates the mainWorkflow correctly.
+    - Test trigger
+    - Use as workflow input
   """
   params = {}
   function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
@@ -48,12 +48,12 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_0(input_data: List[Dict] =  [{...}]):
+def action_0(input_data):
   """
-  comments: Get current weather data from OpenWeatherMap for New York.
+  comments: Get current weather for a specified location.
   TODOs: 
-    - Configure to query New York weather.
-    - Test the weather data retrieval.
+    - Set city name to New York
+    - Test weather fetching
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="openWeatherMap", resource="default", operation="currentWeather")
@@ -91,13 +91,13 @@ This function has been executed for 0 times. Last execution:
 3.Output:
 []
 """
-def action_1(input_data: List[Dict] =  [{...}]):
+def action_1(input_data):
   """
-  comments: Send formatted weather message to Slack channel #weathers.
+  comments: Send a text message to a Slack channel.
   TODOs: 
-    - Set channel to #weathers.
-    - Format message with temperature and wind.
-    - Test message sending.
+    - Select Slack channel
+    - Format message
+    - Test message sending
   """
   params = {}  # to be Implemented
   function = transparent_action(integration="slack", resource="message", operation="post")

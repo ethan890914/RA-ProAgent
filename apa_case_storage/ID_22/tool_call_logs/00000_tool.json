@@ -1,12 +1,12 @@
 {
-  "thought": "To implement the workflow, I need to first define the necessary functions for manual trigger, reading from Google Sheets, AI classification, and Slack message posting.",
+  "thought": "To implement the workflow, I first need to define the necessary actions and trigger for the workflow. These include reading Google Sheets data, calling aiCompletion for classification, and sending messages to Slack. Also, a manual trigger is needed to start the workflow.",
   "plan": [
-    "Define a manual trigger function to start the workflow.",
-    "Define a Google Sheets read action to get commercial entries.",
-    "Define an AI completion action to classify descriptions.",
-    "Define a Slack message post action to send results."
+    "Define a manual trigger function.",
+    "Define an action function to read Google Sheets data with the specified documentId and sheetName.",
+    "Define an action function to call aiCompletion for classification.",
+    "Define an action function to send messages to Slack."
   ],
-  "criticism": "Currently, no functions are defined, so the workflow cannot be implemented or tested.",
+  "criticism": "The current code does not define any functions for actions or triggers, so it cannot run or be tested.",
   "tool_name": "function_define",
   "tool_input": {
     "functions": [
@@ -14,41 +14,40 @@
         "integration_name": "manualTrigger",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Trigger the workflow manually by user clicking a button.",
+        "comments": "Manual trigger to start the workflow on user click.",
         "TODO": [
-          "Test the trigger",
-          "Use it as the main trigger for the workflow"
+          "Test trigger activation.",
+          "Verify output format."
         ]
       },
       {
         "integration_name": "googleSheets",
         "resource_name": "sheet",
         "operation_name": "read",
-        "comments": "Read commercial entries from the specified Google Sheet.",
+        "comments": "Read all rows from the specified Google Sheet document and sheet name.",
         "TODO": [
-          "Set documentId and sheetName parameters",
-          "Test reading data"
+          "Set documentId and sheetName parameters.",
+          "Test reading sheet data."
         ]
       },
       {
         "integration_name": "aiCompletion",
         "resource_name": "default",
         "operation_name": "default",
-        "comments": "Classify each commercial entry's Description as 'to Business' or 'to Customer'.",
+        "comments": "Use AI to classify each commercial entry's Description as 'to Business' or 'to Customer'.",
         "TODO": [
-          "Build messages array in workflow",
-          "Test classification"
+          "Build messages array in workflow.",
+          "Test AI classification."
         ]
       },
       {
         "integration_name": "slack",
         "resource_name": "message",
         "operation_name": "post",
-        "comments": "Send classification results to Slack #general channel.",
+        "comments": "Send each commercial entry's Description, profit, and category to Slack channel #general.",
         "TODO": [
-          "Set channel to #general",
-          "Format message text",
-          "Test sending messages"
+          "Format message text.",
+          "Test Slack message sending."
         ]
       }
     ]
