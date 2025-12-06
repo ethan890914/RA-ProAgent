@@ -254,7 +254,15 @@ class RunningRecoder():
         """
         with open(os.path.join(self.record_root_dir, f"README.md"), "w", encoding="utf-8") as writer:
             writer.write(markdown)
-    
+
+    def save_construction_time_metadata(self, construction_time):
+        with open(os.path.join(self.record_root_dir, "meta.meta"), "w", encoding="utf-8") as writer:
+            tool_call_log = {
+                "tool_call_id": self.tool_call_id,
+                "llm_inference_id": self.llm_interface_id,
+                "construction_time(sec)": construction_time
+            }
+            json.dump(tool_call_log,writer,indent=2, ensure_ascii=False)
     def is_final_cache(self):
         """
         Check if the current cache is the final cache.
