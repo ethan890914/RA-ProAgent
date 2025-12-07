@@ -1,0 +1,14 @@
+{
+  "thought": "",
+  "plan": [],
+  "criticism": "",
+  "tool_name": "task_submit",
+  "tool_input": {
+    "result": "I have implemented the mainWorkflow that triggers on manual trigger, uses aiCompletion to generate a SQL query, executes the query on PostgreSQL, extracts the results, and sends formatted messages to Slack channel 'general'. The workflow has been tested successfully with correct SQL generation, query execution, and Slack message sending. All user requirements are met, including sorting by published_at and limiting to 3 rows, and message formatting with index, title, and published_at. The workflow runs without errors and outputs the expected results in Slack.\n\nThe task is complete."
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "successfully save to markdown",
+    "status": "ToolCallSuccess"
+  }
+}
