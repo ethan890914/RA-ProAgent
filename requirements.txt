@@ -43,3 +43,4 @@ func-timeout
 google-generativeai
 sentence_transformers
 numpy==1.26.4
+dotenv
