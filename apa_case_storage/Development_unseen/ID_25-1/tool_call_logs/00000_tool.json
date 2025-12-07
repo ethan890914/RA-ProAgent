@@ -1,0 +1,89 @@
+{
+  "thought": "为了实现用户需求，先定义所需的触发器和动作函数，包括手动触发器、读取Google Sheets数据、调用AI完成分类和邮件内容生成、发送Slack消息和发送Gmail邮件。",
+  "plan": [
+    "定义手动触发器trigger_manualTrigger",
+    "定义读取Google Sheets表格的action_googleSheets_read",
+    "定义调用AI完成分类的action_aiCompletion_classify",
+    "定义调用AI生成邮件内容的action_aiCompletion_generateEmail",
+    "定义发送Slack消息的action_slack_postMessage",
+    "定义发送Gmail邮件的action_gmail_sendEmail"
+  ],
+  "criticism": "目前还没有具体参数和实现，后续需要根据具体参数定义和实现每个动作和触发器。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "手动触发器，用于启动整个工作流",
+        "TODO": [
+          "测试触发器是否能正常触发",
+          "确保触发器输出格式正确"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "读取Google Sheets中商业流数据，包含cost和sales列",
+        "TODO": [
+          "配置documentId和sheetName参数",
+          "测试读取数据是否正确"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "调用AI完成商业流类型分类，输入包含描述文本",
+        "TODO": [
+          "构造AI输入messages数组",
+          "测试分类结果"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "调用AI生成给客户经理的提醒邮件内容，输入包含多个描述文本",
+        "TODO": [
+          "构造AI输入messages数组",
+          "测试邮件内容生成"
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "向Slack频道发送商业流利润信息",
+        "TODO": [
+          "配置频道为#general",
+          "测试消息发送"
+        ]
+      },
+      {
+        "integration_name": "gmail",
+        "resource_name": "message",
+        "operation_name": "send",
+        "comments": "发送提醒邮件给商业流经理",
+        "TODO": [
+          "配置邮件主题和内容",
+          "测试邮件发送"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default",
+      "function_3 defined SUCCESS: aiCompletion->default->default",
+      "function_4 defined SUCCESS: slack->message->post",
+      "function_5 defined SUCCESS: gmail->message->send"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

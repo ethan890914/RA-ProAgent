@@ -1,0 +1,15 @@
+{
+  "thought": "",
+  "plan": [],
+  "criticism": "",
+  "tool_name": "task_submit",
+  "tool_input": {
+    "result": "我已经定义并实现了完整的工作流，包括手动触发器触发，读取Google Sheets商业流数据，计算利润，调用AI完成商业流分类，分别发送Slack消息和邮件提醒。所有节点均已通过测试，流程运行成功，满足用户需求。现在提交任务。",
+    "status": "All functions defined and implemented, workflow tested successfully, output meets user requirements."
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "successfully save to markdown",
+    "status": "ToolCallSuccess"
+  }
+}
