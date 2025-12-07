@@ -1,0 +1,65 @@
+{
+  "thought": "To fulfill the user request, I need to define the trigger for manual trigger and the actions for reading Google Sheets, calling AI completion for classification, and sending messages to Slack.",
+  "plan": [
+    "Define a trigger function for manual trigger.",
+    "Define an action function to read data from Google Sheets with the given documentId and sheetName.",
+    "Define an action function to call aiCompletion to classify each Description.",
+    "Define an action function to send messages to Slack channel #general."
+  ],
+  "criticism": "Currently no functions are defined, so the workflow cannot run. Defining these functions is the prerequisite.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Manual trigger to start the workflow when user clicks the button.",
+        "TODO": [
+          "Test the manual trigger.",
+          "Ensure it outputs the correct trigger input format."
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "Read all rows from the specified Google Sheet document and sheet name.",
+        "TODO": [
+          "Set documentId and sheetName in params.",
+          "Test reading data from Google Sheets."
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Use AI completion to classify each Description as 'to Business' or 'to Customer'.",
+        "TODO": [
+          "Build messages array in workflow for each Description.",
+          "Test AI classification."
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send classification results to Slack #general channel.",
+        "TODO": [
+          "Format messages correctly.",
+          "Send only 'to Business' classified entries."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default",
+      "function_3 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

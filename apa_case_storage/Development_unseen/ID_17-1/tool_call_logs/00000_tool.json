@@ -1,0 +1,54 @@
+{
+  "thought": "为了完成用户需求，需要定义一个手动触发器触发工作流，读取Google Sheets中指定文档和表单的数据，并通过Gmail发送邮件。",
+  "plan": [
+    "定义手动触发器trigger_0，作为工作流的入口。",
+    "定义action_0，使用googleSheets的sheet-read操作，读取指定的文档ID和表单名称。",
+    "定义action_1，使用gmail的message-send操作，发送邮件给指定邮箱，邮件主题和内容根据读取的数据动态生成。",
+    "实现mainWorkflow，将手动触发器的输出作为输入，调用读取sheet的action_0，再调用发送邮件的action_1。"
+  ],
+  "criticism": "目前还没有任何函数定义，无法执行任何操作。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "定义一个手动触发器，用户点击后触发工作流执行。",
+        "TODO": [
+          "测试触发器是否能正确触发",
+          "确保输出格式正确"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "读取Google Sheets中指定文档和表单的数据。",
+        "TODO": [
+          "设置文档ID和表单名称",
+          "测试读取数据是否正确"
+        ]
+      },
+      {
+        "integration_name": "gmail",
+        "resource_name": "message",
+        "operation_name": "send",
+        "comments": "将读取到的Google Sheets数据作为邮件内容发送给指定邮箱。",
+        "TODO": [
+          "设置收件人邮箱、邮件主题和内容",
+          "测试邮件是否成功发送"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: gmail->message->send"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "thought": "I need to implement the AI completion action parameters to generate a joke about a tree within 30 words. This requires setting up the prompt message properly in the input data for the AI node, as AI completion reads input data, not params, for messages.",
+  "plan": [
+    "Prepare the input data for AI completion with a system prompt and user prompt to generate a joke about a tree within 30 words.",
+    "Set the params as empty since AI completion ignores params.",
+    "Test the AI completion action to see if it generates the joke correctly."
+  ],
+  "criticism": "Currently, the AI completion action has no input data or specific prompt, so it cannot generate the required joke.",
+  "tool_name": "function_rewrite_params",
+  "tool_input": {
+    "function_name": "action_0",
+    "params": "{}",
+    "comments": "Generate a joke about a tree within 30 words using AI completion. The prompt is built in the workflow, so params are empty.",
+    "TODO": [
+      "Build the prompt in the mainWorkflow",
+      "Test AI completion output"
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [],
+    "status": "ToolCallSuccess"
+  }
+}
