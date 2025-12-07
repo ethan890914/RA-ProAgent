@@ -17,7 +17,8 @@ from execute_from_tool_calls import run
 from ProAgent.router.utils import ENVIRONMENT
 from ProAgent.config import CONFIG
 from proagent_rag import include_all_info, ProAgentRAG
-
+from dotenv import load_dotenv
+load_dotenv()
 def run_refine_oneshot_mode(cfg, new_query, old_id, new_query_id=None):
     """
     Run ProAgent in refine_oneshot mode.
@@ -140,7 +141,7 @@ def main(cfg: omegaconf.DictConfig):
             "4.2 Send results to slack channel #news",
             "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
             "5.1 email format:",
-            "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+            f"5.2 Send results with Gmail to {os.environ.get('MY_GMAIL')}",
             "5.3 Each email abstract: Commercial Entry: [Description]",
             "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
         ]

@@ -30,6 +30,8 @@ try:
 except ImportError:
     _gemini_available = False
 
+from dotenv import load_dotenv
+load_dotenv()
 
 def get_api_provider():
     """Determine which API provider to use based on environment variable"""
