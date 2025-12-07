@@ -1,0 +1,122 @@
+"""Function param descriptions: 
+This function doesn't need params
+
+This function has been executed for 1 times. Last execution:
+1.Status: TriggerAcivatedSuccess
+2.Input: 
+[]
+
+3.Output:
+[{'json': {}}]
+"""
+def trigger_0(input_data):
+  """
+  comments: 定义一个手动触发器，用于启动工作流
+  TODOs: 
+    - 实现触发器函数
+    - 测试触发器是否正常工作
+  """
+  params = {}
+  function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
+  output_data = function.run(input_data=None, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+0 params["select"]: enum[string] = "", Required: Send Message To(Select...) . Available values:
+  0.0 value=="channel": Channel
+  0.1 value=="user": User
+1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required when (select in ['channel']), otherwise do not provide: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
+  1.0 params["channelId"]["value"](when "mode"="id"): string: By ID(C0122KQ70S7E)
+  1.1 params["channelId"]["value"](when "mode"="name"): string: By Name(#general)
+  1.2 params["channelId"]["value"](when "mode"="url"): string: By URL(https://app.slack.com/client/TS9594PZK/B0556F47Z3A)
+2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Activate(Not Required) when (select in ['user']), otherwise do not provide: User(Select a user...) . "mode" should be one of ['id', 'username']: 
+  ...hidden...
+3 params["messageType"]: enum[string] = "text": Message Type. Whether to send a simple text message, or use Slack’s Blocks UI builder for more sophisticated messages that include form fields, sections and more . Available values:
+  3.0 value=="text": Simple Text Message. Supports basic Markdown
+  3.1 value=="block": Blocks. Combine text, buttons, form elements, dividers and more in Slack 's visual builder
+  3.2 value=="attachment": Attachments
+4 params["text"]: string = "", Activate(Not Required) when (messageType in ['block']), otherwise do not provide: Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
+5 params["blocksUi"]: string = "", Required when (messageType in ['block']), otherwise do not provide: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
+6 params["attachments"]: list[dict] = [{}], Activate(Not Required) when (messageType in ['attachment']), otherwise do not provide: Attachments(Add attachment item) . properties description:
+  ...hidden...
+7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
+  ...hidden...
+
+This function has been executed for 0 times. Last execution:
+1.Status: DidNotBeenCalled
+2.Input: 
+[]
+
+3.Output:
+[]
+"""
+def action_0(input_data):
+  """
+  comments: 实现Slack发送消息动作，发送消息到#general频道，消息内容由输入数据的text字段决定
+  TODOs: 
+    - 测试Slack发送消息动作
+    - 确认消息正确发送到#general频道
+  """
+  params = { 'channelId': {'mode': 'name', 'value': 'general'},
+             'messageType': 'text',
+             'select': 'channel',
+             'text': '={{$json["text"]}}'}
+  function = transparent_action(integration="slack", resource="message", operation="post")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""
+
+This function has been executed for 1 times. Last execution:
+1.Status: ErrorRaisedHere
+2.Input: 
+[{'json': {}}]
+
+3.Output:
+[]
+"""
+def mainWorkflow(trigger_input: [{...}]):
+    """
+    comments: 手动触发后，发送消息到Slack #general频道，消息内容为'Hello ProAgent!'
+    TODOs:
+      - 调用trigger_0获取触发输入
+      - 构造Slack消息输入数据，包含text字段
+      - 调用action_0发送消息
+      - 返回Slack动作输出
+    """
+    # 调用trigger_0获取触发输入
+    trigger_output = trigger_0()
+
+    # 构造Slack消息输入数据，必须是列表，且每项包含json字段，json中包含text字段
+    slack_input = [{"json": {"text": "Hello ProAgent!"}}]
+
+    # 调用action_0发送消息
+    slack_output = action_0(slack_input)
+
+    return slack_output
+
+
+
+"""
+
+The directly running result for now codes with print results are as following:
+
+
+Note: if there is 'KeyError' in the error message, it may be due to the wrong usage of output data. The output data info may help you: 
+[Output Data Info]
+the output data of function `trigger_0` is: `[{'json': {}}]`
+the output data of function `action_0` is: `[]`
+
+------------------------
+In Function: mainWorkflow
+        # 调用trigger_0获取触发输入
+-->     trigger_output = trigger_0()
+------------------------
+TypeError: n8nNodeRunner.__call__() missing 1 required positional argument: 'input_data'
+
+You can also see the runnning result for all functions in there comments.
+"""

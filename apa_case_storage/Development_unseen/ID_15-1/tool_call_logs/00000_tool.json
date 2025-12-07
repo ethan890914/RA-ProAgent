@@ -1,0 +1,65 @@
+{
+  "thought": "To fulfill the user query, I need to define the necessary trigger and actions for reading Google Sheets data, calling AI completion for classification, and sending messages to Slack.",
+  "plan": [
+    "Define a manual trigger function to start the workflow.",
+    "Define an action to read rows from Google Sheets with specified documentId and sheetName.",
+    "Define an action to call aiCompletion with messages input.",
+    "Define an action to send messages to Slack channel #general-test."
+  ],
+  "criticism": "Currently, no functions are defined, so the workflow cannot run. Defining these core functions is the first step.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Trigger the workflow manually via a button click.",
+        "TODO": [
+          "Test the manual trigger.",
+          "Ensure it activates the mainWorkflow."
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "Read all rows from the specified Google Sheet document and sheet.",
+        "TODO": [
+          "Set documentId and sheetName in params.",
+          "Test reading data from Google Sheets."
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Use OpenAI GPT to classify each commercial entry Description.",
+        "TODO": [
+          "Build messages array in mainWorkflow.",
+          "Test classification accuracy."
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "Send classification results as messages to Slack channel #general-test.",
+        "TODO": [
+          "Format messages properly.",
+          "Test sending messages to Slack."
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default",
+      "function_3 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

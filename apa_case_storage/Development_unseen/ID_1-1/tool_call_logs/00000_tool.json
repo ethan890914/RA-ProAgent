@@ -1,0 +1,42 @@
+{
+  "thought": "用户需要一个手动触发器，当触发时，发送一条消息到Slack的#general频道。首先定义手动触发器和Slack发送消息的动作。",
+  "plan": [
+    "定义一个手动触发器trigger_0",
+    "定义一个Slack发送消息动作action_0，发送消息到#general频道，消息内容为'Hello ProAgent!'",
+    "实现主工作流mainWorkflow，连接触发器和动作"
+  ],
+  "criticism": "当前没有任何函数定义，无法实现工作流。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "定义一个手动触发器，用于启动工作流",
+        "TODO": [
+          "实现触发器函数",
+          "测试触发器是否正常工作"
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "定义一个发送消息到Slack #general频道的动作",
+        "TODO": [
+          "实现Slack发送消息动作",
+          "测试消息是否成功发送"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

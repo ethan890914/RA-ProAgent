@@ -1,0 +1,25 @@
+{
+  "thought": "I need to implement the AI completion action parameters to generate a bird joke between 100 and 200 words. The prompt should instruct the AI accordingly.",
+  "plan": [
+    "Set the AI completion prompt to generate a bird joke with word count between 100 and 200.",
+    "Ensure the prompt is clear and concise to get the desired joke.",
+    "Test the joke generation output."
+  ],
+  "criticism": "The main weakness is that the AI might generate jokes of varying length, but this can be refined later if needed.",
+  "tool_name": "function_rewrite_params",
+  "tool_input": {
+    "function_name": "action_0",
+    "params": "{\"messages\":[{\"role\":\"system\",\"content\":\"You are a helpful assistant.\"},{\"role\":\"user\",\"content\":\"Generate a joke about birds. The joke should be between 100 and 200 words.\"}]}",
+    "comments": "Generate a bird joke between 100 and 200 words using AI completion.",
+    "TODO": [
+      "Test joke generation output",
+      "Refine prompt if joke length is not as expected"
+    ]
+  },
+  "tool_output_status": "UndefinedParam",
+  "tool_output": {
+    "error": "Undefined input parameter \"messages\" for action_0.Supported parameters: []",
+    "result": "Nothing happened.",
+    "status": "UndefinedParam"
+  }
+}

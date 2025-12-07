@@ -1,0 +1,66 @@
+{
+  "thought": "To fulfill the user's request, I need to define the trigger for manual trigger and the actions for reading Google Sheets, calling AI completion, and sending Gmail messages.",
+  "plan": [
+    "Define trigger_0 as manualTrigger.default.default to trigger the workflow manually.",
+    "Define action_0 as googleSheets.sheet.read to read all rows from the specified Google Sheet.",
+    "Define action_1 as aiCompletion.default.default to classify each Description entry.",
+    "Define action_2 as gmail.message.send to send emails with classification results."
+  ],
+  "criticism": "The current plan lacks implementation details and param settings, but defining the functions is the first step.",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Manual trigger to start the workflow.",
+        "TODO": [
+          "Test trigger",
+          "Check output format"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "Read all rows from the specified Google Sheet.",
+        "TODO": [
+          "Set documentId and sheetName",
+          "Test reading data"
+        ]
+      },
+      {
+        "integration_name": "aiCompletion",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "Use AI to classify each commercial entry Description.",
+        "TODO": [
+          "Build messages array in workflow",
+          "Test classification"
+        ]
+      },
+      {
+        "integration_name": "gmail",
+        "resource_name": "message",
+        "operation_name": "send",
+        "comments": "Send classification results to the specified email address.",
+        "TODO": [
+          "Set recipient email",
+          "Format email content",
+          "Test sending emails"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: aiCompletion->default->default",
+      "function_3 defined SUCCESS: gmail->message->send"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}

@@ -1,0 +1,195 @@
+"""Function param descriptions: 
+This function doesn't need params
+
+This function has been executed for 2 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+None
+
+3.Output:
+[{'json': {}, 'pairedItem': {'item': 0}}]
+"""
+def trigger_0(input_data):
+  """
+  comments: Manual trigger to start the workflow when user clicks the button
+  TODOs: 
+    - Test the manual trigger
+    - Ensure output format matches other actions input
+  """
+  params = {}
+  function = transparent_trigger(integration="manualTrigger", resource="default", operation="default")
+  output_data = function.run(input_data=None, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+This function doesn't need params
+
+This function has been executed for 1 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+[{'json': {'messages': [{'role': 'system', 'content': 'You are a professional PostgreSQL SQL programmer, please only output a SQL string'}, {'role': 'user', 'content': "Please write a SQL query, which find the first 10 distinct 'author' from the table 'bloomberg_articles'"}]}}]
+
+3.Output:
+[{'json': {'choices': [{'text': '```sql\nSELECT DISTINCT author\nFROM bloomberg_articles\nLIMIT 10;\n```'}]}, 'pairedItem': {'item': 0}}]
+"""
+def action_0(input_data):
+  """
+  comments: Use aiCompletion to generate SQL query from system and user prompts
+  TODOs: 
+    - Build messages array in mainWorkflow
+    - Pass messages as input_data to this action
+    - Test AI output format
+  """
+  params = {}
+  function = transparent_action(integration="aiCompletion", resource="default", operation="default")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+0 params["query"]: string = "", Required: Query. The SQL query to execute. You can use n8n expressions and $1, $2, $3, etc to refer to the 'Query Parameters' set in options below.(e.g. SELECT id, name FROM product WHERE quantity > $1 AND price <= $2). You can't use expression.
+1 params["options"]: dict = {}: Options(Add Option) . properties description:
+  ...hidden...
+
+This function has been executed for 1 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+[{'json': {'query': 'SELECT DISTINCT author\nFROM bloomberg_articles\nLIMIT 10;'}}]
+
+3.Output:
+[{'json': {'author': 'DEVI SHASTRI AP health writer'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'Peter Charalambous'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'Mason Leib'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'LEANNE ITALIE AP entertainment writer'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'GHAITH ALSAYED Associated Press, BASSEM MROUE Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'JAMES BROOKS Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'LINDSEY BAHR AP film writer'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'The Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'ISHTIAQ MAHSUD Associated Press, MUNIR AHMED Associated Press'}, 'pairedItem': {'item': 0}}, {'json': {'author': 'SIMINA MISTREANU Associated Press'}, 'pairedItem': {'item': 0}}]
+"""
+def action_1(input_data):
+  """
+  comments: Set PostgreSQL executeQuery params with plain string query extracted from input_data and empty options dict
+  TODOs: 
+    - Test SQL execution
+    - Verify output format
+  """
+  params = {'options': {}, 'query': '{{$json["query"]}}'}
+  function = transparent_action(integration="postgres", resource="database", operation="executeQuery")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""Function param descriptions: 
+0 params["select"]: enum[string] = "", Required: Send Message To(Select...) . Available values:
+  0.0 value=="channel": Channel
+  0.1 value=="user": User
+1 params["channelId"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Required when (select in ['channel']), otherwise do not provide: Channel. The Slack channel to send to(Select a channel...) . "mode" should be one of ['id', 'name', 'url']: 
+  1.0 params["channelId"]["value"](when "mode"="id"): string: By ID(C0122KQ70S7E)
+  1.1 params["channelId"]["value"](when "mode"="name"): string: By Name(#general)
+  1.2 params["channelId"]["value"](when "mode"="url"): string: By URL(https://app.slack.com/client/TS9594PZK/B0556F47Z3A)
+2 params["user"]: dict{"mode":enum(str),"values":any} = {'mode': 'list', 'value': ''}, Activate(Not Required) when (select in ['user']), otherwise do not provide: User(Select a user...) . "mode" should be one of ['id', 'username']: 
+  ...hidden...
+3 params["messageType"]: enum[string] = "text": Message Type. Whether to send a simple text message, or use Slack’s Blocks UI builder for more sophisticated messages that include form fields, sections and more . Available values:
+  3.0 value=="text": Simple Text Message. Supports basic Markdown
+  3.1 value=="block": Blocks. Combine text, buttons, form elements, dividers and more in Slack 's visual builder
+  3.2 value=="attachment": Attachments
+4 params["text"]: string = "", Activate(Not Required) when (messageType in ['block']), otherwise do not provide: Notification Text. Fallback text to display in slack notifications. Supports <a href="https://api.slack.com/reference/surfaces/formatting">markdown</a> by default - this can be disabled in "Options".
+5 params["blocksUi"]: string = "", Required when (messageType in ['block']), otherwise do not provide: Blocks. Enter the JSON output from Slack's visual Block Kit Builder here. You can then use expressions to add variable content to your blocks. To create blocks, use <a target='_blank' href='https://app.slack.com/block-kit-builder'>Slack's Block Kit Builder</a>
+6 params["attachments"]: list[dict] = [{}], Activate(Not Required) when (messageType in ['attachment']), otherwise do not provide: Attachments(Add attachment item) . properties description:
+  ...hidden...
+7 params["otherOptions"]: dict = {}: Options. Other options to set(Add options) . properties description:
+  ...hidden...
+
+This function has been executed for 1 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+[{'json': {'text': 'Author: DEVI SHASTRI AP health writer'}}, {'json': {'text': 'Author: Peter Charalambous'}}, {'json': {'text': 'Author: Mason Leib'}}, {'json': {'text': 'Author: LEANNE ITALIE AP entertainment writer'}}, {'json': {'text': 'Author: GHAITH ALSAYED Associated Press, BASSEM MROUE Associated Press'}}, {'json': {'text': 'Author: JAMES BROOKS Associated Press'}}, {'json': {'text': 'Author: LINDSEY BAHR AP film writer'}}, {'json': {'text': 'Author: The Associated Press'}}, {'json': {'text': 'Author: ISHTIAQ MAHSUD Associated Press, MUNIR AHMED Associated Press'}}, {'json': {'text': 'Author: SIMINA MISTREANU Associated Press'}}]
+
+3.Output:
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083614.407819', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: DEVI SHASTRI AP health writer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'v45', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: DEVI SHASTRI AP health writer'}]}]}]}, 'message_timestamp': '1765083614.407819'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083615.349129', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: Peter Charalambous', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Xu7', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: Peter Charalambous'}]}]}]}, 'message_timestamp': '1765083615.349129'}, 'pairedItem': {'item': 1}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083616.427009', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: Mason Leib', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'PuBR7', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: Mason Leib'}]}]}]}, 'message_timestamp': '1765083616.427009'}, 'pairedItem': {'item': 2}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083617.797559', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: LEANNE ITALIE AP entertainment writer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'WbY', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: LEANNE ITALIE AP entertainment writer'}]}]}]}, 'message_timestamp': '1765083617.797559'}, 'pairedItem': {'item': 3}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083618.753249', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: GHAITH ALSAYED Associated Press, BASSEM MROUE Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'xs=iC', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: GHAITH ALSAYED Associated Press, BASSEM MROUE Associated Press'}]}]}]}, 'message_timestamp': '1765083618.753249'}, 'pairedItem': {'item': 4}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083619.632689', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: JAMES BROOKS Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'k+TZr', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: JAMES BROOKS Associated Press'}]}]}]}, 'message_timestamp': '1765083619.632689'}, 'pairedItem': {'item': 5}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083620.523899', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: LINDSEY BAHR AP film writer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'OpTNI', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: LINDSEY BAHR AP film writer'}]}]}]}, 'message_timestamp': '1765083620.523899'}, 'pairedItem': {'item': 6}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083621.394989', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: The Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'sEaGy', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: The Associated Press'}]}]}]}, 'message_timestamp': '1765083621.394989'}, 'pairedItem': {'item': 7}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083622.293199', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: ISHTIAQ MAHSUD Associated Press, MUNIR AHMED Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'lAGhx', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: ISHTIAQ MAHSUD Associated Press, MUNIR AHMED Associated Press'}]}]}]}, 'message_timestamp': '1765083622.293199'}, 'pairedItem': {'item': 8}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083623.179739', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: SIMINA MISTREANU Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Yxvpn', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: SIMINA MISTREANU Associated Press'}]}]}]}, 'message_timestamp': '1765083623.179739'}, 'pairedItem': {'item': 9}}]
+"""
+def action_2(input_data):
+  """
+  comments: Send the SQL query results to Slack channel 'general' with proper params
+  TODOs: 
+    - Test Slack message delivery
+    - Verify message format
+  """
+  params = { 'channelId': {'mode': 'name', 'value': 'general'},
+             'messageType': 'text',
+             'select': 'channel',
+             'text': '={{$json["text"]}}'}
+  function = transparent_action(integration="slack", resource="message", operation="post")
+  output_data = function.run(input_data=input_data, params=params)
+  return output_data
+
+
+
+"""
+
+This function has been executed for 1 times. Last execution:
+1.Status: FunctionExecuteSuccess
+2.Input: 
+[{'json': {}}]
+
+3.Output:
+[{'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083614.407819', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: DEVI SHASTRI AP health writer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'v45', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: DEVI SHASTRI AP health writer'}]}]}]}, 'message_timestamp': '1765083614.407819'}, 'pairedItem': {'item': 0}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083615.349129', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: Peter Charalambous', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Xu7', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: Peter Charalambous'}]}]}]}, 'message_timestamp': '1765083615.349129'}, 'pairedItem': {'item': 1}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083616.427009', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: Mason Leib', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'PuBR7', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: Mason Leib'}]}]}]}, 'message_timestamp': '1765083616.427009'}, 'pairedItem': {'item': 2}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083617.797559', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: LEANNE ITALIE AP entertainment writer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'WbY', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: LEANNE ITALIE AP entertainment writer'}]}]}]}, 'message_timestamp': '1765083617.797559'}, 'pairedItem': {'item': 3}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083618.753249', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: GHAITH ALSAYED Associated Press, BASSEM MROUE Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'xs=iC', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: GHAITH ALSAYED Associated Press, BASSEM MROUE Associated Press'}]}]}]}, 'message_timestamp': '1765083618.753249'}, 'pairedItem': {'item': 4}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083619.632689', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: JAMES BROOKS Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'k+TZr', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: JAMES BROOKS Associated Press'}]}]}]}, 'message_timestamp': '1765083619.632689'}, 'pairedItem': {'item': 5}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083620.523899', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: LINDSEY BAHR AP film writer', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'OpTNI', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: LINDSEY BAHR AP film writer'}]}]}]}, 'message_timestamp': '1765083620.523899'}, 'pairedItem': {'item': 6}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083621.394989', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: The Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'sEaGy', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: The Associated Press'}]}]}]}, 'message_timestamp': '1765083621.394989'}, 'pairedItem': {'item': 7}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083622.293199', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: ISHTIAQ MAHSUD Associated Press, MUNIR AHMED Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'lAGhx', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: ISHTIAQ MAHSUD Associated Press, MUNIR AHMED Associated Press'}]}]}]}, 'message_timestamp': '1765083622.293199'}, 'pairedItem': {'item': 8}}, {'json': {'ok': True, 'channel': 'C09UW58R413', 'message': {'user': 'U09UT5PE4HZ', 'type': 'message', 'ts': '1765083623.179739', 'bot_id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'text': 'Author: SIMINA MISTREANU Associated Press', 'team': 'T09VCDJNALR', 'bot_profile': {'id': 'B09V34LF560', 'app_id': 'A09UW3HDF37', 'user_id': 'U09UT5PE4HZ', 'name': 'ProAgentBot', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1764012858, 'team_id': 'T09VCDJNALR'}, 'blocks': [{'type': 'rich_text', 'block_id': 'Yxvpn', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': 'Author: SIMINA MISTREANU Associated Press'}]}]}]}, 'message_timestamp': '1765083623.179739'}, 'pairedItem': {'item': 9}}]
+"""
+def mainWorkflow(trigger_input: [{...}]):
+    """
+    comments: Workflow to generate SQL query using AI, execute it in PostgreSQL, and send results to Slack
+    TODOs: 
+      - Test full workflow
+      - Handle AI output cleaning and error cases
+    """
+    # Step 1: Manual trigger
+    trigger_output = trigger_0(None)
+
+    # Step 2: Build aiCompletion input messages
+    messages = [
+        {"role": "system", "content": "You are a professional PostgreSQL SQL programmer, please only output a SQL string"},
+        {"role": "user", "content": "Please write a SQL query, which find the first 10 distinct 'author' from the table 'bloomberg_articles'"}
+    ]
+    ai_input = [{"json": {"messages": messages}}]
+
+    # Step 3: Call aiCompletion
+    ai_output = action_0(ai_input)
+
+    # Step 4: Extract and clean SQL query from AI output
+    raw_sql = ai_output[0]['json']['choices'][0]['text'].strip()
+    # Remove markdown code blocks if any
+    if raw_sql.startswith('```'):
+        raw_sql = raw_sql.split('\n', 1)[1] if '\n' in raw_sql else raw_sql[3:]
+        if raw_sql.endswith('```'):
+            raw_sql = raw_sql[:-3]
+        raw_sql = raw_sql.strip()
+    # Further strip possible language identifiers
+    for prefix in ['sql', 'SQL']:
+        if raw_sql.lower().startswith(prefix):
+            raw_sql = raw_sql[len(prefix):].strip()
+
+    # Step 5: Prepare PostgreSQL input
+    pg_input = [{"json": {"query": raw_sql}}]
+
+    # Step 6: Call PostgreSQL executeQuery
+    pg_output = action_1(pg_input)
+
+    # Step 7: Format PostgreSQL output for Slack
+    slack_messages = []
+    for item in pg_output:
+        author = item['json'].get('author', '')
+        slack_messages.append({"json": {"text": f"Author: {author}"}})
+
+    # Step 8: Send messages to Slack channel 'general'
+    slack_output = action_2(slack_messages)
+
+    return slack_output
+
+
+
+"""
+
+The directly running result for now codes with print results are as following:
+
+
+
+
+You can also see the runnning result for all functions in there comments.
+"""

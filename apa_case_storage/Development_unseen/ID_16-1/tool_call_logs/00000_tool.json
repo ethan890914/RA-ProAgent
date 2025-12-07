@@ -1,0 +1,53 @@
+{
+  "thought": "根据用户需求，需要从Google Sheets读取数据并发送到Slack频道。首先定义触发器和两个动作节点：一个读取Google Sheets数据，一个发送消息到Slack。",
+  "plan": [
+    "定义手动触发器trigger_0",
+    "定义读取Google Sheets的action_0，指定文档ID和工作表名称",
+    "定义发送Slack消息的action_1，指定频道为general"
+  ],
+  "criticism": "目前还未定义任何函数，无法实现完整流程。",
+  "tool_name": "function_define",
+  "tool_input": {
+    "functions": [
+      {
+        "integration_name": "manualTrigger",
+        "resource_name": "default",
+        "operation_name": "default",
+        "comments": "手动触发器，用户点击后启动工作流",
+        "TODO": [
+          "测试触发器是否能正常启动工作流"
+        ]
+      },
+      {
+        "integration_name": "googleSheets",
+        "resource_name": "sheet",
+        "operation_name": "read",
+        "comments": "读取指定Google Sheets文档和工作表的数据",
+        "TODO": [
+          "设置文档ID和工作表名称",
+          "测试读取数据是否正确"
+        ]
+      },
+      {
+        "integration_name": "slack",
+        "resource_name": "message",
+        "operation_name": "post",
+        "comments": "将数据发送到Slack的#general频道",
+        "TODO": [
+          "配置频道为general",
+          "格式化消息内容",
+          "测试发送消息"
+        ]
+      }
+    ]
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": [
+      "function_0 defined SUCCESS: manualTrigger->default->default",
+      "function_1 defined SUCCESS: googleSheets->sheet->read",
+      "function_2 defined SUCCESS: slack->message->post"
+    ],
+    "status": "ToolCallSuccess"
+  }
+}
