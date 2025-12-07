@@ -1,0 +1,26 @@
+{
+  "thought": "TODO: Update mainWorkflow logic to filter 'to Business' entries for reminder emails instead of 'to Customer'. DONE: None. Now doing: Update mainWorkflow logic.",
+  "plan": [
+    "Rewrite mainWorkflow to change filtering condition from 'to Customer' to 'to Business' for reminder emails.",
+    "Keep all other parts of workflow intact.",
+    "Test workflow with updated logic."
+  ],
+  "criticism": "The only difference is the filtering condition in mainWorkflow; no parameter changes in actions needed.",
+  "tool_name": "function_rewrite_params",
+  "tool_input": {
+    "function_name": "mainWorkflow",
+    "params": "def mainWorkflow(trigger_input: [{...}]):\n  \"\"\"\n  comments: Workflow triggered manually to process commercial entries, classify them, send Slack messages, generate reminders, and send emails.\n  TODOs: \n    - Implement full data flow and transformations.\n    - Test AI classification and email generation.\n    - Verify Slack and Gmail message sending.\n  \"\"\"\n  # Step 1: Read commercial entries from Google Sheets\n  sheet_data = action_0(trigger_input)\n  if not sheet_data or len(sheet_data) == 0:\n    return []  # No data to process\n\n  # Extract rows (skip header if present)\n  # Assuming first row is header\n  rows = sheet_data\n  # Calculate profit and prepare data with profit\n  processed_entries = []\n  for row in rows:\n    json_data = row.get('json', {})\n    try:\n      cost = float(json_data.get('cost', 0))\n      sales = float(json_data.get('sales', 0))\n    except Exception:\n      cost = 0.0\n      sales = 0.0\n    profit = sales - cost\n    processed_entries.append({\n      'Business Line': json_data.get('Business Line', ''),\n      'Manager': json_data.get('Manager', ''),\n      'cost': cost,\n      'sales': sales,\n      'Description': json_data.get('Description', ''),\n      'profit': profit\n    })\n\n  # Step 2: Build input for first aiCompletion to classify each Description\n  ai_classify_input = []\n  for entry in processed_entries:\n    messages = [\n      {\"role\": \"system\", \"content\": \"You are a news classifier. Classify as 'to Business' or 'to Customer'.\"},\n      {\"role\": \"user\", \"content\": entry['Description']}\n    ]\n    ai_classify_input.append({\"json\": {\"messages\": messages}})\n\n  ai_classify_output = action_1(ai_classify_input)\n\n  # Step 3: Parse classification results and prepare Slack messages\n  slack_messages = []\n  classification_results = []\n  for i, ai_item in enumerate(ai_classify_output):\n    classification_text = ai_item['json']['choices'][0]['text'].strip() if 'choices' in ai_item['json'] else ''\n    # Normalize classification text\n    classification = 'to Business' if 'business' in classification_text.lower() else 'to Customer'\n    classification_results.append(classification)\n\n    entry = processed_entries[i]\n    slack_text = f\"Commercial Entry: {entry['Description']}\\nProfit: {entry['profit']}\\nCategory: {classification}\"\n    slack_messages.append({\"json\": {\"text\": slack_text}})\n\n  # Step 4: Send Slack messages\n  if slack_messages:\n    action_2(slack_messages)\n\n  # Step 5: Filter entries for 'to Business' category for reminder emails\n  to_business_entries = [processed_entries[i] for i, cat in enumerate(classification_results) if cat == 'to Business']\n\n  # Step 6: Build input for second aiCompletion to generate reminders\n  ai_reminder_input = []\n  for entry in to_business_entries:\n    messages = [\n      {\"role\": \"system\", \"content\": \"You are a summarizer and a reminder. Please summarize the provided commercial flows and write reminder emails for each flows.\"},\n      {\"role\": \"user\", \"content\": entry['Description']}\n    ]\n    ai_reminder_input.append({\"json\": {\"messages\": messages}})\n\n  ai_reminder_output = action_3(ai_reminder_input)\n\n  # Step 7: Parse reminder content and send emails\n  email_inputs = []\n  for i, ai_item in enumerate(ai_reminder_output):\n    reminder_content = ai_item['json']['choices'][0]['text'].strip() if 'choices' in ai_item['json'] else ''\n    entry = to_business_entries[i]\n    email_inputs.append({\"json\": {\n      \"sendTo\": entry['Manager'],\n      \"subject\": \"'To Business' commercial flows reminder\",\n      \"emailType\": \"text\",\n      \"message\": reminder_content\n    }})\n\n  # Send emails\n  if email_inputs:\n    for email_input in email_inputs:\n      action_4([email_input])\n\n  return []\n",
+    "comments": "Update mainWorkflow to filter 'to Business' entries for the second aiCompletion and email sending, matching the new user query.",
+    "TODO": [
+      "Test updated mainWorkflow logic.",
+      "Verify Slack messages are sent correctly.",
+      "Verify reminder emails are generated and sent for 'to Business' entries."
+    ]
+  },
+  "tool_output_status": "NoSuchFunction",
+  "tool_output": {
+    "ERROR": "Undefined Function mainWorkflow. Available functions = ['trigger_0', 'action_0', 'action_1', 'action_2', 'action_3', 'action_4'].",
+    "result": "Nothing happened.",
+    "status": "NoSuchFunction"
+  }
+}
