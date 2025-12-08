@@ -1,0 +1,19 @@
+{
+  "thought": "当前工作流实现了读取Google Sheets数据，调用AI判断业务流类型，并筛选出'to B'类型的业务流返回。下一步优化是增加对AI返回结果的清洗，提升筛选准确性，并增加输出日志方便调试。",
+  "plan": [
+    "增加对AI返回文本的清洗，去除多余空格和标点符号。",
+    "增加打印日志输出AI判断结果和筛选结果，方便调试和验证。",
+    "测试优化后的工作流，确保筛选逻辑更准确且运行稳定。"
+  ],
+  "criticism": "当前AI文本判断逻辑较简单，可能对复杂或非标准格式的文本识别不够准确，需要更健壮的文本处理。",
+  "tool_name": "workflow_implment",
+  "tool_input": {
+    "workflow_name": "mainWorkflow",
+    "code": "def mainWorkflow(trigger_input: [{...}]):\n    \"\"\"\n    comments: 主工作流，触发后读取Google Sheets数据，调用AI判断业务流类型，筛选to B类型并返回，增加文本清洗和日志输出\n    TODOs:\n      - 测试整个工作流的连接和数据流\n      - 优化AI输出文本处理\n      - 验证筛选准确性\n    \"\"\"\n    import re\n\n    # 1. 调用Google Sheets读取动作\n    sheet_data = action_0(trigger_input)\n    if not sheet_data:\n        print(\"读取Google Sheets为空，终止流程。\")\n        return []\n\n    # 2. 构造AI输入数据，基于描述字段（Description）\n    ai_input = []\n    for item in sheet_data:\n        description = item['json'].get('Description', '')\n        messages = [\n            {\"role\": \"system\", \"content\": \"你是一个业务流分类助手。请根据业务描述判断业务流类型，是to B（to Business）还是to C（to Customer）。\"},\n            {\"role\": \"user\", \"content\": f\"业务描述: {description}\"}\n        ]\n        ai_input.append({\"json\": {\"messages\": messages}})\n\n    # 3. 调用AI完成动作\n    ai_output = action_1(ai_input)\n\n    # 4. 根据AI结果筛选出业务流类型为to B的项\n    to_b_items = []\n    for i, ai_item in enumerate(ai_output):\n        ai_text = ai_item['json']['choices'][0]['text'].lower()\n        # 清洗文本，去除空白和标点\n        ai_text_clean = re.sub(r\"[^a-z0-9 ]\", \"\", ai_text)\n        ai_text_clean = ai_text_clean.strip()\n        print(f\"AI判断结果[{i}]: {ai_text_clean}\")\n        if 'to b' in ai_text_clean or 'tob' in ai_text_clean:\n            to_b_items.append(sheet_data[i])\n\n    print(f\"筛选出的to B业务流数量: {len(to_b_items)}\")\n\n    # 5. 返回筛选的to B项\n    return to_b_items\n"
+  },
+  "tool_output_status": "ToolCallSuccess",
+  "tool_output": {
+    "result": "mainWorkflow has been re-implemented",
+    "status": "ToolCallSuccess"
+  }
+}

@@ -29,15 +29,25 @@ class ProAgentRAG:
                 "additional_information": record["additional_information"],
             }
             ancestor_file = os.path.join("apa_case_storage", f"ID_{record['ID']}", "ancestor.json")
-            if not os.path.exists(ancestor_file):
-                res["parent"] = record["ID"]
+            baseflow_folder = os.path.join("apa_case_storage", f"ID_{record['ID']}")
+
+            if os.path.isdir(baseflow_folder):
+                # non-baseflow but put into the base folder
+                if os.path.exists(ancestor_file):
+                    with open(ancestor_file, "r") as f:
+                        data = json.load(f)
+                        res["parent"] = data["base_workflow_id"]
+                else:
+                    res["parent"] = record["ID"] # root
             else:
-                with open(ancestor_file, "r") as f:
-                    data = json.load(f)
-                    res["parent"] = data["base_workflow_id"]
+                res["parent"] = None
             self.history[record["ID"]] = res
 
     def find_src(self, id, record):
+        # no history workflow saved
+        if record["parent"] is None:
+            return -1
+
         while record["parent"] != id:
             id = record["parent"]
             record = self.history[id]
@@ -68,6 +78,8 @@ class ProAgentRAG:
         srcs = []
         for idx in top_indices:
             src = self.find_src(self.index_data['keys'][idx], self.history[self.index_data['keys'][idx]])
+            if src == -1:
+                continue
             if src in srcs:
                 continue
             srcs.append(src)

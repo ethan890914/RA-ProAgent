@@ -1,9 +1,12 @@
+import os
+# Disable tokenizers parallelism warnings before any imports that use tokenizers
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import hydra
 import omegaconf
 import logging
 from colorama import Fore, Style
 import json
-import os
 
 from mock_agent import mock_function_call_list
 
@@ -148,7 +151,15 @@ def main(cfg: omegaconf.DictConfig):
         query = include_all_info(task, additions)
         rag = ProAgentRAG()
 
+        # load from already set queries
+        query_loader_ = query_loader()
+        query_temp = query_loader_.get_single_query(ID='21-1')
+        query = include_all_info(query_temp.task, query_temp.additional_information)
+        task = query_temp.task
+        additions = query_temp.additional_information
+
         src_ids = rag.retrieve_similar(query, top_k=1, threshold=0.8)
+        del rag
         old_id = src_ids[0] if len(src_ids) > 0 else None
 
         new_query = userQuery(
@@ -159,6 +170,7 @@ def main(cfg: omegaconf.DictConfig):
         if old_id is not None:
             CONFIG.environment = ENVIRONMENT.Refine_oneshot
             # run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id='21-2')
+            print(f'Retrieved old_id = {old_id}')
             run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id=None)
             return
         else:

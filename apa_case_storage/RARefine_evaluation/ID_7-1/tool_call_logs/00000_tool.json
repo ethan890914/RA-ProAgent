@@ -1,0 +1,23 @@
+{
+  "thought": "TODO: Update action_0 AI prompt to include joke topic 'bird'. DONE: None. Now doing: Update action_0 AI prompt for joke topic 'bird'.",
+  "plan": [
+    "Update action_0 params to add joke topic 'bird' in user content prompt.",
+    "Test AI joke generation with updated prompt."
+  ],
+  "criticism": "The current prompt does not specify joke topic 'bird', which is required by the new query.",
+  "tool_name": "function_rewrite_params",
+  "tool_input": {
+    "function_name": "action_0",
+    "params": "{\"messages\":[{\"role\":\"system\",\"content\":\"You are a helpful assistant that generates jokes.\"},{\"role\":\"user\",\"content\":\"Please generate a joke about bird with more than 100 words but less than 200 words.\"}]}",
+    "comments": "Update AI completion prompt to specify joke topic 'bird' and word count constraints.",
+    "TODO": [
+      "Test AI joke generation with new topic prompt"
+    ]
+  },
+  "tool_output_status": "UndefinedParam",
+  "tool_output": {
+    "error": "Undefined input parameter \"messages\" for action_0.Supported parameters: []",
+    "result": "Nothing happened.",
+    "status": "UndefinedParam"
+  }
+}
