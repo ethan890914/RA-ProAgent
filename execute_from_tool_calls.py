@@ -71,7 +71,8 @@ def execute(record_dir, cfg: omegaconf.DictConfig):
         print()
 
         # Construct path to base workflow
-        base_dir = os.path.dirname(record_dir)
+        # base_dir = os.path.dirname(record_dir)
+        base_dir = os.path.join(os.getcwd(), 'apa_case_storage') # hardcoded apa_case_storage path
         base_record_dir = os.path.join(base_dir, f'ID_{base_workflow_id}')
 
         if os.path.exists(base_record_dir):
