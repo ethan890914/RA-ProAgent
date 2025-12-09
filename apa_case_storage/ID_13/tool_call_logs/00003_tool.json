@@ -8,7 +8,7 @@
   "criticism": "No criticism, the implementation meets the user requirements perfectly.",
   "tool_name": "task_submit",
   "tool_input": {
-    "result": "Implemented manual trigger and Gmail send email action. The workflow sends an email to qwuqwuqwu@gmail.com with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!' upon manual trigger activation. Tested successfully."
+    "result": "Implemented manual trigger and Gmail send email action. The workflow sends an email to {{USER_EMAIL}} with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!' upon manual trigger activation. Tested successfully."
   },
   "tool_output_status": "ToolCallSuccess",
   "tool_output": {

@@ -1,7 +1,7 @@
 {
   "thought": "I need to implement the Gmail send email action with the required parameters to send the email to the specified recipient with the given subject and message.",
   "plan": [
-    "Set the 'sendTo' parameter to 'qwuqwuqwu@gmail.com'.",
+    "Set the 'sendTo' parameter to '{{USER_EMAIL}}'.",
     "Set the 'subject' parameter to 'ProAgent testing'.",
     "Set the 'emailType' parameter to 'text'.",
     "Set the 'message' parameter to 'Hi qwuqwuqwu!'.",
@@ -11,8 +11,8 @@
   "tool_name": "function_rewrite_params",
   "tool_input": {
     "function_name": "action_0",
-    "params": "{\"sendTo\":\"qwuqwuqwu@gmail.com\",\"subject\":\"ProAgent testing\",\"emailType\":\"text\",\"message\":\"Hi qwuqwuqwu!\",\"options\":{}}",
-    "comments": "Send an email to qwuqwuqwu@gmail.com with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!'.",
+    "params": "{\"sendTo\":\"{{USER_EMAIL}}\",\"subject\":\"ProAgent testing\",\"emailType\":\"text\",\"message\":\"Hi qwuqwuqwu!\",\"options\":{}}",
+    "comments": "Send an email to {{USER_EMAIL}} with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!'.",
     "TODO": [
       "Test sending email with given inputs.",
       "Handle errors if email sending fails."

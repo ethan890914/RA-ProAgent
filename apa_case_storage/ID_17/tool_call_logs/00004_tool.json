@@ -10,7 +10,7 @@
   "tool_name": "function_rewrite_params",
   "tool_input": {
     "function_name": "action_1",
-    "params": "{\"sendTo\":\"qwuqwuqwu@gmail.com\",\"subject\":\"commercial flows\",\"emailType\":\"text\",\"message\":\"={{JSON.stringify($json)}}\",\"options\":{}}",
+    "params": "{\"sendTo\":\"{{USER_EMAIL}}\",\"subject\":\"commercial flows\",\"emailType\":\"text\",\"message\":\"={{JSON.stringify($json)}}\",\"options\":{}}",
     "comments": "发送邮件，将读取的Google Sheets数据作为邮件内容发送，正确设置收件人、主题和内容参数",
     "TODO": [
       "测试邮件发送是否成功",

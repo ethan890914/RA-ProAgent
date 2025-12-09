@@ -1,7 +1,7 @@
 {
   "thought": "The Gmail action (action_3) is not configured with any parameters, causing the workflow to fail. It requires 'sendTo', 'subject', 'emailType', and 'message' parameters properly set. I will set these parameters according to the user requirements: recipient email, subject 'Commercial Entry Classification', emailType 'text', and message extracted from input_data.",
   "plan": [
-    "Set 'sendTo' parameter to 'qwuqwuqwu@gmail.com'",
+    "Set 'sendTo' parameter to '{{USER_EMAIL}}'",
     "Set 'subject' parameter to 'Commercial Entry Classification'",
     "Set 'emailType' parameter to 'text'",
     "Set 'message' parameter to expression '={{$json[\"message\"]}}' to extract message content from input_data",
@@ -11,7 +11,7 @@
   "tool_name": "function_rewrite_params",
   "tool_input": {
     "function_name": "action_3",
-    "params": "{\"sendTo\":\"qwuqwuqwu@gmail.com\",\"subject\":\"Commercial Entry Classification\",\"emailType\":\"text\",\"message\":\"={{$json[\\\"message\\\"]}}\"}",
+    "params": "{\"sendTo\":\"{{USER_EMAIL}}\",\"subject\":\"Commercial Entry Classification\",\"emailType\":\"text\",\"message\":\"={{$json[\\\"message\\\"]}}\"}",
     "comments": "Send classified commercial entries to email with formatted subject and message content.",
     "TODO": [
       "Test email sending",

@@ -1,7 +1,7 @@
 {
   "thought": "The Gmail send action is currently failing because the params are not set. I need to provide the required parameters: sendTo (recipient email), subject, emailType, and message with correct values and expressions.",
   "plan": [
-    "Set params for action_1 with sendTo as 'qwuqwuqwu@gmail.com'",
+    "Set params for action_1 with sendTo as '{{USER_EMAIL}}'",
     "Set subject as 'ProAgent Joking'",
     "Set emailType as 'text'",
     "Set message to extract the joke text from input_data using expression",
@@ -11,8 +11,8 @@
   "tool_name": "function_rewrite_params",
   "tool_input": {
     "function_name": "action_1",
-    "params": "{\"sendTo\":\"qwuqwuqwu@gmail.com\",\"subject\":\"ProAgent Joking\",\"emailType\":\"text\",\"message\":\"={{$json[\\\"text\\\"]}}\",\"options\":{}}",
-    "comments": "Send the generated joke email to qwuqwuqwu@gmail.com with subject and content from input_data.",
+    "params": "{\"sendTo\":\"{{USER_EMAIL}}\",\"subject\":\"ProAgent Joking\",\"emailType\":\"text\",\"message\":\"={{$json[\\\"text\\\"]}}\",\"options\":{}}",
+    "comments": "Send the generated joke email to {{USER_EMAIL}} with subject and content from input_data.",
     "TODO": [
       "Test sending email",
       "Verify email received with correct content"

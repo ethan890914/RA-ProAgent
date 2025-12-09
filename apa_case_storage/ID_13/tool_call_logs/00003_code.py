@@ -43,7 +43,7 @@ This function has been executed for 1 times. Last execution:
 """
 def action_0(input_data):
   """
-  comments: Send an email to qwuqwuqwu@gmail.com with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!'.
+  comments: Send an email to {{USER_EMAIL}} with subject 'ProAgent testing' and message 'Hi qwuqwuqwu!'.
   TODOs: 
     - Test sending email with given inputs.
     - Handle errors if email sending fails.
@@ -51,7 +51,7 @@ def action_0(input_data):
   params = { 'emailType': 'text',
              'message': 'Hi qwuqwuqwu!',
              'options': {},
-             'sendTo': 'qwuqwuqwu@gmail.com',
+             'sendTo': '{{USER_EMAIL}}',
              'subject': 'ProAgent testing'}
   function = transparent_action(integration="gmail", resource="message", operation="send")
   output_data = function.run(input_data=input_data, params=params)

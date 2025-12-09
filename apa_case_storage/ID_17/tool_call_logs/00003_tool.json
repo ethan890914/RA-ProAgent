@@ -2,7 +2,7 @@
   "thought": "发现action_1的参数未设置，导致邮件发送失败。需要正确设置发送邮件的参数，包括收件人(sendTo)、主题(subject)、邮件类型(emailType)和邮件内容(message)。邮件内容需要将输入数据转换为JSON字符串。",
   "plan": [
     "从输入数据中提取json字段，转换成格式化的JSON字符串。",
-    "设置params的sendTo为指定邮箱qwuqwuqwu@gmail.com。",
+    "设置params的sendTo为指定邮箱{{USER_EMAIL}}。",
     "设置邮件主题为'commercial flows'。",
     "设置邮件类型为'text'。",
     "将转换的JSON字符串作为邮件内容message传入。",

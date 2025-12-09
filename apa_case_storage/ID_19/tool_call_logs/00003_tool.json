@@ -1,7 +1,7 @@
 {
   "thought": "The Gmail send action failed because the params were not set. I need to set the required parameters correctly, including sendTo, subject, emailType, and message, using expressions to extract from input data.",
   "plan": [
-    "Set sendTo to the fixed email 'qwuqwuqwu@gmail.com'",
+    "Set sendTo to the fixed email '{{USER_EMAIL}}'",
     "Set subject to '={{$json[\"subject\"]}}' to get subject from input data",
     "Set emailType to 'text' as required",
     "Set message to '={{$json[\"message\"]}}' to get message body from input data",
@@ -11,7 +11,7 @@
   "tool_name": "function_rewrite_params",
   "tool_input": {
     "function_name": "action_2",
-    "params": "{\"sendTo\":\"qwuqwuqwu@gmail.com\",\"subject\":\"={{$json[\\\"subject\\\"]}}\",\"emailType\":\"text\",\"message\":\"={{$json[\\\"message\\\"]}}\",\"options\":{}}",
+    "params": "{\"sendTo\":\"{{USER_EMAIL}}\",\"subject\":\"={{$json[\\\"subject\\\"]}}\",\"emailType\":\"text\",\"message\":\"={{$json[\\\"message\\\"]}}\",\"options\":{}}",
     "comments": "Set Gmail send action parameters to send email to fixed recipient with subject and message from input data.",
     "TODO": [
       "Test sending emails",

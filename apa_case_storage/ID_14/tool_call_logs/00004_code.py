@@ -68,7 +68,7 @@ This function has been executed for 1 times. Last execution:
 """
 def action_1(input_data):
   """
-  comments: Send the generated joke email to qwuqwuqwu@gmail.com with subject and content from input_data.
+  comments: Send the generated joke email to {{USER_EMAIL}} with subject and content from input_data.
   TODOs: 
     - Test sending email
     - Verify email received with correct content
@@ -76,7 +76,7 @@ def action_1(input_data):
   params = { 'emailType': 'text',
              'message': '={{$json["text"]}}',
              'options': {},
-             'sendTo': 'qwuqwuqwu@gmail.com',
+             'sendTo': '{{USER_EMAIL}}',
              'subject': 'ProAgent Joking'}
   function = transparent_action(integration="gmail", resource="message", operation="send")
   output_data = function.run(input_data=input_data, params=params)
