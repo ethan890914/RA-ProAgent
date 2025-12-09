@@ -78,7 +78,7 @@ if __name__ == '__main__':
       "4.2 Send results to slack channel #general",
       "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
       "5.1 email format:",
-      "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "5.2 Send results with Gmail to {{USER_EMAIL}}",
       "5.3 Each email abstract: Commercial Entry: [Description]",
       "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
     ]
