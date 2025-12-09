@@ -194,7 +194,7 @@
   },
   {
     "ID": "13",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which send an email to qwuqwuqwu@gmail.com",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which send an email to {{USER_EMAIL}}",
     "additional_information": [
       "1.1 email title: ProAgent testing",
       "1.2 email content: Hi qwuqwuqwu!"
@@ -203,7 +203,7 @@
   },
   {
     "ID": "13-1",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which send an email to cc9008@nyu.edu",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which send an email to {{USER_EMAIL_CC}}",
     "additional_information": [
       "1.1 email title: ProAgent testing",
       "1.2 email content: Hi ProAgent!"
@@ -212,10 +212,10 @@
   },
   {
     "ID": "14",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to qwuqwuqwu@gmail.com.",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which use aiCompletion to generate a joke and send it to {{USER_EMAIL}}.",
     "additional_information": [
       "1 Use n8n-nodes-base.aiCompletion to generate a joke within 30 words.",
-      "2.1 Send the generated joke to email address: qwuqwuqwu@gmail.com",
+      "2.1 Send the generated joke to email address: {{USER_EMAIL}}",
       "2.2 email title: ProAgent Joking",
       "2.3 email content: [joke]"
     ],
@@ -271,7 +271,7 @@
   },
   {
     "ID": "17",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and email it to qwuqwuqwu@gmail.com.",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which read the data from googleSheets and email it to {{USER_EMAIL}}.",
     "additional_information": [
       "1. All thoughts and comments should be in Chinese for me to understand.\n",
       "2.1 The documentId(id) of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c\n",
@@ -284,7 +284,7 @@
   },
   {
     "ID": "18",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to qwuqwuqwu@gmail.com with Gmail. Each email message contains a single Description-category pair.",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to {{USER_EMAIL}} with Gmail. Each email message contains a single Description-category pair.",
     "additional_information": [
       "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
       "1.2 The sheetName of Google is: commercial",
@@ -294,7 +294,7 @@
       "2.3 User prompt: Include the actual commercial entry's Description text",
       "2.4 aiCompletion should process each of the commercial entry separately",
       "3.1 Parse aiCompletion output to extract the category 'to Business' or 'to Customer'",
-      "3.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "3.2 Send results with Gmail to {{USER_EMAIL}}",
       "3.3 Each email abstract: [i]. Commercial Entry: [Description]",
       "3.4 Each email content format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
       "3.5 i is the index of the news. start from 1"
@@ -303,7 +303,7 @@
   },
   {
     "ID": "18-1",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to qwuqwuqwu@gmail.com with Gmail. Each email message contains a single category-Description pair.",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to {{USER_EMAIL}} with Gmail. Each email message contains a single category-Description pair.",
     "additional_information": [
       "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
       "1.2 The sheetName of Google is: commercial-mid",
@@ -313,7 +313,7 @@
       "2.3 User prompt: Include the actual commercial entry's Description text",
       "2.4 aiCompletion should process each of the commercial entry separately",
       "3.1 Parse aiCompletion output to extract the category 'to Business' or 'to Customer'",
-      "3.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "3.2 Send results with Gmail to {{USER_EMAIL}}",
       "3.3 Each email abstract: [i]. Commercial Entry: [Description]",
       "3.4 Each email content format: '[i]. Category: [category]\nCommercial Entry: [Description]'",
       "3.5 i is the index of the news. start from 1"
@@ -323,7 +323,7 @@
 
   {
     "ID": "19",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to qwuqwuqwu@gmail.com with Gmail. Each email message contains a single Description-category pair.",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to {{USER_EMAIL}} with Gmail. Each email message contains a single Description-category pair.",
     "additional_information": [
       "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
       "1.2 The sheetName of Google is: commercial",
@@ -333,7 +333,7 @@
       "2.3 User prompt: Include the actual commercial entry's Description text",
       "2.4 aiCompletion should process each of the commercial entry separately",
       "3.1 Parse aiCompletion output to extract the category 'to Business' or 'to Customer')",
-      "3.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "3.2 Send results with Gmail to {{USER_EMAIL}}",
       "3.3 Only send 'to Customer' category commercial entry, and ignore 'to Business' one.",
       "3.4 Each email abstract: [i]. Commercial Entry: [Description]",
       "3.5 Each email content format: '[i]. Commercial Entry: [Description]\nCategory: [category]'",
@@ -378,7 +378,7 @@
       "4.2 Send results to slack channel #general",
       "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
       "5.1 email format:",
-      "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "5.2 Send results with Gmail to {{USER_EMAIL}}",
       "5.3 Each email abstract: Commercial Entry: [Description]",
       "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
     ],
@@ -402,7 +402,7 @@
       "4.2 Send results to slack channel news",
       "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
       "5.1 email format:",
-      "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "5.2 Send results with Gmail to {{USER_EMAIL}}",
       "5.3 Each email abstract: Commercial Entry: [Description]",
       "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
     ],
@@ -426,7 +426,7 @@
       "4.2 Send results to slack channel #news",
       "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
       "5.1 email format:",
-      "5.2 Send results with Gmail to qwuqwuqwu@gmail.com",
+      "5.2 Send results with Gmail to {{USER_EMAIL}}",
       "5.3 Each email abstract: Commercial Entry: [Description]",
       "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
     ],
@@ -453,7 +453,7 @@
   },
   {
     "ID": "23",
-    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, calculate the profit of each entry(= sales - cost), uses first aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to slack. Each slack message contains a single pair of Description-profit-category. After that, use the second aiCompletion to write a reminder email for each 'to Customer' commercial flow. At the end, send those reminder emails to qwuqwuqwu@gmail.com with Gmail.",
+    "task": "Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, calculate the profit of each entry(= sales - cost), uses first aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and sends each result to slack. Each slack message contains a single pair of Description-profit-category. After that, use the second aiCompletion to write a reminder email for each 'to Customer' commercial flow. At the end, send those reminder emails to {{USER_EMAIL}} with Gmail.",
     "additional_information": [
       "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
       "1.2 The sheetName of Google is: commercial",
@@ -471,7 +471,7 @@
       "5.3 User prompt: Include only the 'to Customer' commercial entry's Description text",
       "5.4 The second aiCompletion should process each of the commercial entry separately",
       "6.1 Parse the second aiCompletion output to extract the reminder content",
-      "6.2 Send results to qwuqwuqwu@gmail.com with Gmail",
+      "6.2 Send results to {{USER_EMAIL}} with Gmail",
       "6.3 Each email abstract: 'To Customer' commercial flows reminder",
       "6.4 Each email content: [reminder content]"
     ],
