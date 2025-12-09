@@ -13,6 +13,19 @@ from ProAgent.n8n_parser.node import n8nPythonNode
 from ProAgent.n8n_tester.pseudo_node.run_pseudo_node import run_pseudo_workflow
 from ProAgent.n8n_tester.prompts import success_prompt, error_prompt
 
+def _replace_email_placeholders(value: Any) -> Any:
+    if isinstance(value, str):
+        user_email = os.environ.get("USER_EMAIL", "")
+        user_email_cc = os.environ.get("USER_EMAIL_CC", user_email)
+        value = value.replace("{{USER_EMAIL}}", user_email)
+        value = value.replace("{{USER_EMAIL_CC}}", user_email_cc)
+        return value
+    elif isinstance(value, dict):
+        return {k: _replace_email_placeholders(v) for k, v in value.items()}
+    elif isinstance(value, list):
+        return [_replace_email_placeholders(item) for item in value]
+    else:
+        return value
 
 class n8nRunningException(Exception):
     def __init__(self, message):
@@ -71,6 +84,7 @@ def _get_constant_workflow(input_data):
 
     workflow = {
         "name": f"AutoRun_{uuid.uuid4().hex[:8]}",
+        "versionId": str(uuid.uuid4()),
         "nodes": [node_start, node_code, node_target],
         "connections": {
             node_start_name: {
@@ -201,6 +215,8 @@ def run_node(node: n8nPythonNode, input_data: list[dict] = [{}]) -> tuple[Any, s
     # Set final parameters
     node_var["parameters"] = param_json
 
+    node_var["parameters"] = _replace_email_placeholders(node_var["parameters"])
+
     # 4. Handle Pseudo Nodes (No Change)
     if 'pseudoNode' in node.node_json.keys() and node.node_json['pseudoNode']:
         try:
@@ -240,6 +256,9 @@ def run_node(node: n8nPythonNode, input_data: list[dict] = [{}]) -> tuple[Any, s
 
         if imp_res.returncode != 0:
             error = f"Import Failed: {imp_res.stderr}"
+            print(colored(f"### IMPORT ERROR ###", "red"))
+            print(colored(f"stderr: {imp_res.stderr}", "red"))
+            print(colored(f"stdout: {imp_res.stdout}", "red"))
         else:
             # B. Get ID
             match = re.search(r'\(ID: ([a-zA-Z0-9\-]+)\)', imp_res.stdout + imp_res.stderr)
