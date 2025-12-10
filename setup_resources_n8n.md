@@ -20,6 +20,8 @@ Note: To execute apa_cases_storage, you should setup
 7. OpenAi
 8. Slack API
 
+<img src="./images/n8n_credentials.png">
+
 ## Resources
 1. Google Sheets
    1. Make sure you have access to
