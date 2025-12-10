@@ -1,4 +1,9 @@
-# ProAgent: From Robotic Process Automation to Agentic Process Automation
+
+# RA-ProAgent: ProAgent with RAG
+
+Acknowledgement: This project is built based on ProAgent.
+
+## ProAgent: From Robotic Process Automation to Agentic Process Automation
 
 <img src="./images/intro.png">
 
@@ -8,8 +13,7 @@ From water wheels to Robotic Process Automation (RPA), automation technology has
 
 Referenced code base paper `Agentic Process Automation`[here](https://arxiv.org/abs/2311.10751).
 
-## RA-ProAgent: ProAgent with RAG.
-
+## Implementation
 Based on ProAgent, we extend it with RAG ability by
 
 1. Setting up query and workflows library
@@ -40,25 +44,19 @@ Our projects use a self-host n8n, you must first install a n8n following the [gu
 npm install n8n -g
 ```
 
-We build and test ProAgent with n8n version: 1.120.4, 1.122.4
+We build and test RA-ProAgent with n8n version: 1.120.4, 1.122.4
 
-self-host n8n doesn't support `https` service. However, we have already built a redirect-service, you can temporally use our service(may not be very stable, and we will opensource the redirect-service code)
-
-```Shell
-export WEBHOOK_URL=https://n8n.x-agent.net/redirect/http%3A%2F%2Flocalhost%3A5678/
-n8n
-```
 
 #### Connect your account in n8n
 
 <img src="./images/credentials.png">
 
-You need to regist or connect an existing APP with n8n **before** launching `ProAgent`. Connecting an APP may have some APP-specific operations, you can follow the n8n credential guide [here](https://docs.n8n.io/integrations/builtin/credentials/)
+You need to register or connect an existing APP with n8n **before** launching `RA-ProAgent`. Connecting an APP may have some APP-specific operations, you can follow the n8n credential guide [here](https://docs.n8n.io/integrations/builtin/credentials/)
 
 Let's create a simple openai workflow first.
 
 1. create a credential
-    1. lick create crential: search for openai
+    1. lick create credential: search for openai
     2. paste your openai key to the API Key field
     3. save
 2. create a workflow
@@ -74,7 +72,7 @@ Let's create a simple openai workflow first.
 
 #### Save credentials
 
-Our code base needs to load the workflow ID and credential ID. So you must make some workflow and regist some apps before, then do the following commands to decode the credentials from n8n service
+Our code base needs to load the workflow ID and credential ID. So you must make some workflow and register some apps before, then do the following commands to decode the credentials from n8n service
 
 ```Shell
 n8n export:credentials --all --decrypted --output=./ProAgent/n8n_tester/credentials/c.json
@@ -90,21 +88,19 @@ move `w.json` to `./ProAgent/n8n_tester/credentials/w.json`
 
 You should find your openai key and a workflow you just created.
 
-### 
-
 ## Code Running
 
-The running depends on a `config`， which is in `ProAgent/config.py`, you can set the running environment:
+The running depends on the configuration set in `ProAgent/config.py`, you can change the running mode:
 
-- development: This is the mode to construct a new workflow
+- **development**: This is the mode to construct a new workflow
 - refine: load from an existing workflow, and then refine the workflow with some new request
-- production: load from an existing workflow, you can use this mode to re-produce an existing run of `ProAgent`
-- Production_quick: load from an existing workflow without calling agent and parsing agent's choice, you can use this mode to reproduce all workflows in the folder `./apa_case_storage/`
-- Refine_oneshot: Build a workflow for the new query based on a existing workflow, you can choose any base workflows (those without ancestor.json) in the folder `./apa_case_storage/`
-- RARefine: Build a workflow based on the most similar retrieved query and workflow.
+- **production**: load from an existing workflow, you can use this mode to re-produce an existing run of `ProAgent`
+- **Production_quick**: load from an existing workflow without calling agent and parsing agent's choice, you can use this mode to reproduce all workflows in the folder `./apa_case_storage/`
+- **Refine_oneshot**: Build a workflow for the new query based on a existing workflow, you can choose any base workflows (those without ancestor.json) in the folder `./apa_case_storage/`
+- **RARefine**: Build a workflow based on the most similar retrieved query and workflow.
 
 
-we have provide complete-built workflows in `./apa_case_storage`, you can use `Production_quick` mode to load and run directly.
+we have provided complete-built workflows in `./apa_case_storage`, you can use `Production_quick` mode to load and run directly.
 
 > To reproduce complete-built workflows, please first refer to `./setup_resources_n8n.md`, and setup n8n credentials, and resources used in the complete-built worflows.
 
@@ -112,21 +108,25 @@ we have provide complete-built workflows in `./apa_case_storage`, you can use `P
 >
 > In the opposite, the development, refine, Refine_oneshot, and RARefine mode enable test-on-change feature
 
-use the following command to start `ProAgent`
+use the following command to start `RA-ProAgent`
 
 ```python
 python main.py
 ```
 
-> Note that we have wrote a readable record system. All of the `ProAgent` runs will generate a new record in `./records/`
+> Note that we have wrote a readable record system. All of the `RA-ProAgent` runs will generate a new record in `./records/`
 
-If you use the development mode, you must prepare OpenAI key first. Set the following vars in your envirnoment
+If you use the development mode, you must prepare OpenAI key first. 
+Following `.env.example`, you can set up the API ke like:
 
 ```
-OPENAI_API_KEY, OPENAI_API_BASE
+OPENAI_API_KEY=
+OPENAI_API_BASE=
 ```
 
-- OpenAI: `ProAgent` is based on `GPT 4.1 mini`.
+You can also add other environment variables you want, such as email, google sheet link so that you can easily use it when constructing queries.
+
+- OpenAI: `RA-ProAgent` is based on `GPT 4.1 mini`.
 
 
 
@@ -143,4 +143,4 @@ If you find this repo helpful, feel free to cite the original paper.
 }
 ```
 
-If you find RAG part of this repo helful, feel free to cite the github repo directly.
+If you find RAG part of this repo helpful, feel free to cite the github repo directly.
