@@ -75,7 +75,9 @@ Note: To execute apa_cases_storage, you should setup
       ```
 
 5. Slack
-    1. Make sure you have these channels in ProAgentWorkspace
-        1. general, general-test, jokes, news, weathers
-        2. ProAgentBot is already in above mentioned channels
+    1. Make sure
+        1. you have created a app named ProAgentBot
+        2. you have these channels in ProAgentWorkspace
+            1. general, general-test, jokes, news, weathers
+            2. ProAgentBot is already in above mentioned channels(/invite @ProAgentBot in your channels)
 
