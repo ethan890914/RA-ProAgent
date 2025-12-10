@@ -30,6 +30,8 @@ Our projects use a self-host n8n, you must first install a n8n following the [gu
 npm install n8n -g
 ```
 
+We build and test ProAgent with n8n version: 1.120.4, 1.122.4
+
 self-host n8n doesn't support `https` service. However, we have already built a redirect-service, you can temporally use our service(may not be very stable, and we will opensource the redirect-service code)
 
 ```Shell
@@ -55,6 +57,9 @@ Let's create a simple openai workflow first.
     3. search for openai, add a `Message a model` node
     4. Credential to connect with: OpenAi account
     5. Model: GPT-4.1-MINI
+    <img src="./images/MessageAModelNode.png">
+    <img src="./images/GPTWorkflow.png">
+    
     6. save the workflow
 
 #### Save credentials
@@ -73,31 +78,37 @@ n8n export:workflow --all --output=./ProAgent/n8n_tester/credentials/w.json
 
 move `w.json` to `./ProAgent/n8n_tester/credentials/w.json`
 
+You should find your openai key and a workflow you just created.
+
 ### 
 
 ## Code Running
 
 The running depends on a `config`， which is in `ProAgent/config.py`, you can set the running environment:
 
-- development: This is the mode reported in paper, .
+- development: This is the mode to construct a new workflow
 - refine: load from an existing workflow, and then refine the workflow with some new request
 - production: load from an existing workflow, you can use this mode to re-produce an existing run of `ProAgent`
+- Production_quick: load from an existing workflow without calling agent and parsing agent's choice, you can use this mode to reproduce all workflows in the folder `./apa_case_storage/`
+- Refine_oneshot: Build a workflow for the new query based on a existing workflow, you can choose any base workflows (those without ancestor.json) in the folder `./apa_case_storage/`
+- RARefine: Build a workflow based on the most similar retrieved query and workflow.
 
-we have provide the case reported in our paper in `./apa_case`, you can use `production` mode to load the run directly
 
-> we disable the test-on-change feature in production mode, And the APA-code will be test only once in the end of the run
+we have provide complete-built workflows in `./apa_case_storage`, you can use `Production_quick` mode to load and run directly.
+
+> To reproduce complete-built workflows, please first refer to `./setup_resources_n8n.md`, and setup n8n credentials, and resources used in the complete-built worflows.
+
+> we disable the test-on-change feature in production, Production_quick mode, And the APA-code will be test only once in the end of the run
 >
-> In the opposite, the refine mode enable test-on-change feature
+> In the opposite, the development, refine, Refine_oneshot, and RARefine mode enable test-on-change feature
 
-
-
-use the following command to start `ProAgent`, if you use `development` mode, remember to start n8n before
+use the following command to start `ProAgent`
 
 ```python
 python main.py
 ```
 
-> Note that we have wrote a readable record system. All of the `ProAgent` runs will generate a new record in `./records`, so you can load the run from record in `refine` or `production` mode. 
+> Note that we have wrote a readable record system. All of the `ProAgent` runs will generate a new record in `./records/`
 
 If you use the development mode, you must prepare OpenAI key first. Set the following vars in your envirnoment
 
@@ -105,20 +116,13 @@ If you use the development mode, you must prepare OpenAI key first. Set the foll
 OPENAI_API_KEY, OPENAI_API_BASE
 ```
 
-
-
-The method in our code is almost the same as descripted in our paper. However something have changed after the paper released: 
-
-- HCI: we observed some problems when `ProAgent` has some misunderstood of the problem, so we developed a feature to enable ProAgent to ask human for help by a new function-call (like XAgent). This proactive manner encourage `ProAgent` to build and test  workflows together with human.
-
-- n8n-feature: n8n have rapidly released some new feature in parallel of our work. Our code is basically built upon an older version of n8n and we have wrote an `n8n-compiler` in our code base. So that compiler may not be compatible with the newer verison of n8n
-- OpenAI: `ProAgent` is based on `GPT4-0613`. However OpenAI have released `GPT4-1106-preview` in Dev Day, which has a 38% improvment in function-calling. So you may find `ProAgent` better than our paper thanks to OpenAI's update~
+- OpenAI: `ProAgent` is based on `GPT 4.1 mini`.
 
 
 
 ## Citation
 
-If you find this repo helpful, feel free to cite us.
+If you find this repo helpful, feel free to cite the original paper.
 
 ```
 @article{ye2023proagent,
@@ -128,3 +132,5 @@ If you find this repo helpful, feel free to cite us.
   year={2023}
 }
 ```
+
+If you find RAG part of this repo helful, feel free to cite the github repo directly.
