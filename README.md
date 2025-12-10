@@ -8,6 +8,16 @@ From water wheels to Robotic Process Automation (RPA), automation technology has
 
 Referenced code base paper `Agentic Process Automation`[here](https://arxiv.org/abs/2311.10751).
 
+## RA-ProAgent: ProAgent with RAG.
+
+Based on ProAgent, we extend it with RAG ability by
+
+1. Setting up query and workflows library
+2. Adding retrieval procedure before workflow construction
+3. Enabling retrieval augmented workflow construction ability with Refine_oneshot mode
+
+<img src="./images/RA-ProAgent_fine.png">
+
 ## Code Setup
 
 ### 1. Install packages
