@@ -6,7 +6,7 @@ From water wheels to Robotic Process Automation (RPA), automation technology has
 
 ## <img src="./images/table.png">
 
-And this is the official code of `Agentic Process Automation` paper, you can download our paper [here](https://arxiv.org/abs/2311.10751).
+Referenced code base paper `Agentic Process Automation`[here](https://arxiv.org/abs/2311.10751).
 
 ## Code Setup
 
@@ -16,15 +16,11 @@ And this is the official code of `Agentic Process Automation` paper, you can dow
 pip install -r requirements.txt
 ```
 
-especially, We use the OpenAI version before Dev Day, so you can't use the latest version of OpenAI 
+especially, We use the OpenAI gpt-4.1-mini
 
 ### 2. Prepare for  n8n
 
-Our projects use a self-host n8n, you can either prepare a n8n environment and connect ProAgent with a realworld APP service. 
-
-Or you can load our record to re-produce the case reported in our paper **without** n8n environment
-
-> prepare a n8n service is not an eazy thing, you may face some problems or bug that we haven't encountered before, and you must handle the situation. For example, you may find some GFW problems in China when connecting your APP accounts with n8n
+Our projects use a self-host n8n, please prepare a n8n environment first.
 
 #### install n8n
 
@@ -41,13 +37,25 @@ export WEBHOOK_URL=https://n8n.x-agent.net/redirect/http%3A%2F%2Flocalhost%3A567
 n8n
 ```
 
-
-
 #### Connect your account in n8n
 
 <img src="./images/credentials.png">
 
-You need to regist or connect an existing APP with n8n before launching `ProAgent`. Connecting an APP may have some APP-specific operations, you can follow the n8n credential guide [here](https://docs.n8n.io/integrations/builtin/credentials/)
+You need to regist or connect an existing APP with n8n **before** launching `ProAgent`. Connecting an APP may have some APP-specific operations, you can follow the n8n credential guide [here](https://docs.n8n.io/integrations/builtin/credentials/)
+
+Let's create a simple openai workflow first.
+
+1. create a credential
+    1. lick create crential: search for openai
+    2. paste your openai key to the API Key field
+    3. save
+2. create a workflow
+    1. add a trigger manually node
+    2. click the add button on the right of the trigger node
+    3. search for openai, add a `Message a model` node
+    4. Credential to connect with: OpenAi account
+    5. Model: GPT-4.1-MINI
+    6. save the workflow
 
 #### Save credentials
 
