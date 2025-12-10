@@ -1,6 +1,4 @@
 import os
-# Disable tokenizers parallelism warnings before any imports that use tokenizers
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 import hydra
 import omegaconf
