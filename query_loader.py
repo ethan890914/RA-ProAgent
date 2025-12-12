@@ -11,7 +11,7 @@ class query_loader():
     Use get_single_query(ID) to retrieve a specific query.
     """
 
-    def __init__(self, queries_file='./task_library/base_flow.json'):
+    def __init__(self, queries_file='./task_library/all_task.json'):
         self.queries = {}
         self.queries_file = queries_file
         self.load_queries()
