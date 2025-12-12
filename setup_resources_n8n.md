@@ -1,8 +1,8 @@
-# Resources for apa_cases_storage
+# Resources for task library
 
-Note: To execute apa_cases_storage, you should setup
+Note: To execute task library, you should set up
 1. n8n credentials (ProAgent uses n8n to execute its workflow.)
-2. All input that is referenced in the queries inside apa_cases_storage.
+2. All input that is referenced in the queries inside `task_library/`.
 
 ## n8n credentials
 1. Gmail OAuth2 API
@@ -27,7 +27,7 @@ Note: To execute apa_cases_storage, you should setup
    1. Make sure you have access to
        1. https://docs.google.com/spreadsheets/d/1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c/edit?usp=sharing
        2. https://docs.google.com/spreadsheets/d/1yMInqpKdzm-ZC9bT0dH-HMIm4P3eAZ17K8Yn251MsJY/edit?usp=sharing
-3. Google Drive
+2. Google Drive
     1. Make sure your own Google Drive has this folder / file architecture
         1. ProAgentWorkspace
             1. newsapi_data/
@@ -35,7 +35,7 @@ Note: To execute apa_cases_storage, you should setup
             3. 00006_code.py
             4. abc-news_chunked_1day_articles_2025-11-11_1.csv
 
-4. Postgres
+3. Postgres
    1. Create a server named **postgres**
    2. In this server, create a table named **bloomberg_articles**:
 
@@ -76,10 +76,10 @@ Note: To execute apa_cases_storage, you should setup
       CSV HEADER;
       ```
 
-5. Slack
+4. Slack
     1. Make sure
-        1. you have created a app named ProAgentBot
+        1. you have created an app named ProAgentBot
         2. you have these channels in ProAgentWorkspace
             1. general, general-test, jokes, news, weathers
-            2. ProAgentBot is already in above mentioned channels(/invite @ProAgentBot in your channels)
+            2. ProAgentBot is already in above-mentioned channels(/invite @ProAgentBot in your channels)
 

@@ -11,14 +11,14 @@ class query_loader():
     Use get_single_query(ID) to retrieve a specific query.
     """
 
-    def __init__(self, queries_file='queries_data.json'):
+    def __init__(self, queries_file='./task_library/base_flow.json'):
         self.queries = {}
         self.queries_file = queries_file
         self.load_queries()
 
     def load_queries(self):
         """
-        Load all queries from queries_data.json
+        Load all queries from base_flow.json
         Each query in the JSON file contains: ID, task, additional_information, refine_prompt
         """
         # Get the directory where this file is located
@@ -61,15 +61,15 @@ class query_loader():
             assert False, f"Query ID={ID} not found"
             return self.queries.get('default')
 
-    def load_workflow_from_storage(self, old_ID, storage_dir='apa_case_storage'):
+    def load_workflow_from_storage(self, old_ID, storage_dir='task_library/Base_workflow'):
         """
-        Load workflow data from apa_case_storage/ID_X directory
+        Load workflow data from task_library/Base_workflow/ID_X directory
 
         Loads the final successful workflow code from tool_call_logs directory.
 
         Args:
             old_ID: The ID of the old workflow to load
-            storage_dir: The base directory for storage (default: 'apa_case_storage')
+            storage_dir: The base directory for storage (default: 'task_library/Base_workflow')
 
         Returns:
             dict with 'query' (userQuery object) and 'workflow_code' (str: final workflow code)

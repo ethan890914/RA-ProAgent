@@ -8,6 +8,7 @@ records/
 *.log
 .DS_Store
 .vscode
+.env
 
 ProAgent/n8n_tester/credentials/*.json
 

@@ -2,21 +2,14 @@
 Fixed utils.py for ProAgent - Proper hybrid OpenAI/Gemini support
 Switch between APIs by setting API_PROVIDER in environment variables
 '''
-import os
-import traceback
-from typing import Dict, List, Union
 import json
-import uuid
-from colorama import Fore
-import openai  # Keep original OpenAI import
-from copy import deepcopy
-import requests
-import tiktoken
+import os
 import time
-from func_timeout import func_set_timeout
+import traceback
+
 import func_timeout
-import random
-from ProAgent.config import CONFIG
+import openai  # Keep original OpenAI import
+from func_timeout import func_set_timeout
 
 from ProAgent.loggers.logs import logger
 from ProAgent.running_recorder import RunningRecoder

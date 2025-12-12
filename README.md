@@ -95,16 +95,16 @@ The running depends on the configuration set in `ProAgent/config.py`, you can ch
 - **development**: This is the mode to construct a new workflow
 - refine: load from an existing workflow, and then refine the workflow with some new request
 - **production**: load from an existing workflow, you can use this mode to re-produce an existing run of `ProAgent`
-- **Production_quick**: load from an existing workflow without calling agent and parsing agent's choice, you can use this mode to reproduce all workflows in the folder `./apa_case_storage/`
-- **Refine_oneshot**: Build a workflow for the new query based on a existing workflow, you can choose any base workflows (those without ancestor.json) in the folder `./apa_case_storage/`
+- **Production_quick**: load from an existing workflow without calling agent and parsing agent's choice, you can use this mode to reproduce all workflows in the folder `./task_library/Base_workflow`
+- **Refine_oneshot**: Build a workflow for the new query based on an existing workflow, you can choose any base workflows (those without ancestor.json) in the folder `./task_library/Base_workflow`
 - **RARefine**: Build a workflow based on the most similar retrieved query and workflow.
 
 
-we have provided complete-built workflows in `./apa_case_storage`, you can use `Production_quick` mode to load and run directly.
+we have provided complete-built workflows in `./task_library`, you can use `Production_quick` mode to load and run directly.
 
-> To reproduce complete-built workflows, please first refer to `./setup_resources_n8n.md`, and setup n8n credentials, and resources used in the complete-built worflows.
+> To reproduce complete-built workflows, please first refer to `./setup_resources_n8n.md`, and setup n8n credentials, and resources used in the complete-built workflows.
 
-> we disable the test-on-change feature in production, Production_quick mode, And the APA-code will be test only once in the end of the run
+> we disable the test-on-change feature in production, Production_quick mode, And the APA-code will be tested only once in the end of the run
 >
 > In the opposite, the development, refine, Refine_oneshot, and RARefine mode enable test-on-change feature
 
@@ -117,7 +117,7 @@ python main.py
 > Note that we have wrote a readable record system. All of the `RA-ProAgent` runs will generate a new record in `./records/`
 
 If you use the development mode, you must prepare OpenAI key first. 
-Following `.env.example`, you can set up the API ke like:
+Following `.env.example`, you can set up the API key like:
 
 ```
 OPENAI_API_KEY=

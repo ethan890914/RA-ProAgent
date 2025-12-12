@@ -1,46 +1,37 @@
+import json
 import os
 
 import hydra
 import omegaconf
-import logging
-from colorama import Fore, Style
-import json
-
-from mock_agent import mock_function_call_list
-
-from ProAgent.loggers.logs import logger
-from ProAgent.n8n_parser.compiler import Compiler
-from ProAgent.handler.ReACT import ReACTHandler
-from ProAgent.utils import userQuery
-from ProAgent.running_recorder import RunningRecoder
-from query_loader import query_loader
-from execute_from_tool_calls import run
-from ProAgent.router.utils import ENVIRONMENT
-from ProAgent.config import CONFIG
-from proagent_rag import include_all_info, ProAgentRAG
 from dotenv import load_dotenv
+
+from ProAgent.config import CONFIG
+from ProAgent.handler.ReACT import ReACTHandler
+from ProAgent.n8n_parser.compiler import Compiler
+from ProAgent.router.utils import ENVIRONMENT
+from ProAgent.running_recorder import RunningRecoder
+from ProAgent.utils import userQuery
+from execute_from_tool_calls import run
+from proagent_rag import include_all_info, ProAgentRAG
+from query_loader import query_loader
+
 load_dotenv()
-def run_refine_oneshot_mode(cfg, new_query, old_id, new_query_id=None):
+def run_refine_oneshot_mode(cfg, new_query, old_id):
     """
     Run ProAgent in refine_oneshot mode.
 
     Args:
         cfg: Configuration object
-        new_query_id: ID of the new query to process
+        new_query: new query to process
         old_id: ID of the old workflow to use as reference
 
     Returns:
         None
     """
-    import os
 
     recorder = RunningRecoder()
 
     query_loader_ = query_loader()
-
-    # Load new query
-    if new_query_id is not None:
-        new_query = query_loader_.get_single_query(ID=new_query_id)
 
     # Load old workflow data
     workflow_data = query_loader_.load_workflow_from_storage(old_ID=old_id)
@@ -56,7 +47,7 @@ def run_refine_oneshot_mode(cfg, new_query, old_id, new_query_id=None):
 
     # Load and replay tool calls from old workflow to initialize the compiler
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    old_workflow_dir = os.path.join(current_dir, 'apa_case_storage', f'ID_{old_id}')
+    old_workflow_dir = os.path.join(current_dir, 'task_library/Base_workflow', f'ID_{old_id}')
     tool_call_logs_dir = os.path.join(old_workflow_dir, 'tool_call_logs')
 
     if os.path.exists(tool_call_logs_dir):
@@ -111,46 +102,19 @@ def main(cfg: omegaconf.DictConfig):
     Returns:
         None
     """
+    query_loader_ = query_loader()
 
     if CONFIG.environment == ENVIRONMENT.Production_quick:
-        # run("./records/2025_11_30_10_21_25", cfg)
-        run("./apa_case_storage/ID_21-2", cfg)
+        run("./task_library/Base_workflow/ID_21-2", cfg)
         return
     elif CONFIG.environment == ENVIRONMENT.Refine_oneshot:
-        run_refine_oneshot_mode(cfg, new_query_id='21-2', old_id='21')
+        query = query_loader_.get_single_query(ID='21-2')
+        run_refine_oneshot_mode(cfg, new_query=query, old_id='21')
         return
     elif CONFIG.environment == ENVIRONMENT.RARefine:
-        # task = '''
-        # Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each news headline as 'technology' or 'sport', and sends results to Slack. Each Slack message contains a single news-category pair.
-        # '''
-
-        task = '''
-                Whenever I trigger the Manual Trigger, execute the workflow, which reads data from googleSheets, uses aiCompletion to classify each commercial entry Description as 'to Business' or 'to Customer', and emails the result or send it to slack.'''
-        additions = None
-        additions = [
-            "1.1 The documentId(\"mode\": \"id\") of Google Sheet is: 1JiMU318fRZguk7LmfvpeDKg72vv34bfeSjTdwl0Sj7c",
-            "1.2 The sheetName of Google is: commercial",
-            "1.3 The sheet has one title row with value \"Business Line\", \"Manager\", \"cost\", \"sales\", \"Description\" and has several commercial entries below.",
-            "2.1 For each commercial entry from Google Sheets, create an aiCompletion input with messages array containing system prompt and user prompt",
-            "2.2 System prompt: 'You are a news classifier. Classify as 'to Business' or 'to Customer'.'",
-            "2.3 User prompt: Include the actual commercial entry's Description text",
-            "2.4 aiCompletion should process each of the commercial entry separately",
-            "3.1 Parse aiCompletion output to extract the category ('to Business' or 'to Customer')",
-            "3.2 If it's a 'to Business' commercial entry, then send it through slack.",
-            "3.3 If it's a 'to Customer' commercial entry, then send it through email.",
-            "4.1 slack format:",
-            "4.2 Send results to slack channel #news",
-            "4.3 Each slack message format: 'Commercial Entry: [Description]\nCategory: [category]'",
-            "5.1 email format:",
-            f"5.2 Send results with Gmail to {os.environ.get('MY_GMAIL')}",
-            "5.3 Each email abstract: Commercial Entry: [Description]",
-            "5.4 Each email content format: 'Commercial Entry: [Description]\nCategory: [category]'"
-        ]
-        query = include_all_info(task, additions)
         rag = ProAgentRAG()
 
         # load from already set queries
-        query_loader_ = query_loader()
         query_temp = query_loader_.get_single_query(ID='21-1')
         query = include_all_info(query_temp.task, query_temp.additional_information)
         task = query_temp.task
@@ -158,45 +122,30 @@ def main(cfg: omegaconf.DictConfig):
 
         src_ids = rag.retrieve_similar(query, top_k=1, threshold=0.8)
         del rag
-        old_id = src_ids[0] if len(src_ids) > 0 else None
+        retrieve_workflow = src_ids[0] if len(src_ids) > 0 else None
 
         new_query = userQuery(
             ID='temp',
             task=task,
             additional_information=additions
         )
-        if old_id is not None:
+
+        if retrieve_workflow is not None:
             CONFIG.environment = ENVIRONMENT.Refine_oneshot
-            # run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id='21-2')
-            print(f'Retrieved old_id = {old_id}')
-            run_refine_oneshot_mode(cfg, new_query, old_id=old_id, new_query_id=None)
+            print(f'Retrieved retrieve_workflow = {retrieve_workflow}')
+            run_refine_oneshot_mode(cfg, new_query, old_id=retrieve_workflow)
             return
         else:
             CONFIG.environment = ENVIRONMENT.Development
 
     recorder = RunningRecoder() # default root directory: ./records
 
-    record_dir = None
     record_dir = "./apa_case"
 
-    if record_dir != None:
+    if record_dir is not None:
         recorder.load_from_disk(record_dir, cfg)
         # this record_dir is the record history provided by the original paper, which is different from saving
         # directory of current round
-
-    # original ProAgent demo example
-    # query = userQuery(
-    #     task = "Whenever I trigger the Manual Trigger, execute the workflow, and read the business flow data from googleSheets, which contains cost and sales. Calculate the profit of the business flow (= sales - cost), and based on the descriptions of the business flow, let the first aiCompletion determine the business flow type (to B or to C), and send profit or loss information to the business manager. If the business flow type is to B (to Business), send a message to slack. If the business flow type is to C (to Client), send a reminder email to the business flow manager, with the content generated by the second aiCompletion.",
-    #     additional_information=[
-    #         "1. All thoughts and comments should be in Chinese for me to understand.\n",
-    #         "2.1 The documentId(url) of Google Sheet is: https://docs.google.com/spreadsheets/d/1_B038J1f3VW94z179OagFwEtnr3k5mTyXKBTPI2Fw-U/edit#gid=1759497495\n",
-    #         "2.2 The sheetName(url) of Google is: https://docs.google.com/spreadsheets/d/1_B038J1f3VW94z179OagFwEtnr3k5mTyXKBTPI2Fw-U/edit#gid=1759497495\n"
-    #         "3.1 Use ai node1 to determine if there is a business flow, you can use the aiCompletion node (remember to adjust the Prompt!), if the ai's answer contains 'to B', then the business flow type is to B, if it contains 'to C', then the business flow type is to C.\n"
-    #         "4.1 Choose #general for the Slack Channel.\n",
-    #         "4.2 Use ai node2 to generate the email content.\n"
-    #     ],
-    #     refine_prompt=""
-    # )
 
     query_loader_ = query_loader()
     query = query_loader_.get_single_query(ID='21')

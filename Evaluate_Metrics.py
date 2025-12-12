@@ -93,7 +93,7 @@ def plot_two_subfigures(baseline_folder, rarefine_folder):
 
 
 if __name__ == "__main__":
-    baseline_path = "./apa_case_storage/Development_unseen"
-    rarefine_path = "./apa_case_storage/RARefine_evaluation"
+    baseline_path = "./task_library/Development_unseen"
+    rarefine_path = "./task_library/RARefine_evaluation"
 
     plot_two_subfigures(baseline_path, rarefine_path)
