@@ -1,18 +1,16 @@
+import time
 from copy import deepcopy
 from typing import List, Dict
-import json
-from ProAgent.frontend.highlight_code import highlight_code
-from ProAgent.running_recorder import RunningRecoder
 
-from ProAgent.handler import react_prompt
-from ProAgent.utils import userQuery, Action
 from ProAgent.agent.gpt4_function import OpenAIFunction
-from ProAgent.n8n_parser.compiler import Compiler
-from ProAgent.loggers.logs import logger
-from ProAgent.n8n_parser.intrinsic_functions import get_intrinsic_functions
 from ProAgent.config import CONFIG
+from ProAgent.frontend.highlight_code import highlight_code
+from ProAgent.handler import react_prompt
+from ProAgent.n8n_parser.compiler import Compiler
+from ProAgent.n8n_parser.intrinsic_functions import get_intrinsic_functions
+from ProAgent.running_recorder import RunningRecoder
+from ProAgent.utils import userQuery, Action
 
-import time
 
 class ReACTHandler():
     def __init__(self, cfg, query:userQuery, compiler: Compiler, recorder: RunningRecoder, refine_oneshot_data=None):

@@ -1,10 +1,11 @@
-import logging
-from typing import List, Dict
 import json
+import logging
+from typing import Dict
+
 from colorama import Fore, Style
 
-from ProAgent.loggers.logs import logger
 from ProAgent.agent.utils import _chat_completion_request
+from ProAgent.loggers.logs import logger
 
 
 class OpenAIFunction():
